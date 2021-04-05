@@ -1,0 +1,12 @@
+.tasksbox {
+  background-color: #f18444;
+  color: rgb(211, 31, 31);
+  text-align: center;
+  height: 200px;
+  width: 150px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  box-shadow: 0 10px 10px 0 rgba(172, 168, 168, 0.43);
+  z-index: 9999;
+}
