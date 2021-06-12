@@ -20,7 +20,7 @@ class Password extends Component {
     this.setState({ account });
   };
   handlerChangePassword = async () => {
-    console.log(this.props);
+    //console.log(this.props);
     if (this.state.account.newPasswordR !== this.state.account.newPassword) {
       this.showMessage("کلمه عبور جدید و تکرار آن تفاوت دارند", "error");
       return false;

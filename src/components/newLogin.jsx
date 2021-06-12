@@ -88,67 +88,66 @@ class Login extends Component {
         <div className="container">
           <div className="card login-card">
             <div className="row no-gutters">
-              <div className="col-md-5  ">
+              <div className="col-lg-5   ">
                 <img src={login} alt="login" className="login-card-img" />
               </div>
-              <div className="col-md-7  ">
+              <div className="col-lg-7 text-center ">
                 <div
                   className="card-body"
-                  style={{ minHeight: this.state.height }}
+                  style={{
+                    minHeight: this.state.height,
+                  }}
                 >
                   {/* <p className="login-card-description ">ورود به حساب کاربری</p> */}
-                  <form action="#!">
-                    <div className="brand-wrapper ">
-                      <h4>
-                        <img src={logo} alt="logo" className="logo" />
-                        <p className="text-danger">
-                          معاونت مالی و سرمایه گذاری
-                        </p>
-                        <p className="text-success">سامانه آمار و بودجه</p>
-                      </h4>
-                    </div>
-                    <Input
-                      type="number"
-                      name="username"
-                      error=""
-                      placeholder="کد ملی را وارد کنید"
-                      value={this.state.account.Username}
-                      onChange={this.handleChange}
-                    />
-                    <Input
-                      type="password"
-                      name="password"
-                      error=""
-                      placeholder="کلمه عبور را وارد کنید"
-                      value={this.state.account.Password}
-                      onChange={this.handleChange}
-                    />
-                    <input
-                      name="login"
-                      id="login"
-                      className="btn btn-block login-btn mb-4"
-                      type="button"
-                      onClick={() => {
-                        this.handlerLogin();
-                      }}
-                      value="ورود"
-                    />
-                  </form>
-                  <a href="#!" className="forgot-password-link">
-                    بازیابی کلمه عبور
-                  </a>
-                  <p className="login-card-footer-text">
-                    حساب کاربری ندارید؟
-                    <a href="#!" className="text-reset">
-                      ثبت نام
-                    </a>
-                  </p>
-                  <nav className="login-card-footer-nav">
-                    کلیه حقوق این سایت متعلق به اداره کل آمار و بودجه پست بانک
-                    ایران میباشد™
-                  </nav>
-                  نسخه{version}
+
+                  <div className="brand-wrapper ">
+                    <h4>
+                      <img src={logo} alt="logo" className="logo" />
+                      <p className="text-danger">معاونت مالی و سرمایه گذاری</p>
+                      <p className="text-success">سامانه آمار و بودجه</p>
+                    </h4>
+                  </div>
+                  <Input
+                    type="number"
+                    name="username"
+                    error=""
+                    placeholder="کد ملی را وارد کنید"
+                    value={this.state.account.Username}
+                    onChange={this.handleChange}
+                  />
+                  <Input
+                    type="password"
+                    name="password"
+                    error=""
+                    placeholder="کلمه عبور را وارد کنید"
+                    value={this.state.account.Password}
+                    onChange={this.handleChange}
+                  />
+                  <input
+                    name="login"
+                    id="login"
+                    className="btn btn-block login-btn mb-4"
+                    type="button"
+                    onClick={() => {
+                      this.handlerLogin();
+                    }}
+                    value="ورود"
+                  />
                 </div>
+                <a href="#!" className="forgot-password-link">
+                  بازیابی کلمه عبور
+                </a>
+                <p className="login-card-footer-text">
+                  حساب کاربری ندارید؟
+                  <a href="#!" className="text-reset">
+                    ثبت نام
+                  </a>
+                </p>
+                <nav className="login-card-footer-nav">
+                  کلیه حقوق این سایت متعلق به اداره کل آمار و بودجه پست بانک
+                  ایران میباشد™
+                </nav>
+                نسخه{version}
               </div>
             </div>
           </div>

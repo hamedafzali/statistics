@@ -21,3 +21,13 @@ export function karanehAccessUpdate(id) {
 export function karanehAccessUpdateAll(type, status) {
   return http.get(apiUrl + `/karaneh/karanehaccessupdateall/${type}/${status}`);
 }
+
+export function GetKarnamehPersonTotal(paydate) {
+  return http.get(apiUrl + `/karaneh/getkarnamehpersontotal/${paydate}`);
+}
+export function GetKarnamehBranchTotal(paydate) {
+  return http.get(apiUrl + `/karaneh/getkarnamehbranchtotal/${paydate}`);
+}
+export function GetKarnamehSupervisorTotal(paydate) {
+  return http.get(apiUrl + `/karaneh/getkarnamehsupervisortotal/${paydate}`);
+}

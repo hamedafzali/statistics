@@ -14,10 +14,16 @@ class KarnamehTable extends Component {
   ];
 
   render() {
-    const { data, height, title } = this.props;
+    const { data, height, title, loading } = this.props;
 
     return (
-      <Table columns={this.columns} data={data} height={height} title={title} />
+      <Table
+        columns={this.columns}
+        data={data}
+        height={height}
+        title={title}
+        loading={loading}
+      />
     );
   }
 }

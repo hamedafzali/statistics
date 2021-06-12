@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import KaranehPersonelTable from "./karanehPersonelTable";
-import Pagination from "./common/pagination";
+//import Pagination from "./common/pagination";
 import { getPersonelKaraneh } from "../services/personsKaraneh";
-import _ from "lodash";
-import { paginate } from "../utils/paginate";
+//import _ from "lodash";
+//import { paginate } from "../utils/paginate";
 class KaranehPersonel extends Component {
   state = {
+    loading: false,
     KaranehPersonel: [],
     currentPage: 1,
     pageSize: 500,
@@ -18,13 +19,14 @@ class KaranehPersonel extends Component {
     //this.setState({ karnameh });
   }
   refresh = async (type) => {
+    this.setState({ loading: true });
     const { data: KaranehPersonel } = await getPersonelKaraneh(
       this.props.paydate,
       this.props.ratiosaf,
       this.props.ratiosetad,
       this.props.ratio
     );
-    this.setState({ KaranehPersonel });
+    this.setState({ KaranehPersonel, loading: false });
 
     //console.log(this.state);
 
@@ -32,57 +34,59 @@ class KaranehPersonel extends Component {
     //this.setState({ branchesRank });
   };
 
-  handlePageChange = (page) => {
-    this.setState({ currentPage: page });
-  };
+  // handlePageChange = (page) => {
+  //   this.setState({ currentPage: page });
+  // };
 
-  handleSort = (sortColumn) => {
-    this.setState({ sortColumn });
-  };
+  // handleSort = (sortColumn) => {
+  //   this.setState({ sortColumn });
+  // };
 
-  getPagedData = () => {
-    const { pageSize, currentPage, sortColumn, KaranehPersonel } = this.state;
-    //const filtered = branchesRank;
+  // getPagedData = () => {
+  //   const { pageSize, currentPage, sortColumn, KaranehPersonel } = this.state;
+  //   //const filtered = branchesRank;
 
-    const sorted = _.orderBy(
-      KaranehPersonel,
-      [sortColumn.path],
-      [sortColumn.order]
-    );
-    const Pdata = paginate(sorted, currentPage, pageSize);
-    return { totalCount: KaranehPersonel.length, data: Pdata };
-  };
+  //   const sorted = _.orderBy(
+  //     KaranehPersonel,
+  //     [sortColumn.path],
+  //     [sortColumn.order]
+  //   );
+  //   const Pdata = paginate(sorted, currentPage, pageSize);
+  //   return { totalCount: KaranehPersonel.length, data: Pdata };
+  // };
 
   render() {
-    const { length: count } = this.state.KaranehPersonel;
-    const { pageSize, currentPage, sortColumn } = this.state;
+    //const { length: count } = this.state.KaranehPersonel;
+    //const { pageSize, currentPage, sortColumn } = this.state;
 
-    if (count === 0) return <p>اطلاعاتی وجود ندارد.</p>;
+    // if (count === 0) return <p>اطلاعاتی وجود ندارد.</p>;
 
-    const { totalCount, data } = this.getPagedData();
+    //const { totalCount, data } = this.getPagedData();
 
     return (
       <div className="row">
         <div className="col">
-          <span className="input-group-text text-justifiy col-md">
+          {/* <span className="input-group-text text-justifiy col-md">
             لیست پرسنل {totalCount}
-          </span>
+          </span> */}
 
           <KaranehPersonelTable
-            data={data}
-            sortColumn={sortColumn}
-            onLike={this.handleLike}
-            onDelete={this.handleDelete}
-            onSort={this.handleSort}
-            allData={this.state.KaranehPersonel}
+            data={this.state.KaranehPersonel}
+            title="پرسنل مشمول کارانه"
+            loading={this.state.loading}
+            //sortColumn={sortColumn}
+            //onLike={this.handleLike}
+            //onDelete={this.handleDelete}
+            //onSort={this.handleSort}
+            //allData={this.state.KaranehPersonel}
           />
 
-          <Pagination
+          {/* <Pagination
             itemsCount={totalCount}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
-          />
+          /> */}
         </div>
       </div>
     );

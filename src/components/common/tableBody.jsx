@@ -1,23 +1,39 @@
 import React, { Component } from "react";
-import _ from "lodash";
+//import _ from "lodash";
+import _ from "underscore";
 
 class TableBody extends Component {
   //state = { data: [] };
   handleChange = (e) => {
     e.preventDefault();
-    let data = this.props.data.map((i) => {
-      //console.log(i.NationalCode, e.currentTarget.name.substring(0, 10));
-      if (i.NationalCode === e.currentTarget.name.substring(0, 10)) {
-        let name = e.currentTarget.name.substring(10, 13);
+    // let data = this.props.data.map((i) => {
+    //   // console.log(
+    //   //   "data",
+    //   //   i.NationalCode,
+    //   //   e.currentTarget.name.substring(0, 10)
+    //   // );
+    //   if (i.NationalCode === e.currentTarget.name.substring(0, 10)) {
+    //     let name = e.currentTarget.name.substring(10, 13);
 
-        i[name] = e.currentTarget.value.replace(",", "");
-        i.edited = true;
-        return i;
-      } else {
-        return i;
-      }
-    });
-    this.props.tbhandleChange(data);
+    //     i[name] = e.currentTarget.value.replace(",", "");
+    //     i.edited = true;
+    //     //console.log(i);
+    //     return i;
+    //   } else {
+    //     return i;
+    //   }
+    // });
+    // this.props.tbhandleChange(data);
+    let data = this.props.data.filter(
+      (i) => i.NationalCode === e.currentTarget.name.substring(0, 10)
+    );
+    if (data) {
+      let name = e.currentTarget.name.substring(10, 13);
+
+      data[0][name] = e.currentTarget.value.replace(",", "");
+      data[0].edited = true;
+      this.props.tbhandleChange(data[0]);
+    }
   };
   //.replace(/[\D\s\._\-]+/g, "")
   numberWithCommas = (x) => {
@@ -43,7 +59,7 @@ class TableBody extends Component {
               name={item.NationalCode + column.path}
               key={item.NationalCode + column.path}
               onChange={this.handleChange}
-            ></input>
+            />
           );
 
         case "inputnumber":
@@ -145,7 +161,15 @@ class TableBody extends Component {
   };
 
   createKey = (item, column) => {
-    return item.Id + (column.path || column.key);
+    // console.log(
+    //   (item.Id || item.NationalCode) +
+    //     (column.path || column.key || column.label)
+    // );
+    return (
+      (item.Id || item.NationalCode) +
+      (column.path || column.key || column.label)
+    );
+    //return Math.random();
   };
   render() {
     const { columns } = this.props;
@@ -155,8 +179,10 @@ class TableBody extends Component {
         {this.props.data.map((item) => (
           <tr key={item.Id} className={item.edited ? "bg-warning" : null}>
             {columns.map((column) => (
-              <td key={this.createKey(item, column)}>
-                {/* {console.log(item)} */}
+              <td
+                key={this.createKey(item, column)}
+                className={column.color ? column.color : ""}
+              >
                 {this.renderCell(item, column)}
               </td>
             ))}

@@ -34,7 +34,7 @@ class CEOCommit extends Component {
     value: { min: 25, max: 120 },
   };
   handleRange = async (value) => {
-     setKaranehParams(
+    setKaranehParams(
       this.state.paydate,
       value.min,
       value.max,
@@ -58,6 +58,7 @@ class CEOCommit extends Component {
     this.setState({
       KaranehDates,
     });
+    console.log(this.state);
   };
   handleSave = () => {
     //console.log(this.state);
@@ -144,6 +145,7 @@ class CEOCommit extends Component {
   handleRefresh = () => {
     // console.log("handleRefresh", this.state);
     this.handleFillData();
+
     // this.childSupervisorsRank.refresh(this.state.ratio, this.state.paydate);
     // this.childBranchesRank.refresh(this.state.ratio, this.state.paydate);
     // this.childKarnamehsh.refresh(this.state.paydate);
@@ -461,7 +463,8 @@ class CEOCommit extends Component {
                               ratio={this.state.ratio}
                               paydate={this.state.paydate}
                               ref={(instanceSupervisorsRank) => {
-                                this.childSupervisorsRank = instanceSupervisorsRank;
+                                this.childSupervisorsRank =
+                                  instanceSupervisorsRank;
                               }}
                             />
                           </div>

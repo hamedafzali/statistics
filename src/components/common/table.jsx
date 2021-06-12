@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import TableHeader from "./tableHeader";
+import logo from "../../assets/images/loading.gif";
 import TableBody from "./tableBody";
 import Inputsm from "../common/inputsm";
 import Select from "../common/select";
@@ -11,15 +12,26 @@ import { CSVLink } from "react-csv";
 import Overlay from "react-overlay-component";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Table = ({ columns, data, onCommit, tbhandleChange, height, title }) => {
+const Table = ({
+  columns,
+  data,
+  onCommit,
+  tbhandleChange,
+  height,
+  title,
+  loading,
+  refresh,
+  doRefresh,
+}) => {
   const [isOpen, setOverlay] = useState(false);
   const closeOverlay = () => setOverlay(false);
-  const [size, setSize] = useState(14);
+  const [size, setSize] = useState(13);
   const [searchOpen, setSearchOpen] = useState(false);
   const [pageSizeOpen, setPageSizeOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setpageSize] = useState(200);
   const [keyword, setKeyword] = useState("");
+
   const pageSizeData = [
     { id: 10, name: "10" },
     { id: 25, name: "25" },
@@ -40,12 +52,15 @@ const Table = ({ columns, data, onCommit, tbhandleChange, height, title }) => {
 
   const doSearch = (data) => {
     return _.filter(data, function (item) {
+      //_.indexOf(data).conca
       try {
         var s = "";
         columns.forEach((i) => {
           s += item[i.path];
         });
+
         if (s.indexOf(keyword) !== -1) {
+          //if (_.indexOf(s, keyword) !== -1) {
           return item;
         } else return null;
       } catch (e) {
@@ -80,7 +95,20 @@ const Table = ({ columns, data, onCommit, tbhandleChange, height, title }) => {
     //console.log(sortColumn);
   };
   const { totalCount, PData } = getPagedData();
-  if (data.length === 0) return <p>اطلاعاتی وجود ندارد.</p>;
+
+  if (loading)
+    return (
+      <React.Fragment>
+        <span className="input-group-text text-justifiy col-md">
+          {title} تعداد :{totalCount}
+        </span>
+        <div>
+          <img src={logo} alt="loading..." />
+          <h3>در حال بارگذاری اطلاعات....</h3>
+        </div>
+      </React.Fragment>
+    );
+  if (!loading && data.length === 0) return <p>اطلاعاتی وجود ندارد.</p>;
   return (
     <div style={{ width: "100%" }}>
       <div className="row">
@@ -93,7 +121,7 @@ const Table = ({ columns, data, onCommit, tbhandleChange, height, title }) => {
       <div className="row">
         <div className="text-right col ">
           {data.length ? (
-            <>
+            <React.Fragment>
               <CSVLink data={data}>
                 <i
                   // onClick={() => this.props.onCommit(item.Id)}
@@ -111,7 +139,7 @@ const Table = ({ columns, data, onCommit, tbhandleChange, height, title }) => {
                 className={`btn-outline-danger fa fa-fw fa-file-pdf-o`}
                 style={{ fontSize: "1.65em" }}
               />
-            </>
+            </React.Fragment>
           ) : (
             ""
           )}
@@ -154,6 +182,17 @@ const Table = ({ columns, data, onCommit, tbhandleChange, height, title }) => {
             className={`btn-outline-info fa fa-fw fa-arrows-v`}
             style={{ fontSize: "1.25em" }}
           />
+          {refresh ? (
+            <i
+              onClick={() => {
+                doRefresh();
+              }}
+              className={`btn-outline-info fa fa-fw fa-refresh`}
+              style={{ fontSize: "1.25em" }}
+            />
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className="row ">

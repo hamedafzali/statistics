@@ -12,9 +12,15 @@ class KarnamehSHTable extends Component {
     { path: "LimitedCalced", label: "با اعمال حد" },
   ];
   render() {
-    const { data, title, height } = this.props;
+    const { data, title, height, loading } = this.props;
     return (
-      <Table columns={this.columns} data={data} title={title} height={height} />
+      <Table
+        columns={this.columns}
+        data={data}
+        title={title}
+        height={height}
+        loading={loading}
+      />
     );
   }
 }

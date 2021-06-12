@@ -19,6 +19,8 @@ class Header extends Component {
     fontWeight: "bold",
     alignItems: "center",
     direction: "rtl",
+    borderRadius: "25px",
+    zIndex: 99999999,
   };
   // Demo = () => (
   //   <NewWindow>
@@ -42,7 +44,7 @@ class Header extends Component {
         if (subMenu.length !== 0) {
           return (
             <Dropdown
-              className="bg-white text-dark border-0"
+              className="bg-white text-dark border-0 ml-2"
               key="right"
               id={`dropdown-button-drop-right`}
               drop="down"
@@ -65,7 +67,10 @@ class Header extends Component {
           );
         } else {
           return (
-            <Dropdown.Item eventKey="1" className="bg-white text-dark border-0">
+            <Dropdown.Item
+              eventKey="1"
+              className="bg-white text-dark border-0 "
+            >
               <Link to={i.Link} className="text-dark">
                 {i.Name}
               </Link>
@@ -78,8 +83,13 @@ class Header extends Component {
 
   render() {
     return (
-      <div className="container py-3">
-        <Navbar collapseOnSelect expand="lg" style={this.titleStyle}>
+      <div className="container py-3 fixed-top">
+        <Navbar
+          collapseOnSelect
+          expand="lg"
+          style={this.titleStyle}
+          className="bg-white border"
+        >
           <Navbar.Brand className="font-weight-bold text-muted text-right">
             <img src={logo} alt="logo" className="logo" width="25" />
             <Link to="/" className="text-danger">
@@ -92,7 +102,11 @@ class Header extends Component {
             </p> */}
           </Navbar.Brand>
           <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
+          <Navbar.Collapse
+            className="j
+            ustify-content-end"
+            style={{ zIndex: 999999999 }}
+          >
             <Nav className="mr-auto text-right ">{this.state.menu}</Nav>
           </Navbar.Collapse>
         </Navbar>

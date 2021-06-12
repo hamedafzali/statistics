@@ -12,7 +12,7 @@ import NotFound from "./components/notFound";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 //import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 // Be sure to include styles at some point, probably during your bootstraping
-import "@trendmicro/react-sidenav/dist/react-sidenav.css";
+//import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import RelocationCommit from "./components/relocationCommit";
 import CEOCommit from "./components/CEOCommit";
 //import AboutUs from "./components/aboutUs";
@@ -36,8 +36,22 @@ import Product from "./components/product";
 import ThreeOf1000 from "./components/ThreeOf1000";
 import Payesh from "./components/payesh";
 import CEOCommitNew from "./components/CEOCommitNew";
+import BudgetTitle from "./components/budgetTitle";
+import BudgetAllocation from "./components/budgetAllocation";
+import Messages from "./components/messages";
+import MessageNew from "./components/messageNew";
+import PdfReader from "./components/pdfReader";
+import BudgetReport from "./components/budgetReport";
+import BudgetCommit from "./components/budgetCommit";
+import BudgetPrint from "./components/budgetPrint";
+import BudgetRequest from "./components/budgetRequest";
+import KaranehReport from "./components/karanehReport";
+import logo from "./assets/images/loading1.gif";
+import TasksComment from "./components/tasksComment";
+
 class App extends Component {
   state = {
+    loading: false,
     employee: {
       Name: "",
       Family: "",
@@ -50,7 +64,7 @@ class App extends Component {
       UserStatus: 0,
     },
     menudata: "",
-    currentPage: "ain",
+    currentPage: "Main",
   };
 
   handleLogin = (employee) => {
@@ -60,20 +74,35 @@ class App extends Component {
 
     //console.log(this.state);
   };
+  handleLoading = (stat) => {
+    this.setState({ loading: stat });
+  };
   handleMenu = async () => {
     const { data: menudata } = await getMenu(this.state.employee.GroupId || 5);
     this.setState({ menudata });
   };
   componentDidMount() {
+    //let employee;
+    if (!this.state.employee) auth.logout();
+    //console.log("employee", auth.getCurrentUser());
+    // try {
+    //   this.setState({ employee: auth.getCurrentUser() }, () => {
+    //     if (this.state.employee) {
+
     setInterval(() => {
+      //console.log(window.location.pathname);
       if (
         this.state.employee.GroupId === 0 &&
-        window.location.pathname !== "/"
+        window.location.pathname !== "/" &&
+        window.location.pathname !== "/budgetprint/"
       ) {
         //alert("جلسه کاری شما به پایان رسید");
         window.location = "/";
       }
     }, 5000);
+    //    }
+    //   });
+    // } catch (e) {}
   }
   handleLogout = () => {
     this.setState(
@@ -112,7 +141,26 @@ class App extends Component {
             this.childHeader = instanceHeader;
           }}
         />
-        <div className="container">
+        <div
+          style={{
+            width: window.width,
+            height: window.height,
+            position: "fixed",
+            display: this.state.loading ? "block" : "none",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "#fff",
+            opacity: 0.8,
+            zIndex: 99999999,
+          }}
+        >
+          <div style={{ position: "absolute", top: "10%", left: "40%" }}>
+            <img src={logo} alt="loading..." />
+          </div>
+        </div>
+        <div className="container " style={{ marginTop: 100 }}>
           <div className="row">
             <div className="col text-center">
               <div className="content">
@@ -157,6 +205,24 @@ class App extends Component {
                         employee={this.state.employee}
                         {...props}
                       />
+                    )}
+                  />
+                  <Route
+                    path="/messages"
+                    render={(props) => (
+                      <Messages employee={this.state.employee} {...props} />
+                    )}
+                  />
+                  <Route
+                    path="/messagesnew"
+                    render={(props) => (
+                      <MessageNew employee={this.state.employee} {...props} />
+                    )}
+                  />
+                  <Route
+                    path="/pdf"
+                    render={(props) => (
+                      <PdfReader employee={this.state.employee} {...props} />
                     )}
                   />
                   <Route
@@ -221,6 +287,12 @@ class App extends Component {
                     )}
                   />
                   <Route
+                    path="/taskscomment"
+                    render={(props) => (
+                      <TasksComment employee={this.state.employee} {...props} />
+                    )}
+                  />
+                  <Route
                     path="/personelreport"
                     render={(props) => (
                       <PersonelReport
@@ -259,7 +331,11 @@ class App extends Component {
                   <Route
                     path="/ceocommit"
                     render={(props) => (
-                      <CEOCommit employee={this.state.employee} {...props} />
+                      <CEOCommit
+                        employee={this.state.employee}
+                        handleLoading={this.handleLoading}
+                        {...props}
+                      />
                     )}
                   />
                   <Route
@@ -269,9 +345,60 @@ class App extends Component {
                     )}
                   />
                   <Route
+                    path="/karanehreport"
+                    render={(props) => (
+                      <KaranehReport
+                        employee={this.state.employee}
+                        {...props}
+                      />
+                    )}
+                  />
+                  <Route
                     path="/managercommit"
                     render={(props) => (
                       <ManagerCommit
+                        employee={this.state.employee}
+                        {...props}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/budgettitle"
+                    render={(props) => (
+                      <BudgetTitle employee={this.state.employee} {...props} />
+                    )}
+                  />
+                  <Route
+                    path="/budgetreport"
+                    render={(props) => (
+                      <BudgetReport employee={this.state.employee} {...props} />
+                    )}
+                  />
+                  <Route
+                    path="/budgetprint"
+                    render={(props) => (
+                      <BudgetPrint employee={this.state.employee} {...props} />
+                    )}
+                  />
+                  <Route
+                    path="/budgetcommit"
+                    render={(props) => (
+                      <BudgetCommit employee={this.state.employee} {...props} />
+                    )}
+                  />
+                  <Route
+                    path="/budgetrequest"
+                    render={(props) => (
+                      <BudgetRequest
+                        employee={this.state.employee}
+                        {...props}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/budgetallocation"
+                    render={(props) => (
+                      <BudgetAllocation
                         employee={this.state.employee}
                         {...props}
                       />

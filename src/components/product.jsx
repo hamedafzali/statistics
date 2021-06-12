@@ -13,6 +13,7 @@ import {
 //import _ from "lodash";
 class Product extends Component {
   state = {
+    loading: false,
     pageContent: { title: "تخصیص فوق العاده عملیاتی" },
     data: [],
     currentPage: 1,
@@ -61,24 +62,34 @@ class Product extends Component {
       switch (item.Description) {
         case "شعبه": {
           A30Sum +=
-            parseInt(0.3 * item.مبلغ) -
+            parseInt(0.3 * item["مبلغ کل"]) -
             parseInt(String(item.A30).replace(",", ""));
-          A30All += parseInt(0.3 * item.مبلغ);
+          A30All += parseInt(0.3 * item["مبلغ کل"]);
           A20Sum +=
-            parseInt(0.2 * item.مبلغ) - String(item.A20).replace(",", "");
-          A20All += parseInt(0.2 * item.مبلغ);
-          break
+            parseInt(0.2 * item["مبلغ کل"]) - String(item.A20).replace(",", "");
+          A20All += parseInt(0.2 * item["مبلغ کل"]);
+          break;
+        }
+        case "شعبه مستقل": {
+          A30Sum +=
+            parseInt(0.3 * item["مبلغ کل"]) -
+            parseInt(String(item.A30).replace(",", ""));
+          A30All += parseInt(0.3 * item["مبلغ کل"]);
+          A20Sum +=
+            parseInt(0.2 * item["مبلغ کل"]) - String(item.A20).replace(",", "");
+          A20All += parseInt(0.2 * item["مبلغ کل"]);
+          break;
         }
         default: {
           A30Sum += 0;
           A30All += 0;
           A20Sum +=
-            parseInt(0.5 * item.مبلغ) -
+            parseInt(0.5 * item["مبلغ کل"]) -
             parseInt(String(item.A20).replace(",", ""));
-          A20All += parseInt(0.5 * item.مبلغ);
+          A20All += parseInt(0.5 * item["مبلغ کل"]);
         }
       }
-return 0;
+      return 0;
       // if (item.Description === "شعبه") {
       //   let Percent = this.state.productPercent.filter(
       //     (i) => i.UnitType === 3
@@ -145,13 +156,14 @@ return 0;
   };
   refresh = async () => {
     //console.log(this.state.payDate);
+    this.setState({ loading: true });
     const { data } = await GetPersonsProduct(
       this.props.employee.NationalCode,
       this.state.payDate,
       this.state.productId
     );
 
-    this.setState({ data }, () => {
+    this.setState({ data, loading: false }, () => {
       //this.clacRemain();
       this.handleKaranehRemain();
     });
@@ -178,9 +190,9 @@ return 0;
           this.props.employee.GroupId === 2) &&
         PostTypeId === 2
       ) {
-        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 30000000) {
+        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
           this.showMessage(
-            "سقف مبلغ قابل تخصیص به رییس شعبه 30,000,000 ریال میباشد",
+            "سقف مبلغ قابل تخصیص به رییس شعبه 35,000,000 ریال میباشد",
             "error"
           );
           return false;
@@ -190,17 +202,17 @@ return 0;
           this.props.employee.GroupId === 2) &&
         PostTypeId !== 2
       ) {
-        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 30000000) {
+        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
           this.showMessage(
-            "سقف مبلغ قابل تخصیص به کارکنان 30,000,000 ریال میباشد",
+            "سقف مبلغ قابل تخصیص به کارکنان 35,000,000 ریال میباشد",
             "error"
           );
           return false;
         }
       } else {
-        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 30000000) {
+        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
           this.showMessage(
-            "سقف مبلغ قابل تخصیص به کارکنان ستادی 30,000,000 ریال میباشد",
+            "سقف مبلغ قابل تخصیص به کارکنان ستادی 35,000,000 ریال میباشد",
             "error"
           );
           return false;
@@ -292,8 +304,17 @@ return 0;
       }
     });
   };
-  tbhandleChange = (data) => {
-    this.setState({ data });
+  tbhandleChange = (row) => {
+    //console.log("row", row);
+    let dataNew = this.state.data.map((i) => {
+      //console.log(i.NationalCode, row.NationalCode);
+      if (i.NationalCode === row.NationalCode) return row;
+      else return i;
+    });
+    //console.log(dataNew);
+    this.setState({
+      data: dataNew,
+    });
     //this.clacRemain();
   };
   insert = async (
@@ -406,7 +427,10 @@ return 0;
                       ""
                     )}
                   </h4>
-
+                  <strong>مبلغ نهایی</strong> شامل
+                  <strong> مبلغ ثابت </strong>،<strong> سهم شعبه </strong> و
+                  <strong> سهم سرپرستی/ستاد </strong> میباشد که مبلغ کارگزاری و
+                  ارزی در آن لحاظ شده است
                   <div className="row">
                     <div className="col">
                       <ProductTable
@@ -414,6 +438,8 @@ return 0;
                         employee={this.props.employee}
                         onCommit={this.onCommit}
                         tbhandleChange={this.tbhandleChange}
+                        refresh={this.refresh}
+                        loading={this.state.loading}
                       />
                     </div>
                   </div>

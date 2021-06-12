@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import TreeMenu, { defaultChildren } from "react-simple-tree-menu";
-import Select from "./selectPrepend";
+import Select from "./selectPrepend-sm";
 //import Input from "./input";
 import "../../../node_modules/react-simple-tree-menu/dist/main.css";
 import Relocation from "../relocation";
@@ -96,7 +96,7 @@ export default class Tree extends Component {
       return false;
     }
     if (window.confirm(`${this.state.person.name} حذف شود؟`)) {
-       await personLocationSetStatus(
+      await personLocationSetStatus(
         this.state.person.nationalCode,
         this.state.description,
         this.state.person.sourceId,
@@ -274,7 +274,7 @@ export default class Tree extends Component {
                   }}
                 >
                   <p>ثبت جابجایی</p>
-                  <img src={arrow} alt=""/>
+                  <img src={arrow} alt="" />
                 </button>
 
                 <div

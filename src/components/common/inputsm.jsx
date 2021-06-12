@@ -1,3 +1,4 @@
+import React from "react";
 const Inputsm = ({ name, label, error, ...rest }) => {
   return (
     <input

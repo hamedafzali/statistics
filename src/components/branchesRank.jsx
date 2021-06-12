@@ -8,28 +8,36 @@ import "react-input-range/lib/css/index.css";
 //import { paginate } from "../utils/paginate";
 class BranchesRank extends Component {
   state = {
+    loading: false,
     data: [],
-
     title: "گزارش محاسباتی",
     height: 600,
   };
 
-  componentDidMount() {
-    this.refresh();
-  }
+  // componentDidMount() {
+  //   this.refresh();
+  // }
   refresh = async () => {
+    this.setState({ loading: true });
     const { data } = await getBranchesRank(
       this.props.ratio,
       this.props.paydate
     );
 
     //console.log("BranchesRank", BranchesRank);
-    this.setState({ data });
+    this.setState({ data, loading: false });
   };
 
   render() {
     const { data, title, height } = this.state;
-    return <BranchesRankTable data={data} title={title} height={height} />;
+    return (
+      <BranchesRankTable
+        data={data}
+        title={title}
+        height={height}
+        loading={this.state.loading}
+      />
+    );
   }
 }
 
