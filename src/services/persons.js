@@ -58,3 +58,7 @@ export function UpdatePersons(nationalcode, status, posttypeid, vajed) {
 export function personsList() {
   return http.get(apiUrl + `/persons/personslist`);
 }
+
+export function personsTransfer(params) {
+  return http.post(apiUrl + `/persons/chartupdate`, params);
+}

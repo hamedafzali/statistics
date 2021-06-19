@@ -246,3 +246,15 @@ Number.prototype.toPersianLetter = function () {
 };
 
 export default Num2persian;
+
+export function toFarsiNumber(n) {
+  try {
+    const farsiDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+    //console.log("n", n);
+    return n
+      .toString()
+      .split("")
+      .map((x) => (isNaN(parseInt(x)) === true ? x : farsiDigits[x]))
+      .join("");
+  } catch (e) {}
+}

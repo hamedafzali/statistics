@@ -12,7 +12,12 @@ import "react-toastify/dist/ReactToastify.css";
 import arrow from "../../assets/images/arrow.svg";
 import { getKaranehDates } from "../../services/karanehDates";
 import { ChartPerson, Chart } from "../../services/tree";
-import { personLocationSetStatus } from "../../services/persons";
+import {
+  personLocationSetStatus,
+  PostTypeGetallData,
+  personsTransfer,
+} from "../../services/persons";
+
 export default class Tree extends Component {
   state = {
     person: {
@@ -26,6 +31,7 @@ export default class Tree extends Component {
     description: "",
     tel: "0",
     personTreeData: [],
+    postTypeData: [],
     chartTreeData: [],
     KaranehDates: [],
     deleteReasons: [
@@ -72,14 +78,20 @@ export default class Tree extends Component {
     this.fillTree();
     this.hadnleRefresh();
     this.getKaranehDates();
+    this.getPostTypes();
   }
+  getPostTypes = async () => {
+    const { data: postTypeData } = await PostTypeGetallData();
+    this.setState({ postTypeData });
+  };
+
   handleChange = (e) => {
     let newState = { ...this.state };
     newState[e.currentTarget.name] = e.currentTarget.value;
     //console.log("old", newState);
     this.setState(newState, () => {
       this.hadnleRefresh();
-      //console.log("new", this.state);
+      console.log("new", this.state);
     });
   };
   handleDelete = async () => {
@@ -105,56 +117,8 @@ export default class Tree extends Component {
       );
       this.hadnleRefresh();
     }
-
-    // confirmAlert({
-    //   title: "حذف پرسنل", // Title dialog
-    //   message: `${this.state.person.name}`, // Message dialog
-    //   childrenElement: () => (
-    //     <div>
-    //       <div>حذف مورد تایید است؟</div>
-    //     </div>
-    //   ),
-    //   buttons: [
-    //     {
-    //       label: "بله",
-    //       onClick: async () => {
-    //         const { data: KaranehDates } = await personLocationSetStatus(
-    //           this.state.person.NationalCode,
-    //           0
-    //         );
-    //         this.setState({
-    //           KaranehDates,
-    //         });
-    //       },
-    //     },
-    //     {
-    //       label: "خیر",
-    //     },
-    //   ],
-    // });
   };
-  // handleConfirm = () => {
-  //   confirmAlert({
-  //     title: "تغییرات پرسنل", // Title dialog
-  //     message: `${this.state.person.name}`, // Message dialog
-  //     childrenElement: () => (
-  //       <div>
-  //         <div>انتقال به:{this.state.person.destinationName}</div>
-  //         <br />
-  //         <div>جابجایی مورد تایید است؟</div>
-  //       </div>
-  //     ),
-  //     buttons: [
-  //       {
-  //         label: "بله",
-  //         onClick: () => this.handleTransfer(),
-  //       },
-  //       {
-  //         label: "خیر",
-  //       },
-  //     ],
-  //   });
-  // };
+
   handleTransfer = async (sw) => {
     //console.log(this.state);
     if (!sw) return false;
@@ -170,14 +134,22 @@ export default class Tree extends Component {
       this.showMessage("مقصد را انتخاب کنید", "error");
       return false;
     }
-    // console.log(
-    //   this.state.person.destinationId === this.state.person.sourceId,
-    //   this.state
-    // );
+
     if (this.state.person.destinationId === this.state.person.sourceId) {
       this.showMessage("مبدا و مقصد یکسان میباشد", "error");
       return false;
     }
+    // let { data } = this.handleTransfer({
+    //   nationalCode: this.state.person.nationalCode,
+    //   sourceId: this.state.person.sourceId,
+    //   Description:this.state.person.nationalCode,
+    //   destinationCode: this.state.person.destinationCode,
+    //   destinationName: this.state.person.destinationName,
+    //   destinationId: this.state.person.destinationId,
+    //   tel: this.state.tel,
+    //   paydate: this.state.paydate,
+    //   Registrar: this.props.employee.NationalCode,
+    // });
     let { data } = await Axios.get(
       `http://amar.pb.ir:8080/api/persons/chartupdate/${this.state.person.nationalCode.trim()}/${
         this.state.person.sourceId
@@ -331,6 +303,14 @@ export default class Tree extends Component {
                     label="علت حذف"
                     error=""
                     options={this.state.deleteReasons}
+                  />
+                  <Select
+                    id="post"
+                    onChange={this.handleChange}
+                    name="post"
+                    label="پست سازمانی در واحد مقصد"
+                    error=""
+                    options={this.state.postTypeData}
                   />
                   {/* <Input
                     type="text"

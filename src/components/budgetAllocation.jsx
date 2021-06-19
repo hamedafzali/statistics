@@ -85,6 +85,7 @@ class BudgetAllocation extends Component {
         selectedDocumentId: 0,
         collapse: id,
       });
+      this.getBudgetDocuments();
     } else if (id === 2) {
       if (!this.state.newDocument) {
         this.showMessage("ایجاد سند از مرحله اول قابل انجام است", "error");
@@ -503,19 +504,27 @@ class BudgetAllocation extends Component {
                                             </td>
                                             <td>{i.Registrar}</td>
                                             <td>
-                                              <div
-                                                className="d-inline  btn btn-outline-danger btn-md m1"
-                                                onClick={() => {
-                                                  this.setState(
-                                                    {
-                                                      selectedDocumentId: i.Id,
-                                                    },
-                                                    () => this.handleCollapse(3)
-                                                  );
-                                                }}
-                                              >
-                                                ویرایش
-                                              </div>
+                                              {i.Status === 0 ? (
+                                                <div
+                                                  className="d-inline  btn btn-outline-danger btn-md m1"
+                                                  onClick={() => {
+                                                    this.setState(
+                                                      {
+                                                        selectedDocumentId:
+                                                          i.Id,
+                                                      },
+                                                      () =>
+                                                        this.handleCollapse(3)
+                                                    );
+                                                  }}
+                                                >
+                                                  ویرایش
+                                                </div>
+                                              ) : (
+                                                <span className="badge badge-warning">
+                                                  غیر قابل ویرایش
+                                                </span>
+                                              )}
                                             </td>
                                           </tr>
                                         ))}
@@ -572,7 +581,7 @@ class BudgetAllocation extends Component {
                                   label="توضیحات سند"
                                   error=""
                                   title={this.props.employee.BranchCode}
-                                  maxLength={500}
+                                  maxLength={4000}
                                   placeholder=""
                                   value={this.state.documentTitle}
                                   onChange={this.handleChange}

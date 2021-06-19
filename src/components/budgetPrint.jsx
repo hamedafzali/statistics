@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as htmlToImage from "html-to-image";
 import XLSX from "xlsx";
 import thousandSeperator from "../utils/thousandSeparator";
-import Num2persian from "../utils/num2persian";
+import Num2persian, { toFarsiNumber } from "../utils/num2persian";
 //import tinyNumToWord from '../utils/num2persian';
 //import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
@@ -18,23 +18,11 @@ class BudgetPrint extends Component {
     BudgetDocumentDetail: [],
     selectedDocumentId: new URLSearchParams(window.location.search).get("id"),
     BudgetSummary: { Sum: 0, SumTotal: 0, SumAll: 0 },
-    // data: {
-    //   cols: [
-    //     { name: "A", key: 0 },
-    //     { name: "B", key: 1 },
-    //     { name: "C", key: 2 },
-    //   ],
-    //   data: [
-    //     ["id", "name", "value"],
-    //     [1, "sheetjs", 7262],
-    //     [2, "js-xlsx", 6969],
-    //   ],
-    // },
   };
   componentDidMount() {
     this.getBudgetDocumentDetail();
     this.getBudgetDocumentSummary();
-    // console.log(Num2persian(123));
+    //console.log(this.toFarsiNumber("123,111"));
   }
   getBudgetDocumentSummary = async () => {
     const { data: BudgetSummary } = await BudgetDocumentSummary(
@@ -42,7 +30,17 @@ class BudgetPrint extends Component {
     );
     this.setState({ BudgetSummary });
   };
-
+  // toFarsiNumber = (n) => {
+  //   try {
+  //     const farsiDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+  //     //console.log("n", n);
+  //     return n
+  //       .toString()
+  //       .split("")
+  //       .map((x) => (isNaN(parseInt(x)) === true ? x : farsiDigits[x]))
+  //       .join("");
+  //   } catch (e) {}
+  // };
   getBudgetDocumentDetail = async () => {
     const { data: BudgetDocumentDetail } = await BudgetDocumentDetailGetData(
       this.state.selectedDocumentId
@@ -92,13 +90,17 @@ class BudgetPrint extends Component {
             className={` btn-outline-success fa fa-fw fa-download`}
             style={{ fontSize: "2em" }}
           />
-          <div className="row" id="title">
+          <div className="row " id="title">
             بدینوسیله با ابلاغ مبلغ
-            {thousandSeperator(this.state.BudgetSummary.Sum)} ریال حکم شماره
-            {this.state.BudgetSummary.PId} مورخ {this.state.BudgetSummary.Date}
+            {toFarsiNumber(thousandSeperator(this.state.BudgetSummary.Sum))}
+            ریال حکم شماره
+            {toFarsiNumber(this.state.BudgetSummary.PId)} مورخ{" "}
+            {toFarsiNumber(this.state.BudgetSummary.Date)}
             به شرح ذیل اصلاح و جمع کل اعتبارات آن مدیریت مبلغ
-            {thousandSeperator(this.state.BudgetSummary.SumAll)} ریال تعیین
-            میگردد
+            {toFarsiNumber(
+              thousandSeperator(this.state.BudgetSummary.SumAll)
+            )}{" "}
+            ریال تعیین میگردد
           </div>
           <div id="my-node">
             {/* <div className="row">
@@ -112,7 +114,10 @@ class BudgetPrint extends Component {
 
             {/* {console.log(document.getElementById("my-node"))} */}
 
-            <table className="table table-sm " style={{ fontSize: 12 }}>
+            <table
+              className="table table-sm table-bordered"
+              style={{ fontSize: 12 }}
+            >
               {/* <caption>سند بودجه استان آذر غربی</caption> */}
               <thead className="thead-light">
                 <tr key="header">
@@ -128,13 +133,13 @@ class BudgetPrint extends Component {
               <tbody>
                 {this.state.BudgetDocumentDetail.map((i, index) => (
                   <tr key={i.PId}>
-                    <td>{index + 1}</td>
+                    <td>{toFarsiNumber(index + 1)}</td>
                     {/* <td>{i.PId}</td> */}
                     {/* <td>{i.Code}</td> */}
-                    <td>{i.Title}</td>
-                    <td>{i.Count === 0 ? "-" : i.Count}</td>
-                    <td>{i.Description}</td>
-                    <td>{thousandSeperator(i.Amount)}</td>
+                    <td>{toFarsiNumber(i.Title)}</td>
+                    <td>{i.Count === 0 ? "-" : toFarsiNumber(i.Count)}</td>
+                    <td>{toFarsiNumber(i.Description)}</td>
+                    <td>{toFarsiNumber(thousandSeperator(i.Amount))}</td>
                   </tr>
                 ))}
               </tbody>
@@ -145,7 +150,11 @@ class BudgetPrint extends Component {
                     {Num2persian(this.state.BudgetSummary.Sum)} ریال
                   </td>
 
-                  <td>{thousandSeperator(this.state.BudgetSummary.Sum)}</td>
+                  <td>
+                    {toFarsiNumber(
+                      thousandSeperator(this.state.BudgetSummary.Sum)
+                    )}
+                  </td>
                 </tr>
                 <tr>
                   <td colSpan="2">جمع اعتبار ابلاغ شده:</td>
@@ -154,7 +163,9 @@ class BudgetPrint extends Component {
                   </td>
 
                   <td>
-                    {thousandSeperator(this.state.BudgetSummary.SumTotal)}
+                    {toFarsiNumber(
+                      thousandSeperator(this.state.BudgetSummary.SumTotal)
+                    )}
                   </td>
                 </tr>
                 <tr>
@@ -163,7 +174,11 @@ class BudgetPrint extends Component {
                     {Num2persian(this.state.BudgetSummary.SumAll)} ریال
                   </td>
 
-                  <td>{thousandSeperator(this.state.BudgetSummary.SumAll)}</td>
+                  <td>
+                    {toFarsiNumber(
+                      thousandSeperator(this.state.BudgetSummary.SumAll)
+                    )}
+                  </td>
                 </tr>
               </tfoot>
             </table>
