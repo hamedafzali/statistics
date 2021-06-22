@@ -492,7 +492,9 @@ class BudgetAllocation extends Component {
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        {this.state.BudgetDocuments.map((i) => (
+                                        {this.state.BudgetDocuments.filter(
+                                          (i) => i.Status === 0
+                                        ).map((i) => (
                                           <tr key={i.Id}>
                                             <td>{i.Date}</td>
                                             <td>{i.Id}</td>
@@ -895,7 +897,9 @@ class BudgetAllocation extends Component {
                                 </tr>
                               </thead>
                               <tbody>
-                                {this.state.BudgetDocuments.map((i) => (
+                                {this.state.BudgetDocuments.filter(
+                                  (i) => i.Status === 0
+                                ).map((i) => (
                                   <tr key={i.Id}>
                                     <td>{i.Date}</td>
                                     <td>{i.Id}</td>
@@ -905,6 +909,7 @@ class BudgetAllocation extends Component {
                                     <td>{i.Branch + "-" + i.BranchCode}</td>
                                     <td>{i.Registrar}</td>
                                     <td>{i.StatusTitle}</td>
+                                    {console.log(i)}
                                     {i.Status === 0 ? (
                                       <td>
                                         <div
@@ -916,7 +921,7 @@ class BudgetAllocation extends Component {
                                           تایید
                                         </div>
                                       </td>
-                                    ) : (
+                                    ) : parseInt(i.Status) > 2 ? (
                                       <td>
                                         <div
                                           className="d-inline  btn btn-outline-warning btn-md m-1 "
@@ -928,6 +933,12 @@ class BudgetAllocation extends Component {
                                         >
                                           چاپ
                                         </div>
+                                      </td>
+                                    ) : (
+                                      <td>
+                                        <span className="badge badge-warning">
+                                          امکان چاپ بعد از تایید نهایی
+                                        </span>
                                       </td>
                                     )}
                                     {/* <td>

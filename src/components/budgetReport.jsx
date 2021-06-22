@@ -135,9 +135,11 @@ class BudgetReport extends Component {
                               <th scope="col">عنوان سند</th>
                               <th scope="col">واحد مقصد</th>
                               <th scope="col">ثبت کننده</th>
-                              <th scope="col">تایید اول</th>
-                              <th scope="col">تایید دوم</th>
-                              <th scope="col">تایید نهایی</th>
+                              <th scope="col">وضعیت سند</th>
+                              <th scope="col">تایید کارشناس مسئول</th>
+                              <th scope="col">تایید معاون اداره کل</th>
+                              <th scope="col">تایید اداره کل</th>
+                              <th scope="col">تایید معاون مدیر عامل</th>
                               <th scope="col"></th>
                             </tr>
                           </thead>
@@ -150,21 +152,25 @@ class BudgetReport extends Component {
                                 <td>{i.Title}</td>
                                 <td>{i.Branch + "-" + i.BranchCode}</td>
                                 <td>{i.Registrar}</td>
+                                <td>{i.StatusTitle}</td>
                                 <td>{i.Commit1}</td>
                                 <td>{i.Commit2}</td>
                                 <td>{i.Commit3}</td>
-                                <td>
-                                  <div
-                                    className="d-inline  btn btn-outline-danger btn-md m1"
-                                    onClick={() => {
-                                      this.setState({
-                                        selectedDocumentId: i.Id,
-                                      });
-                                    }}
-                                  >
-                                    چاپ
-                                  </div>
-                                </td>
+                                <td>{i.Commit4}</td>
+                                {i.Status > 2 ? (
+                                  <td>
+                                    <div
+                                      className="d-inline text-nowrap btn btn-outline-danger btn-md m-1 col"
+                                      onClick={() => {
+                                        window.open(`/budgetprint/?id=${i.Id}`);
+                                      }}
+                                    >
+                                      چاپ
+                                    </div>
+                                  </td>
+                                ) : (
+                                  <td></td>
+                                )}
                               </tr>
                             ))}
                           </tbody>

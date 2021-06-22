@@ -185,6 +185,7 @@ class BudgetCommit extends Component {
                               <th scope="col">مبلغ سند</th>
                               <th scope="col">واحد مقصد</th>
                               <th scope="col">وضعیت سند</th>
+                              <th scope="col">ثبت کننده</th>
                               <th scope="col">تایید کارشناس مسئول</th>
                               <th scope="col">تایید معاون اداره کل</th>
                               <th scope="col">تایید اداره کل</th>
@@ -207,6 +208,7 @@ class BudgetCommit extends Component {
                                 <td>{i.Amount}</td>
                                 <td>{i.Branch + "-" + i.BranchCode}</td>
                                 <td>{i.StatusTitle}</td>
+                                <td>{i.Registrar}</td>
                                 <td>{i.Commit1}</td>
                                 <td>{i.Commit2}</td>
                                 <td>{i.Commit3}</td>

@@ -32,7 +32,7 @@ class KaranehManagers extends Component {
     this.setState({ data });
   };
   refresh = async () => {
-    const { data: managersList } = await getManagersList("140001");
+    const { data: managersList } = await getManagersList("140003");
     this.setState({ managersList });
   };
 

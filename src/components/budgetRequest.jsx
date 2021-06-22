@@ -264,7 +264,7 @@ class BudgetRequest extends Component {
                           id="headingOne"
                           className={
                             this.state.collapse === 1
-                              ? `col-lg-${colsize} col-md-12 mt-1 card-header shadow p-3 mt-1  bg-success text-light`
+                              ? `col-lg-${colsize} col-md-12 mt-1 card-header shadow p-3  bg-warning `
                               : `col-lg-${colsize} col-md-12  card-header p-3 mt-1  bg-light btn-block border`
                           }
                           //data-toggle="collapse"
@@ -276,8 +276,8 @@ class BudgetRequest extends Component {
                           <h3
                             className={
                               this.state.collapse === 1
-                                ? "btn btn-block mb-0  text-light"
-                                : "btn btn-block mb-0 text dark"
+                                ? "btn btn-block mb-0  text-dark"
+                                : "btn btn-block mb-0 text-dark"
                             }
                           >
                             مرحله اول - نوع درخواست
@@ -288,7 +288,7 @@ class BudgetRequest extends Component {
                           id="headingTwo"
                           className={
                             this.state.collapse === 2
-                              ? `col-lg-${colsize} col-md-12  mt-1 card-header shadow p-3 mt-1  bg-success text-light`
+                              ? `col-lg-${colsize} col-md-12  mt-1 card-header shadow p-3 bg-warning`
                               : `col-lg-${colsize} col-md-12  card-header p-3 mt-1  bg-light btn-block border`
                           }
                           //data-toggle="collapse"
@@ -300,8 +300,8 @@ class BudgetRequest extends Component {
                           <h3
                             className={
                               this.state.collapse === 2
-                                ? "btn btn-block mb-0  text-light"
-                                : "btn btn-block mb-0 text dark"
+                                ? "btn btn-block mb-0  text-dark"
+                                : "btn btn-block mb-0 text-dark"
                             }
                           >
                             مرحله دوم - ایجاد درخواست
@@ -313,7 +313,7 @@ class BudgetRequest extends Component {
                           style={{ borderRadius: 20, zIndex: 1 }}
                           className={
                             this.state.collapse === 3
-                              ? `col-lg-${colsize} col-md-12  mt-1 card-header shadow p-3 mt-1  bg-success text-light`
+                              ? `col-lg-${colsize} col-md-12  mt-1 card-header shadow p-3 bg-warning`
                               : `col-lg-${colsize} col-md-12  card-header p-3 mt-1  bg-light btn-block border`
                           }
                           //data-toggle="collapse"
@@ -325,8 +325,8 @@ class BudgetRequest extends Component {
                           <h3
                             className={
                               this.state.collapse === 3
-                                ? "btn btn-block mb-0  text-light"
-                                : "btn btn-block mb-0 text dark"
+                                ? "btn btn-block mb-0  text-dark"
+                                : "btn btn-block mb-0 text-dark"
                             }
                           >
                             مرحله سوم - ثبت درخواست
@@ -338,7 +338,7 @@ class BudgetRequest extends Component {
                           id="headingFour"
                           className={
                             this.state.collapse === 4
-                              ? "col-lg-3 col-md-12 mt-1 card-header shadow p-3 mt-1  bg-success text-light"
+                              ? "col-lg-3 col-md-12 mt-1 card-header shadow p-3 bg-warning"
                               : "col-lg-3 col-md-12 card-header p-3 mt-1 bg-light btn-block border"
                           }
                           //data-toggle="collapse"
@@ -350,8 +350,8 @@ class BudgetRequest extends Component {
                           <h3
                             className={
                               this.state.collapse === 4
-                                ? "btn btn-block mb-0 text-light"
-                                : "btn btn-block mb-0 text dark"
+                                ? "btn btn-block mb-0 text-dark"
+                                : "btn btn-block mb-0 text-dark"
                             }
                           >
                             مرحله چهارم -تایید نهایی

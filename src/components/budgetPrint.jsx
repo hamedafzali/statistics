@@ -3,8 +3,6 @@ import * as htmlToImage from "html-to-image";
 import XLSX from "xlsx";
 import thousandSeperator from "../utils/thousandSeparator";
 import Num2persian, { toFarsiNumber } from "../utils/num2persian";
-//import tinyNumToWord from '../utils/num2persian';
-//import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
 import {
   BudgetDocumentDetailGetData,
@@ -22,7 +20,6 @@ class BudgetPrint extends Component {
   componentDidMount() {
     this.getBudgetDocumentDetail();
     this.getBudgetDocumentSummary();
-    //console.log(this.toFarsiNumber("123,111"));
   }
   getBudgetDocumentSummary = async () => {
     const { data: BudgetSummary } = await BudgetDocumentSummary(
@@ -30,17 +27,7 @@ class BudgetPrint extends Component {
     );
     this.setState({ BudgetSummary });
   };
-  // toFarsiNumber = (n) => {
-  //   try {
-  //     const farsiDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-  //     //console.log("n", n);
-  //     return n
-  //       .toString()
-  //       .split("")
-  //       .map((x) => (isNaN(parseInt(x)) === true ? x : farsiDigits[x]))
-  //       .join("");
-  //   } catch (e) {}
-  // };
+
   getBudgetDocumentDetail = async () => {
     const { data: BudgetDocumentDetail } = await BudgetDocumentDetailGetData(
       this.state.selectedDocumentId
@@ -83,14 +70,16 @@ class BudgetPrint extends Component {
           className="bg-white"
           style={{
             width: "700px",
+            fontFamily: "B Nazanin",
+            padding: "2rem",
           }}
         >
           <i
             onClick={this.downloadImage}
             className={` btn-outline-success fa fa-fw fa-download`}
-            style={{ fontSize: "2em" }}
+            style={{ fontSize: "2rem" }}
           />
-          <div className="row " id="title">
+          <div className="row text-right m-2" id="title">
             بدینوسیله با ابلاغ مبلغ
             {toFarsiNumber(thousandSeperator(this.state.BudgetSummary.Sum))}
             ریال حکم شماره
@@ -103,27 +92,13 @@ class BudgetPrint extends Component {
             ریال تعیین میگردد
           </div>
           <div id="my-node">
-            {/* <div className="row">
-            <div className="col">شماره سند:121321</div>
-            <div className="col">مقصد: فارس</div>
-          </div>
-          <div className="row">
-            <div className="col"> مبلغ:22500000</div>
-            <div className="col"> توضیحات:سند بودجه</div>
-          </div> */}
-
-            {/* {console.log(document.getElementById("my-node"))} */}
-
             <table
               className="table table-sm table-bordered"
-              style={{ fontSize: 12 }}
+              style={{ fontSize: "0.7rem", fontWeight: 600 }}
             >
-              {/* <caption>سند بودجه استان آذر غربی</caption> */}
               <thead className="thead-light">
                 <tr key="header">
                   <th scope="col">ردیف</th>
-                  {/* <th scope="col">شماره سند</th> */}
-                  {/* <th scope="col">کد سرفصل</th> */}
                   <th scope="col">عنوان هزینه</th>
                   <th scope="col">تعداد</th>
                   <th scope="col">شرح </th>
@@ -134,8 +109,6 @@ class BudgetPrint extends Component {
                 {this.state.BudgetDocumentDetail.map((i, index) => (
                   <tr key={i.PId}>
                     <td>{toFarsiNumber(index + 1)}</td>
-                    {/* <td>{i.PId}</td> */}
-                    {/* <td>{i.Code}</td> */}
                     <td>{toFarsiNumber(i.Title)}</td>
                     <td>{i.Count === 0 ? "-" : toFarsiNumber(i.Count)}</td>
                     <td>{toFarsiNumber(i.Description)}</td>
