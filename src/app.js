@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Login from "./components/newLogin";
-//import Index from "./components/index";
 import { Route, Switch, Redirect } from "react-router-dom";
 import auth from "./services/authService";
 import MainPage from "./components/main";
@@ -8,22 +7,13 @@ import ResetPassword from "./components/resetPassword";
 import Password from "./components/password";
 import PersonsLocation from "./components/personsLocation";
 import NotFound from "./components/notFound";
-//import SideMenu from "./components/common/sidemenu";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
-//import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
-// Be sure to include styles at some point, probably during your bootstraping
-//import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import RelocationCommit from "./components/relocationCommit";
 import CEOCommit from "./components/CEOCommit";
-//import AboutUs from "./components/aboutUs";
-//import ContactUs from "./components/contactUs";
-//import Links from "./components/main";
 import ManagerCommit from "./components/managerCommit";
 import Header from "./components/common/header";
 import { getMenu } from "./services/menu";
-//import { accessControl } from "./services/accessControl";
 import UnderConstruction from "./components/underConstruction";
-//import { reject } from "underscore";
 import PersonsDetail from "./components/personsDetail";
 import PersonelReport from "./components/personelReport";
 import AdditionRegForm from "./components/additionForm";
@@ -31,7 +21,6 @@ import KaranehAccess from "./components/karanehAccess";
 import KaranehManagersPage from "./components/karanehManagersPage";
 import CEOConfirm from "./components/ceoConfirm";
 import PersonsList from "./components/PersonsList";
-//import TasksBox from "./components/common/tasksBox";
 import Product from "./components/product";
 import ThreeOf1000 from "./components/ThreeOf1000";
 import Payesh from "./components/payesh";
@@ -71,8 +60,6 @@ class App extends Component {
     this.setState({ employee }, () =>
       this.childHeader.fillmenu(this.state.employee.GroupId)
     );
-
-    //console.log(this.state);
   };
   handleLoading = (stat) => {
     this.setState({ loading: stat });
@@ -82,15 +69,8 @@ class App extends Component {
     this.setState({ menudata });
   };
   componentDidMount() {
-    //let employee;
     if (!this.state.employee) auth.logout();
-    //console.log("employee", auth.getCurrentUser());
-    // try {
-    //   this.setState({ employee: auth.getCurrentUser() }, () => {
-    //     if (this.state.employee) {
-
     setInterval(() => {
-      //console.log(window.location.pathname);
       if (
         this.state.employee.GroupId === 0 &&
         window.location.pathname !== "/" &&
@@ -100,9 +80,6 @@ class App extends Component {
         window.location = "/";
       }
     }, 5000);
-    //    }
-    //   });
-    // } catch (e) {}
   }
   handleLogout = () => {
     this.setState(
@@ -122,9 +99,6 @@ class App extends Component {
       },
       async () => {
         auth.logout();
-        // const { data: menudata } = await getMenu(
-        //   this.state.employee.GroupId || 5
-        // );
         this.childHeader.fillmenu(5);
       }
     );
