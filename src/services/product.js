@@ -8,6 +8,9 @@ export function GetProductTitle(id) {
 export function GetProductPercent(id) {
   return http.get(apiUrl + `/product/getproductpercent/${id}`);
 }
+export function ProductStatus() {
+  return http.get(apiUrl + `/product/karanehstatus`);
+}
 
 export function GetPersonsProduct(managerNationalCode, paydate, productid) {
   return http.get(

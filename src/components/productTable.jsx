@@ -7,37 +7,37 @@ class ProductTable extends Component {
     { path: "واحد", label: "واحد" },
     { path: "نام", label: "نام" },
     { path: "نام خانوادگی", label: "نام خانوادگی" },
-    {
-      path: "مبلغ فردی",
-      label: "کارگزاری",
-      type: "text",
-      seprated: true,
-      color: "bg-info text-light",
-    },
+    // {
+    //   path: "مبلغ فردی",
+    //   label: "کارگزاری",
+    //   type: "text",
+    //   seprated: true,
+    //   color: "bg-info text-light",
+    // },
 
-    {
-      path: "مبلغ شعبه ای",
-      label: "ارزی",
-      type: "text",
-      seprated: true,
-      color: "bg-info text-light",
-    },
+    // {
+    //   path: "مبلغ شعبه ای",
+    //   label: "ارزی",
+    //   type: "text",
+    //   seprated: true,
+    //   color: "bg-info text-light",
+    // },
 
     {
       path: "مبلغ",
-      label: "پایش و پویش",
+      label: "جمع کل(پایش و پویش/کارگزاری/ارزی)",
       type: "text",
       seprated: true,
       color: "bg-info text-light",
     },
 
-    {
-      path: "مبلغ کل",
-      label: "جمع کل",
-      type: "text",
-      seprated: true,
-      color: "bg-info text-light",
-    },
+    // {
+    //   path: "مبلغ ",
+    //   label: "جمع کل",
+    //   type: "text",
+    //   seprated: true,
+    //   color: "bg-info text-light",
+    // },
     {
       path: "A50",
       label: "ثابت (50% جمع کل)",

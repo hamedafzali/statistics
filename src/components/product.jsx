@@ -190,24 +190,44 @@ class Product extends Component {
           this.props.employee.GroupId === 2) &&
         PostTypeId === 2
       ) {
-        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
-          this.showMessage(
-            "سقف مبلغ قابل تخصیص به رییس شعبه 35,000,000 ریال میباشد",
-            "error"
-          );
-          return false;
+        if (parseInt(A50) * 2 === 45000000) {
+          if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 45000000) {
+            this.showMessage(
+              "سقف مبلغ قابل تخصیص به رییس شعبه 45,000,000 ریال میباشد",
+              "error"
+            );
+            return false;
+          }
+        } else {
+          if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
+            this.showMessage(
+              "سقف مبلغ قابل تخصیص به رییس شعبه 35,000,000 ریال میباشد",
+              "error"
+            );
+            return false;
+          }
         }
       } else if (
         (this.props.employee.GroupId === 4 ||
           this.props.employee.GroupId === 2) &&
         PostTypeId !== 2
       ) {
-        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
-          this.showMessage(
-            "سقف مبلغ قابل تخصیص به کارکنان 35,000,000 ریال میباشد",
-            "error"
-          );
-          return false;
+        if (parseInt(A50) * 2 === 45000000) {
+          if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 45000000) {
+            this.showMessage(
+              "سقف مبلغ قابل تخصیص به کارکنان 45,000,000 ریال میباشد",
+              "error"
+            );
+            return false;
+          }
+        } else {
+          if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
+            this.showMessage(
+              "سقف مبلغ قابل تخصیص به کارکنان 35,000,000 ریال میباشد",
+              "error"
+            );
+            return false;
+          }
         }
       } else {
         if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
@@ -361,8 +381,14 @@ class Product extends Component {
                 </div>
                 <div
                   className="card-body "
-                  style={{ minHeight: this.state.height }}
+                  style={{ minHeight: this.state.height, marginTop: -60 }}
                 >
+                  <h4 className="row bg-danger text-light rounded border border-dark shadow p-3 mb-3">
+                    مانده کل تعلق یافته(پایش و پویش/کارگزاری/ارزی) (100%) :
+                    {this.numberWithCommas(
+                      parseInt(this.state.karanehRemain.A50) * 2
+                    )}
+                  </h4>
                   <h4 className="row text-success">
                     {this.props.employee.GroupId === 2 ? (
                       <ul>

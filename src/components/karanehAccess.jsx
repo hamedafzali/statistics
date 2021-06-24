@@ -7,6 +7,8 @@ import {
   karanehAccessUpdate,
   karanehAccessUpdateAll,
 } from "../services/karanehData";
+
+import { ProductStatus } from "../services/product";
 import KaranehAccessTable from "./karanehAccessTable";
 class KaranehAccess extends Component {
   state = {
@@ -29,12 +31,18 @@ class KaranehAccess extends Component {
       { id: "Branch", name: "شعب" },
     ],
     level: "",
+    karanehStatus: {
+      Supervisor: 1,
+      Branch: 0,
+      Setad: 0,
+    },
   };
   componentDidMount() {
     this.setState({
       width: window.innerWidth,
       height: window.innerHeight - 100,
     });
+    this.getProductStatus();
     this.getKaranehDates();
     this.KaranehAccessList(this.state.level);
   }
@@ -50,6 +58,11 @@ class KaranehAccess extends Component {
       this.setState({ data });
     }
   };
+  getProductStatus = async () => {
+    const { data } = await ProductStatus();
+    this.setState({ karanehStatus: data });
+  };
+
   handleChange = (e) => {
     const newState = { ...this.state };
     newState[e.currentTarget.name] = e.currentTarget.value;
@@ -75,7 +88,7 @@ class KaranehAccess extends Component {
       );
     } else {
       if (Code) {
-         await karanehAccessUpdate(Code);
+        await karanehAccessUpdate(Code);
         this.KaranehAccessList(this.state.level);
       }
     }
@@ -83,7 +96,7 @@ class KaranehAccess extends Component {
   handleChangeSwitch = async (item, val) => {
     //const checked = this.state.checked[this.state.level];
     //console.log(item, val);
-     await karanehAccessUpdateAll(
+    await karanehAccessUpdateAll(
       item,
       this.state.checked[item] === true ? 1 : 0
     );
@@ -125,8 +138,65 @@ class KaranehAccess extends Component {
                   className="card-body "
                   style={{ minHeight: this.state.height }}
                 >
-                  <div className="row bg-light ">
-                    <div className="col col-4">
+                  <div className="row bg-light border border-warning rounded m-1">
+                    <div className="col-md-6 col-lg-3 col-md-12 p-2">
+                      ثبت نشده شعبه: {this.state.karanehStatus.Branch}
+                    </div>
+                    <div className=" col-md-6 col-lg-3 col-md-12 p-2">
+                      ثبت نشده مدیریت شعب: {this.state.karanehStatus.Supervisor}
+                    </div>
+                    <div className=" col-md-6 col-lg-3 col-md-12 p-2">
+                      ثبت نشده ستاد: {this.state.karanehStatus.Setad}
+                    </div>
+                    <div className=" col-md-6 col-lg-3 col-md-12 ">
+                      <div
+                        className="btn btn-outline-primary btn-block m-1"
+                        onClick={() => this.getProductStatus}
+                      >
+                        بروزرسانی
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row bg-light border border-danger rounded m-1">
+                    <div className="col-lg-4 col-md-12">
+                      <div
+                        className={
+                          this.state.karanehStatus.Branch === 0
+                            ? "btn btn-success btn-block m-2 p-3 disabled"
+                            : "btn btn-danger btn-block m-2 p-3"
+                        }
+                      >
+                        1. تکمیل عملیات شعب
+                      </div>
+                    </div>
+                    <div className="col-lg-4 col-md-12">
+                      <div
+                        className={
+                          this.state.karanehStatus.Setad === 0
+                            ? "btn btn-success btn-block m-2 p-3 disabled"
+                            : "btn btn-danger btn-block m-2 p-3"
+                        }
+                      >
+                        2. تکمیل عملیات ستاد
+                      </div>
+                    </div>
+
+                    <div className="col-lg-4 col-md-12">
+                      <div
+                        className={
+                          this.state.karanehStatus.Branch !== 0
+                            ? "btn btn-danger btn-block m-2 p-3 disabled"
+                            : this.state.karanehStatus.Supervisor !== 0
+                            ? "btn btn-danger btn-block m-2 p-3"
+                            : "btn btn-success btn-block m-2 p-3 disabled"
+                        }
+                      >
+                        3. تکمیل عملیات مدیریت شعب
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row bg-light m-1 mt-3 p-2 border border-success rounded">
+                    <div className="col-12 text-right">
                       <Select
                         onChange={this.handleChange}
                         name="level"
@@ -136,15 +206,17 @@ class KaranehAccess extends Component {
                         style={{ width: 250 }}
                       />
                     </div>
+                    <div className="col col-12">
+                      <KaranehAccessTable
+                        data={this.state.data}
+                        onCommit={this.onCommit}
+                        tbhandleChange={this.tbhandleChange}
+                        handleKaranehAccess={this.handleKaranehAccess}
+                        level={this.state.level}
+                        checked={this.state.checked[this.state.level]}
+                      />
+                    </div>
                   </div>
-                  <KaranehAccessTable
-                    data={this.state.data}
-                    onCommit={this.onCommit}
-                    tbhandleChange={this.tbhandleChange}
-                    handleKaranehAccess={this.handleKaranehAccess}
-                    level={this.state.level}
-                    checked={this.state.checked[this.state.level]}
-                  />
                 </div>
               </div>
             </div>
