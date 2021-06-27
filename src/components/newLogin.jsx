@@ -26,14 +26,6 @@ class Login extends Component {
     alignItems: "center",
   };
   async componentDidMount() {
-    //const employee = this.props.employee;
-    //employee.Status = 0;
-    //this.props.handleLogin(employee);
-    /* let { data: posts } = await Axios.get(
-      "http://127.0.0.1:5000/users/checkuser/1/2"
-    );
-    console.log(posts);*/
-
     this.props.handleLogout();
   }
   validate = () => {

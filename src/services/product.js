@@ -38,3 +38,7 @@ export function getPersonsProductRemain(nationalCode, paydate, producttypeid) {
       `/product/getpersonsproductremain/${nationalCode}/${paydate}/${producttypeid}`
   );
 }
+
+export function KaranehPersonelReport(code) {
+  return http.get(apiUrl + `/product/karanehpersonelreport/${code}`);
+}

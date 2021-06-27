@@ -157,7 +157,7 @@ class AdditionRegForm extends Component {
                 >
                   <div className="brand-wrapper ">
                     <div className="row">
-                      <div className="col">
+                      <div className="col-md-12 col-lg-4">
                         <Select
                           id="paydate"
                           onChange={this.handleChange}
@@ -168,22 +168,11 @@ class AdditionRegForm extends Component {
                           //value={this.state.selectedOption}
                         />
                       </div>
-                      <div className="col">
-                        {/* <Select
-                          id="paydate"
-                          onChange={this.handleChange}
-                          name="paydate"
-                          label="نوع فوق العاده"
-                          error=""
-                          options={this.state.additionTypeData}
-                          //value={this.state.selectedOption}
-                        /> */}
-                      </div>
                     </div>
                   </div>
                   <div className="brand-wrapper ">
                     <div className="row bg-light">
-                      <div className="col-8 mt-3">
+                      <div className="col-md-12 col-lg-8 mt-3">
                         <Input
                           type="text"
                           name="nationalCode"
@@ -194,7 +183,7 @@ class AdditionRegForm extends Component {
                           onChange={this.handleChange}
                         />
                       </div>
-                      <div className="col-4 mt-3">
+                      <div className="col-md-12 col-lg-4 mt-3">
                         <button
                           name=" mt-3"
                           className="btn btn-danger btn-block "
@@ -208,7 +197,7 @@ class AdditionRegForm extends Component {
                       </div>
                     </div>
                     <div className="row bg-light border-bottom">
-                      <div className="col">
+                      <div className="col-md-12 col-lg-4">
                         <Inputlbl
                           type="text"
                           name="name"
@@ -219,7 +208,7 @@ class AdditionRegForm extends Component {
                           //onChange={this.handleChange}
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-md-12 col-lg-4">
                         <Inputlbl
                           type="text"
                           name="name"
@@ -230,7 +219,7 @@ class AdditionRegForm extends Component {
                           //onChange={this.handleChange}
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-md-12 col-lg-4">
                         <Inputlbl
                           type="text"
                           name="name"
@@ -244,7 +233,7 @@ class AdditionRegForm extends Component {
                     </div>
 
                     <div className="row">
-                      <div className="col">
+                      <div className="col-md-12 col-lg-4">
                         <Inputlbl
                           type="text"
                           name="hour"
@@ -255,7 +244,7 @@ class AdditionRegForm extends Component {
                           onChange={this.handleChange}
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-md-12 col-lg-4">
                         <Inputlbl
                           type="text"
                           name="amount"
@@ -266,7 +255,7 @@ class AdditionRegForm extends Component {
                           //onChange={this.handleChange}
                         />
                       </div>
-                      <div className="col">
+                      <div className="col-md-12 col-lg-4">
                         <button
                           name=""
                           className="btn btn-success btn-block mt-4"

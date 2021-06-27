@@ -59,6 +59,7 @@ class KaranehAccess extends Component {
     }
   };
   getProductStatus = async () => {
+    console.log("3333");
     const { data } = await ProductStatus();
     this.setState({ karanehStatus: data });
   };
@@ -140,6 +141,11 @@ class KaranehAccess extends Component {
                 >
                   <div className="row bg-light border border-warning rounded m-1">
                     <div className="col-md-6 col-lg-3 col-md-12 p-2">
+                      تاریخ: {this.state.karanehStatus.Date}
+                    </div>
+                  </div>
+                  <div className="row bg-light border border-warning rounded m-1">
+                    <div className="col-md-6 col-lg-3 col-md-12 p-2">
                       ثبت نشده شعبه: {this.state.karanehStatus.Branch}
                     </div>
                     <div className=" col-md-6 col-lg-3 col-md-12 p-2">
@@ -151,7 +157,7 @@ class KaranehAccess extends Component {
                     <div className=" col-md-6 col-lg-3 col-md-12 ">
                       <div
                         className="btn btn-outline-primary btn-block m-1"
-                        onClick={() => this.getProductStatus}
+                        onClick={() => this.getProductStatus()}
                       >
                         بروزرسانی
                       </div>

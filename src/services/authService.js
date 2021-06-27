@@ -8,9 +8,10 @@ const tokenKey = "token";
 http.setJwt(getJwt());
 
 export async function login(username, password, callback) {
-  const jwt = await http.get(
-    apiEndpoint + `/checkuser/${username}/${password} `
-  );
+  const jwt = await http.post(apiEndpoint + `/checkuser/`, {
+    username,
+    password,
+  });
   //console.log(jwt);
   localStorage.setItem(tokenKey, jwt.headers["x-auth-token"]);
   callback();

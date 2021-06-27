@@ -1,4 +1,4 @@
 {
   "apiUrl1": "http://amar.pb.ir:8080/api",
-  "apiUrl": "http://192.168.60.23:8080/api"
+  "apiUrl": "http://localhost:8080/api"
 }

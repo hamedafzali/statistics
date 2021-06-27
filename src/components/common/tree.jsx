@@ -196,7 +196,7 @@ export default class Tree extends Component {
               />
               <div className="row no-gutters">
                 <div
-                  className="col-lg border bg-light "
+                  className="col-md-12 col-lg-5 border bg-light "
                   style={{ overflow: "scroll", height: 500, direction: "ltr" }}
                 >
                   <TreeMenu
@@ -239,7 +239,7 @@ export default class Tree extends Component {
                 </div>
                 <button
                   name="btntransfer"
-                  className="btn btn-success "
+                  className="btn btn-success col-md-12 col-lg-2 "
                   onClick={(e) => {
                     //alert(e);
                     this.handleTransfer(true);
@@ -250,10 +250,9 @@ export default class Tree extends Component {
                 </button>
 
                 <div
-                  className="col-md border bg-light "
+                  className="col-md-12 col-lg-5 border bg-light "
                   style={{ overflow: "scroll", height: 500, direction: "ltr" }}
                 >
-                  {" "}
                   <p className="text-danger">
                     جهت مشاهده افراد شاغل در هر واحد روی علامت (+) کلیک نمایید
                   </p>
@@ -295,7 +294,7 @@ export default class Tree extends Component {
               </div>
 
               <div className="row ">
-                <div className="col-lg-8 ">
+                <div className="col-lg-8 col-md-12">
                   <Select
                     id="description"
                     onChange={this.handleChange}
@@ -304,6 +303,8 @@ export default class Tree extends Component {
                     error=""
                     options={this.state.deleteReasons}
                   />
+                </div>
+                <div className="col-lg-8 col-md-12">
                   <Select
                     id="post"
                     onChange={this.handleChange}
@@ -312,16 +313,6 @@ export default class Tree extends Component {
                     error=""
                     options={this.state.postTypeData}
                   />
-                  {/* <Input
-                    type="text"
-                    id="description"
-                    name="description"
-                    label="توضیحات"
-                    error=""
-                    placeholder=""
-                    value={this.state.person.description}
-                    onChange={this.handleChange}
-                  /> */}
                 </div>
 
                 <div className="col-lg-4">
