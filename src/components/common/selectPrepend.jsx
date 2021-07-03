@@ -2,9 +2,12 @@ import React from "react";
 
 const Select = ({ name, label, options, error, ...rest }) => {
   return (
-    <div className="input-group  ">
+    <div
+      className="input-group border mt-1 mb-1  "
+      style={{ borderRadius: "0.5em", overflow: "hidden" }}
+    >
       <div className="input-group-prepend ">
-        <span className="input-group-text" id="">
+        <span className="input-group-text border-0" id="">
           {label}
         </span>
       </div>
@@ -12,7 +15,7 @@ const Select = ({ name, label, options, error, ...rest }) => {
         name={name}
         id={name}
         {...rest}
-        className="form-control"
+        className="form-control border-0"
         style={{ margin: 0, padding: 0 }}
       >
         <option value="" />

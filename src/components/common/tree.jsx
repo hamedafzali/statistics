@@ -216,7 +216,7 @@ export default class Tree extends Component {
                       console.log(this.state);
                     }}
                   >
-                    {({ search, items, resetOpenNodes }) => (
+                    {/* {({ search, items, resetOpenNodes }) => (
                       <div>
                         <div className="row">
                           <div className="col">
@@ -233,6 +233,21 @@ export default class Tree extends Component {
                           </div>
                         </div>
                         {defaultChildren({ search, items })}
+                      </div>
+                    )} */}
+                    {({ search, items }) => (
+                      <div className="border border-dark p-1 rounded">
+                        <div class="input-group input-group-sm mb-3">
+                          <input
+                            onChange={(e) => search(e.target.value)}
+                            placeholder="جستجو"
+                            className="form-control text-right"
+                            aria-label="Small"
+                            aria-describedby="inputGroup-sizing-sm"
+                          />
+                        </div>
+                        <strong>مقصد انتخاب کنید</strong>
+                        {defaultChildren({ items })}
                       </div>
                     )}
                   </TreeMenu>
@@ -268,7 +283,7 @@ export default class Tree extends Component {
                       console.log(this.state);
                     }}
                   >
-                    {({ search, items, resetOpenNodes }) => (
+                    {/* {({ search, items, resetOpenNodes }) => (
                       <div>
                         <div className="row">
                           <div className="col">
@@ -285,6 +300,21 @@ export default class Tree extends Component {
                           </div>
                         </div>
                         {defaultChildren({ search, items })}
+                      </div>
+                    )} */}
+                    {({ search, items }) => (
+                      <div className="border border-dark p-1 rounded">
+                        <div class="input-group input-group-sm mb-3">
+                          <input
+                            onChange={(e) => search(e.target.value)}
+                            placeholder="جستجو"
+                            className="form-control text-right"
+                            aria-label="Small"
+                            aria-describedby="inputGroup-sizing-sm"
+                          />
+                        </div>
+                        <strong>کارمند را انتخاب کنید</strong>
+                        {defaultChildren({ items })}
                       </div>
                     )}
                   </TreeMenu>

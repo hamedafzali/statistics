@@ -88,9 +88,9 @@ class Header extends Component {
           collapseOnSelect
           expand="lg"
           style={this.titleStyle}
-          className="bg-white border"
+          className="bg-white border shadow "
         >
-          <Navbar.Brand className="font-weight-bold text-muted text-right">
+          <Navbar.Brand className="font-weight-bold text-muted text-right ">
             <img src={logo} alt="logo" className="logo" width="25" />
             <Link to="/" className="text-danger">
               سامانه آمار و بودجه پست بانک ایران
@@ -103,8 +103,7 @@ class Header extends Component {
           </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse
-            className="j
-            ustify-content-end"
+            className="justify-content-end"
             style={{ zIndex: 999999999 }}
           >
             <Nav className="mr-auto text-right ">{this.state.menu}</Nav>
@@ -115,7 +114,7 @@ class Header extends Component {
             this.props.employee.Name +
             " " +
             this.props.employee.Family
-          : "کاربر: میهمان"}
+          : ""}
         {this.state.now.toString}
       </div>
     );

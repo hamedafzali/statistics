@@ -193,26 +193,27 @@ class CEOCommit extends Component {
                               options={this.state.KaranehDates}
                             />
                           </div>
+
+                          <div className="col-lg">
+                            <InputPrepend
+                              type="text"
+                              name="ratio"
+                              id="ratio"
+                              label="ضریب بودجه"
+                              error=""
+                              placeholder="ضریب بودجه"
+                              value={this.state.ratio}
+                              onChange={this.handleChange}
+                            />
+                          </div>
                         </div>
                         <div className="row">
                           <div className="col-lg">
-                            <div className="form-inline">
-                              <InputPrepend
-                                type="text"
-                                name="ratio"
-                                id="ratio"
-                                label="ضریب بودجه"
-                                error=""
-                                placeholder="ضریب بودجه"
-                                value={this.state.ratio}
-                                onChange={this.handleChange}
-                              />
-                              <div
-                                className="d-inline  btn btn-outline-danger btn-sm m2"
-                                onClick={this.handleRefresh}
-                              >
-                                نمایش
-                              </div>
+                            <div
+                              className="inline-block  btn btn-outline-danger btn-block mt-2 mb-2"
+                              onClick={this.handleRefresh}
+                            >
+                              نمایش
                             </div>
                           </div>
                         </div>

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import Login from "./components/newLogin";
+import AOS from "aos";
+import "aos/dist/aos.css"; // You can also use <link> for styles
+import Login from "./components/login";
 import { Route, Switch, Redirect } from "react-router-dom";
 import auth from "./services/authService";
 import MainPage from "./components/main";
@@ -37,7 +39,8 @@ import BudgetRequest from "./components/budgetRequest";
 import KaranehReport from "./components/karanehReport";
 import logo from "./assets/images/loading1.gif";
 import TasksComment from "./components/tasksComment";
-
+import BudgetTotalReg from "./components/budgetTotalReg";
+import "./assets/css/tree.css";
 class App extends Component {
   state = {
     loading: false,
@@ -69,6 +72,7 @@ class App extends Component {
     this.setState({ menudata });
   };
   componentDidMount() {
+    AOS.init();
     if (!this.state.employee) auth.logout();
     setInterval(() => {
       if (
@@ -164,14 +168,12 @@ class App extends Component {
                     path="/mainpage"
                     render={() => <MainPage handleState={this.handleState} />}
                   />
-
                   <Route
                     path="/password"
                     render={(props) => (
                       <Password employee={this.state.employee} {...props} />
                     )}
                   />
-
                   <Route
                     path="/personslocation"
                     render={(props) => (
@@ -364,6 +366,15 @@ class App extends Component {
                     path="/budgetrequest"
                     render={(props) => (
                       <BudgetRequest
+                        employee={this.state.employee}
+                        {...props}
+                      />
+                    )}
+                  />{" "}
+                  <Route
+                    path="/budgettotalreg"
+                    render={(props) => (
+                      <BudgetTotalReg
                         employee={this.state.employee}
                         {...props}
                       />

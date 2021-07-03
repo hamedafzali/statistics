@@ -7,11 +7,11 @@ class NavbarPage extends Component {
     return (
       <>
         <Navbar
-          className="navbar navbar-expand-lg navbar-light bg-info"
+          className="navbar navbar-expand-lg navbar-light bg-info "
           style={{ direction: "rtl" }}
         >
           <Navbar.Brand href="/">سامانه آمار و بودجه</Navbar.Brand>
-          <Nav className="ml-auto">
+          <Nav className="ml-auto ">
             <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
               <li className="nav-item">
                 <Link className="nav-link" to="/mainpage">

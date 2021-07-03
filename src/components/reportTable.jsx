@@ -17,16 +17,14 @@ class reportTable extends Component {
     this.setState({ fs: this.state.fs + c }, () => console.log(this.state));
   };
   render() {
-    const { data, onSort, sortColumn, allData } = this.props;
+    const { data, allData, title } = this.props;
 
     return (
       <Table
         columns={this.columns}
         data={data}
-        sortColumn={sortColumn}
-        onSort={onSort}
         handleSize={this.handleSize}
-        fs={this.state.fs}
+        title={title}
         allData={allData}
       />
     );

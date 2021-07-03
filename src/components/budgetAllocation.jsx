@@ -492,9 +492,7 @@ class BudgetAllocation extends Component {
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        {this.state.BudgetDocuments.filter(
-                                          (i) => i.Status === 0
-                                        ).map((i) => (
+                                        {this.state.BudgetDocuments.map((i) => (
                                           <tr key={i.Id}>
                                             <td>{i.Date}</td>
                                             <td>{i.Id}</td>
@@ -506,7 +504,10 @@ class BudgetAllocation extends Component {
                                             </td>
                                             <td>{i.Registrar}</td>
                                             <td>
-                                              {i.Status === 0 ? (
+                                              {i.Status === 0 ||
+                                              (i.Status !== 0 &&
+                                                this.props.employee.GroupId !==
+                                                  8) ? (
                                                 <div
                                                   className="d-inline  btn btn-outline-danger btn-md m1"
                                                   onClick={() => {
