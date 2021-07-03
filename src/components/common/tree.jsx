@@ -15,7 +15,6 @@ import { ChartPerson, Chart } from "../../services/tree";
 import {
   personLocationSetStatus,
   PostTypeGetallData,
-  personsTransfer,
 } from "../../services/persons";
 
 export default class Tree extends Component {
@@ -180,7 +179,7 @@ export default class Tree extends Component {
     return (
       <main>
         <div className="container">
-          <div className="card login-card bg-light ">
+          <div className="card login-card bg-light mt-n5">
             <div className="m-3">
               <h5 className="card-title">مشخصات : {this.state.person.name}</h5>
               <h5 className="card-title">

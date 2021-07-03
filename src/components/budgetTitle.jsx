@@ -3,10 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import InputPrepend from "./common/inputPrepend";
 import { budgetInsert, BudgetGetData } from "../services/budget";
 import "../assets/css/tree.css";
-import TreeMenu, {
-  defaultChildren,
-  ItemComponent,
-} from "react-simple-tree-menu";
+import TreeMenu, { defaultChildren } from "react-simple-tree-menu";
 class BudgetTitle extends Component {
   state = {
     chartwidth: 500,
@@ -87,8 +84,14 @@ class BudgetTitle extends Component {
                   style={{ minHeight: this.state.height }}
                 >
                   <div className="brand-wrapper ">
-                    <div className="row">
-                      <div className=" col-lg-6 col-md-12 mt-1 border border-dark rounded pt-2">
+                    <div className="row mt-n5">
+                      <div
+                        className=" col-lg-6 col-md-12 mt-1 border border-dark rounded pt-2"
+                        data-aos="fade-left"
+                        data-aos-offset="200"
+                        data-aos-delay="50"
+                        data-aos-duration="1000"
+                      >
                         <div className="row border border-success rounded p-2 m-1">
                           <div className=" col-12 mt-1 text-right ">
                             سرفصل انتخاب شده:
@@ -142,6 +145,10 @@ class BudgetTitle extends Component {
                       </div>
                       <div
                         className=" col-lg-6 col-md-12 mt-1 border border-dark rounded pt-2"
+                        data-aos="fade-right"
+                        data-aos-offset="200"
+                        data-aos-delay="50"
+                        data-aos-duration="1000"
                         style={{
                           overflow: "scroll",
                           height: 500,

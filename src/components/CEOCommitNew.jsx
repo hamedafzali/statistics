@@ -51,7 +51,7 @@ class CEOCommitNew extends Component {
     },
   };
   handleRange = async (value) => {
-     setKaranehParams(
+    setKaranehParams(
       this.state.paydate,
       value.min,
       value.max,
@@ -107,9 +107,8 @@ class CEOCommitNew extends Component {
   handleFillData = async () => {
     // console.log(this.state);
     let str = "";
-    for (const [key, value] of Object.entries(this.state.checked)) {
-      
-      str += value ? "1" : "0";
+    for (const value of Object.entries(this.state.checked)) {
+      str += value[1] ? "1" : "0";
     }
     //console.log(str);
     const { data: KaranehData } = await getKaranehData1(
@@ -141,32 +140,18 @@ class CEOCommitNew extends Component {
         );
       }
     );
-    //console.log(this.state.KaranehData.max);
   };
-  // handleBarClick(element, id) {
-  //   //console.log(`The bin ${element.text} with id ${id} was clicked`);
-  //   const newState = { ...this.state };
-  //   newState[e.currentTarget.name] = e.currentTarget.value;
-  //   this.setState(newState);
-  // }
   handleChange = (e) => {
-    //alert(e.currentTarget.name);
     const newState = { ...this.state };
     newState[e.currentTarget.name] = e.currentTarget.value;
     this.setState(newState);
-    //console.log(this.state);
   };
   handleSetadHours = (e) => {
-    //alert(e.currentTarget.name);
     const newState = { ...this.state };
     newState.KaranehData[e.currentTarget.name] = e.currentTarget.value;
-    //console.log(newState.KaranehData.SafHours);
-    //console.log(newState.KaranehData.SetadHours);
     newState.diff =
       newState.KaranehData.SafHours - newState.KaranehData.SetadHours;
     this.setState(newState, () => this.handleFillData());
-
-    //console.log(this.state);
   };
   handleRefresh = () => {
     // console.log("handleRefresh", this.state);
@@ -626,7 +611,8 @@ class CEOCommitNew extends Component {
                               ratio={this.state.ratio}
                               paydate={this.state.paydate}
                               ref={(instanceSupervisorsRank) => {
-                                this.childSupervisorsRank = instanceSupervisorsRank;
+                                this.childSupervisorsRank =
+                                  instanceSupervisorsRank;
                               }}
                             />
                           </div>

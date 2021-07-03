@@ -70,7 +70,6 @@ class Login extends Component {
     });
   };
   handleChange = (e) => {
-    //alert(e.currentTarget.name)
     const account = { ...this.state.account };
     account[e.currentTarget.name] = e.currentTarget.value;
     this.setState({ account });
@@ -78,9 +77,9 @@ class Login extends Component {
   render() {
     return (
       <main className="d-flex align-items-center min-vh-100 py-3 py-md-0 ">
-        <div className="container">
-          <div className="card login-card">
-            <div className="row no-gutters">
+        <div className="container ">
+          <div className="card login-card shadow">
+            <div className="row no-gutters mt-n5">
               <div
                 className="col-lg-5"
                 data-aos="fade-left"
@@ -107,8 +106,6 @@ class Login extends Component {
                     minHeight: this.state.height,
                   }}
                 >
-                  {/* <p className="login-card-description ">ورود به حساب کاربری</p> */}
-
                   <div className="brand-wrapper ">
                     <h4>
                       <img src={logo} alt="logo" className="logo" />

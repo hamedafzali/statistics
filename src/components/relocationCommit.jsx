@@ -56,7 +56,7 @@ class RelocationCommit extends Component {
                   <h4>{this.state.pageContent.title}</h4>
                 </div>
                 <div
-                  className="card-body "
+                  className="card-body mt-n5"
                   style={{ minHeight: this.state.height }}
                 >
                   {/* <div className="brand-wrapper ">

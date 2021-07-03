@@ -6,7 +6,6 @@ import Num2persian, { toFarsiNumber } from "../utils/num2persian";
 
 import {
   BudgetDocumentDetailGetData,
-  BudgetDocumentGetData,
   BudgetDocumentSummary,
 } from "../services/budget";
 

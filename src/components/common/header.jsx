@@ -88,7 +88,7 @@ class Header extends Component {
           collapseOnSelect
           expand="lg"
           style={this.titleStyle}
-          className="bg-white border shadow "
+          className="bg-white border shadow"
         >
           <Navbar.Brand className="font-weight-bold text-muted text-right ">
             <img src={logo} alt="logo" className="logo" width="25" />

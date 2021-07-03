@@ -110,7 +110,13 @@ const Table = ({
     );
   if (!loading && data.length === 0) return <p>اطلاعاتی وجود ندارد.</p>;
   return (
-    <div style={{ width: "100%" }}>
+    <div
+      style={{ width: "100%" }}
+      data-aos="zoom-in"
+      data-aos-offset="200"
+      data-aos-delay="50"
+      data-aos-duration="1000"
+    >
       <div className="row">
         <div className="col">
           <span className="input-group-text text-justifiy col-md">

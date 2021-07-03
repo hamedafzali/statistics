@@ -56,7 +56,7 @@ class MainPage extends Component {
                 >
                   <div className="row">
                     <div
-                      className="col col-lg-3 col-sm-12 col-xs-12 bg-light "
+                      className="col col-lg-3 col-sm-12 col-xs-12 bg-light mt-n5"
                       style={{ borderRadius: 20 }}
                     >
                       <h5
@@ -90,7 +90,7 @@ class MainPage extends Component {
                         </React.Fragment>
                       ))}
                     </div>
-                    <div className="col col-lg-9 col-sm-12 col-12">
+                    <div className="col col-lg-9 col-sm-12 col-12 mt-n5">
                       <div className="brand-wrapper ">
                         <img src={logo} alt="" width="100" />
                         <br />

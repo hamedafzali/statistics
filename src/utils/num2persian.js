@@ -236,12 +236,12 @@ const Num2persian = (input) => {
 
   return (isNegative ? negative : "") + Output.join(delimiter) + decimalPart;
 };
-
-String.prototype.toPersianLetter = function () {
+var st = String;
+st.prototype.toPersianLetter = function () {
   return Num2persian(this);
 };
-
-Number.prototype.toPersianLetter = function () {
+var nm = Number;
+nm.prototype.toPersianLetter = function () {
   return Num2persian(parseFloat(this).toString());
 };
 
@@ -250,7 +250,6 @@ export default Num2persian;
 export function toFarsiNumber(n) {
   try {
     const farsiDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-    //console.log("n", n);
     return n
       .toString()
       .split("")

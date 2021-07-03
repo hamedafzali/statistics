@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReportTable from "./reportTable";
-import Pagination from "./common/pagination";
 import { getPersonReport } from "../services/persons";
 import _ from "lodash";
 import { paginate } from "../utils/paginate";

@@ -1,14 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Select from "react-select";
 
 const SelectSearchable = ({ data, onChange, selectedValue }) => {
-  // const [options, setOptions] = useState([
-  //   { value: "chocolate", label: "تهران" },
-  //   { value: "strawberry", label: "شیراز" },
-  //   { value: "vanilla", label: "اصفهان" },
-  // ]);
-  //const [selectedOption, setSelectedOption] = useState("");
-
   return (
     <Select
       value={selectedValue}
