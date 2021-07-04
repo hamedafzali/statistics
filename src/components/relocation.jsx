@@ -4,7 +4,6 @@ import {
   getRelocateRequest,
   CommitRelocateRequest,
 } from "../services/relocation";
-//import _ from "lodash";
 class Relocation extends Component {
   state = {
     data: [],
@@ -15,18 +14,15 @@ class Relocation extends Component {
     this.refresh();
   }
   refresh = async () => {
-    console.log(this.props.paydate, this.props.NationalCode);
+    if (!this.props.paydate) return false;
     const { data } = await getRelocateRequest(
       this.props.paydate,
       this.props.NationalCode
     );
-
-    //console.log(Ranks);
     this.setState({ data });
   };
 
   onCommit = async (id) => {
-    //console.log(id, this.props);
     await CommitRelocateRequest(id, this.props.NationalCode);
     this.refresh();
   };

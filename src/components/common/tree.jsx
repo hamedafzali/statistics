@@ -90,7 +90,7 @@ export default class Tree extends Component {
     //console.log("old", newState);
     this.setState(newState, () => {
       this.hadnleRefresh();
-      console.log("new", this.state);
+      //console.log("new", this.state);
     });
   };
   handleDelete = async () => {
@@ -201,7 +201,7 @@ export default class Tree extends Component {
                   <TreeMenu
                     data={this.state.chartTreeData}
                     onClickItem={({ ...props }) => {
-                      console.log(props);
+                      //console.log(props);
                       const tmpperson = this.state.person;
                       //console.log(tmpperson);
                       tmpperson.destinationId = parseInt(
@@ -212,7 +212,7 @@ export default class Tree extends Component {
 
                       this.setState({ person: tmpperson });
                       //initialActiveKey = {};
-                      console.log(this.state);
+                      //console.log(this.state);
                     }}
                   >
                     {/* {({ search, items, resetOpenNodes }) => (
@@ -273,13 +273,13 @@ export default class Tree extends Component {
                   <TreeMenu
                     data={this.state.personTreeData}
                     onClickItem={({ ...props }) => {
-                      console.log(props);
+                      //console.log(props);
                       const tmpperson = this.state.person;
                       tmpperson.name = props.label;
                       tmpperson.nationalCode = props.Code;
                       tmpperson.sourceId = props.PId;
                       this.setState({ person: tmpperson });
-                      console.log(this.state);
+                      //console.log(this.state);
                     }}
                   >
                     {/* {({ search, items, resetOpenNodes }) => (

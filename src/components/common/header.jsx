@@ -68,6 +68,7 @@ class Header extends Component {
         } else {
           return (
             <Dropdown.Item
+              key={i}
               eventKey="1"
               className="bg-white text-dark border-0 "
             >

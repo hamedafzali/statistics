@@ -910,7 +910,7 @@ class BudgetAllocation extends Component {
                                     <td>{i.Branch + "-" + i.BranchCode}</td>
                                     <td>{i.Registrar}</td>
                                     <td>{i.StatusTitle}</td>
-                                    {console.log(i)}
+
                                     {i.Status === 0 ? (
                                       <td>
                                         <div

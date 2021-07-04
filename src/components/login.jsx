@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-
+import { connect } from "react-redux";
+import * as actions from "../store/employee/actions";
 import logo from "../assets/images/Logo Amar without.jpg";
 import login from "../assets/images/Untitled-1.jpg";
 import "../assets/css/login.css";
@@ -61,6 +62,8 @@ class Login extends Component {
           this.showMessage("نام کاربری یا کلمه عبور اشتباه میباشد ", "error");
         } else {
           this.props.handleLogin(employee);
+          this.props.addEmployee(employee);
+          //console.log("employees", this.props.employees);
           if (employee.UserStatus === 2) this.props.history.push("/password");
           else this.props.history.push("/mainpage");
         }
@@ -163,5 +166,10 @@ class Login extends Component {
     );
   }
 }
-
-export default Login;
+const mapStateToProps = (state) => ({
+  employees: state.employees,
+});
+const mapDispatchToProps = (dispatch) => ({
+  addEmployee: (obj) => dispatch(actions.addEmployee(obj)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

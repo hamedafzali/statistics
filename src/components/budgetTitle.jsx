@@ -13,6 +13,7 @@ class BudgetTitle extends Component {
     titleData: [],
     selectedTitle: "سرفصلی انتخاب نشده است",
     selectedTitleId: 0,
+    title: "",
   };
   componentDidMount() {
     this.setState({
@@ -30,26 +31,25 @@ class BudgetTitle extends Component {
   };
 
   handleSave = async () => {
-    // if (this.state.documentTypeId === 0) {
-    //   this.showMessage("نوع سند انتخاب نشده است", "error");
-    //   return false;
-    // } else if (this.state.documentTitle.length === 0) {
-    //   this.showMessage("عنوان سند را وارد کنید", "error");
-    //   return false;
-    // } else if (this.state.unitId === 0) {
-    //   this.showMessage("واحد مقصد انتخاب نشده است", "error");
-    //   return false;
-    // }
+    if (this.state.selectedTitleId === 0) {
+      this.showMessage("سرفصل مربوطه را از درختواره انتخاب کنید", "error");
+      return false;
+    } else if (this.state.code.length === 0) {
+      this.showMessage("کد سرفصل را وارد کنید", "error");
+      return false;
+    }
     const { data } = await budgetInsert({
+      pid: this.state.selectedTitleId,
       title: this.state.title,
       code: this.state.code,
+      level: this.state.level,
     });
     if (!data) {
-      this.showMessage("نوع سند انتخاب نشده است", "error");
+      this.showMessage("خطا در انجام عملیات", "error");
       return false;
     } else {
       this.showMessage("سند ثبت شد", "success");
-      this.fillGrid();
+      //this.fillGrid();
       this.setState({ title: "", code: "" });
     }
   };
@@ -158,15 +158,21 @@ class BudgetTitle extends Component {
                         <TreeMenu
                           data={this.state.titleData}
                           onClickItem={({ ...props }) => {
+                            console.log(props);
                             this.setState({
                               selectedTitle: props.label,
-                              selectedTitleId: props.key,
+                              selectedTitleId: parseInt(
+                                props.key.split("/")[
+                                  props.key.split("/").length - 1
+                                ]
+                              ),
+                              level: props.level,
                             });
                           }}
                         >
                           {({ search, items }) => (
                             <div className=" p-1 ">
-                              <div class="input-group input-group-sm mb-3">
+                              <div className="input-group input-group-sm mb-3">
                                 <input
                                   onChange={(e) => search(e.target.value)}
                                   placeholder="جستجو"

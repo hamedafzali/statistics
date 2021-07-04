@@ -54,9 +54,9 @@ class MainPage extends Component {
                   className="card-body "
                   style={{ minHeight: this.state.height }}
                 >
-                  <div className="row">
+                  <div className="row mt-n5">
                     <div
-                      className="col col-lg-3 col-sm-12 col-xs-12 bg-light mt-n5"
+                      className="col col-lg-3 col-sm-12 col-xs-12 bg-light "
                       style={{ borderRadius: 20 }}
                     >
                       <h5
@@ -67,7 +67,7 @@ class MainPage extends Component {
                       </h5>
 
                       {this.state.sideMenu.map((row) => (
-                        <React.Fragment>
+                        <div key={row}>
                           <Link
                             to={row.link + "/" + row.name}
                             className=" btn btn-sm btn-light btn-block "
@@ -87,10 +87,10 @@ class MainPage extends Component {
                             </h5>
                           </Link>
                           <hr className="mt-1 mb-1" />
-                        </React.Fragment>
+                        </div>
                       ))}
                     </div>
-                    <div className="col col-lg-9 col-sm-12 col-12 mt-n5">
+                    <div className="col col-lg-9 col-sm-12 col-12 ">
                       <div className="brand-wrapper ">
                         <img src={logo} alt="" width="100" />
                         <br />
