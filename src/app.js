@@ -1,16 +1,20 @@
 import React, { Component } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import AOS from "aos";
-import Header from "./components/common/header";
-import { Route, Switch, Redirect } from "react-router-dom";
-import auth from "./services/authService";
-import * as actions from "./store/employee/actions";
-import "aos/dist/aos.css"; // You can also use <link> for styles
-import "../node_modules/font-awesome/css/font-awesome.min.css";
-import { getMenu } from "./services/menu";
-import logo from "./assets/images/loading1.gif";
-import "./assets/css/tree.css";
+
 import { routes } from "./routes";
+import * as actions from "./store/employees";
+import Header from "./components/common/header";
+import auth from "./services/authService";
+import { getMenu } from "./services/menu";
+
+import "aos/dist/aos.css";
+import "../node_modules/font-awesome/css/font-awesome.min.css";
+import "./assets/css/tree.css";
+
+import logo from "./assets/images/loading1.gif";
+
 class App extends Component {
   state = {
     loading: false,
@@ -30,9 +34,9 @@ class App extends Component {
   };
 
   handleLogin = (employee) => {
-    this.setState({ employee }, () =>
-      this.childHeader.fillmenu(this.state.employee.GroupId)
-    );
+    this.setState({ employee }, () => {
+      this.childHeader.fillmenu(this.state.employee.GroupId);
+    });
   };
   handleLoading = (stat) => {
     this.setState({ loading: stat });
@@ -53,8 +57,24 @@ class App extends Component {
         //alert("جلسه کاری شما به پایان رسید");
         window.location = "/";
       }
-    }, 5000);
+    }, 2000);
+    // setInterval(() => {
+    //   if (
+    //     !this.props.employees &&
+    //     window.location.pathname !== "/" &&
+    //     window.location.pathname !== "/budgetprint/"
+    //   ) {
+    //     //alert("جلسه کاری شما به پایان رسید");
+    //     console.log(this.props.employees);
+    //     window.location = "/";
+    //   }
+    // }, 1000);
   }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps !== this.props) {
+  //     if (nextProps.employees.lenght) auth.logout();
+  //   }
+  // }
   handleLogout = () => {
     this.props.removeLastEmployee();
     //console.log("store1", this.props.employees);
@@ -76,6 +96,7 @@ class App extends Component {
       async () => {
         auth.logout();
         this.childHeader.fillmenu(5);
+        this.props.removeAllEmployee();
       }
     );
   };

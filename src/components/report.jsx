@@ -9,14 +9,18 @@ class Report extends Component {
     currentPage: 1,
     pageSize: 500,
     sortColumn: { path: "Rank", order: "asc" },
+    employees: [],
   };
 
   componentDidMount() {
-    this.refresh();
+    this.setState({ employees: this.props.employees }, () => {
+      console.log(this.state.employees);
+      this.refresh();
+    });
   }
   refresh = async () => {
     const { data: PersonReport } = await getPersonReport(
-      this.props.employee.NationalCode
+      this.state.employees[this.state.employees.length - 1].NationalCode
     );
     //console.log(PersonReport);
     this.setState({ PersonReport });

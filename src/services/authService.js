@@ -12,7 +12,6 @@ export async function login(username, password, callback) {
     username,
     password,
   });
-  //console.log(jwt);
   localStorage.setItem(tokenKey, jwt.headers["x-auth-token"]);
   callback();
 }
@@ -29,6 +28,7 @@ export function getCurrentUser() {
   try {
     const jwt = localStorage.getItem(tokenKey);
     return jwtDecode(jwt);
+    //return { ...jwtDecode(jwt), jwt: jwt };
   } catch (ex) {
     return null;
   }

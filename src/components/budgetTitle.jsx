@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import InputPrepend from "./common/inputPrepend";
+import TreeMenu, { defaultChildren } from "react-simple-tree-menu";
 import { budgetInsert, BudgetGetData } from "../services/budget";
 import "../assets/css/tree.css";
-import TreeMenu, { defaultChildren } from "react-simple-tree-menu";
 class BudgetTitle extends Component {
   state = {
     chartwidth: 500,
@@ -49,13 +49,15 @@ class BudgetTitle extends Component {
       return false;
     } else {
       this.showMessage("سند ثبت شد", "success");
-      //this.fillGrid();
+      this.fillGrid();
       this.setState({ title: "", code: "" });
     }
   };
-  fillGrid = async () => {
-    const { data: titleData } = await BudgetGetData();
-    this.setState({ titleData });
+  fillGrid = () => {
+    this.setState({ data: null }, async () => {
+      const { data: titleData } = await BudgetGetData();
+      this.setState({ titleData });
+    });
   };
   showMessage = (msg, type) => {
     toast[type](msg, {

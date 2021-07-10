@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { connect } from "react-redux";
 //import logo from "../assets/images/Logo Amar without.png";
 import Report from "./report";
 class PersonelReport extends Component {
@@ -34,7 +34,7 @@ class PersonelReport extends Component {
                   style={{ minHeight: this.state.height }}
                 >
                   <div className="brand-wrapper ">
-                    <Report employee={this.props.employee} />
+                    <Report employees={this.props.employees} />
                   </div>
                 </div>
               </div>
@@ -47,4 +47,9 @@ class PersonelReport extends Component {
   }
 }
 
-export default PersonelReport;
+//export default PersonelReport;
+const mapStateToProps = (state) => ({
+  employees: state.employees,
+});
+
+export default connect(mapStateToProps, null)(PersonelReport);

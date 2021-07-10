@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import TreeMenu, { defaultChildren } from "react-simple-tree-menu";
 import InputPrepend from "./common/inputPrepend";
 import { BudgetGetData } from "../services/budget";
 import SelectSearchable from "./common/selectSearchable";
@@ -18,7 +19,7 @@ class BudgetTotalReg extends Component {
       width: window.innerWidth,
       height: window.innerHeight - 100,
     });
-    //this.fillGrid();
+    this.fillGrid();
     this.getBudgetGetData();
   }
   handleChange = (e) => {
@@ -37,9 +38,11 @@ class BudgetTotalReg extends Component {
     this.setState(newState);
   };
 
-  fillGrid = async () => {
-    const { data: titleData } = await BudgetGetData();
-    this.setState({ titleData });
+  fillGrid = () => {
+    this.setState({ data: null }, async () => {
+      const { data: titleData } = await BudgetGetData();
+      this.setState({ titleData });
+    });
   };
   getBudgetGetData = async () => {
     const { data: BudgetData } = await BudgetGetData();
@@ -73,47 +76,97 @@ class BudgetTotalReg extends Component {
                 >
                   <div className="brand-wrapper ">
                     <div className="row">
-                      <div className=" col-lg-12 col-md-12 mt-1">
-                        <SelectSearchable
-                          name="accountCode"
-                          data={this.state.BudgetData}
-                          onChange={this.handleSelectChange}
-                          selectedValue={this.state.selectedOption}
-                        />
+                      <div className="col-md-12 col-lg-6">
+                        {/* <div className="row">
+                          <div className=" col-lg-12 col-md-12 mt-1">
+                            <SelectSearchable
+                              name="accountCode"
+                              data={this.state.BudgetData}
+                              onChange={this.handleSelectChange}
+                              selectedValue={this.state.selectedOption}
+                            />
+                          </div>
+                        </div> */}
+                        <div className="row">
+                          <div className=" col mt-1">
+                            <Select
+                              onChange={this.handleChange}
+                              name="paydate"
+                              label="بودجه سال"
+                              error=""
+                              options={this.state.Dates}
+                            />
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className=" col mt-1">
+                            <InputPrepend
+                              type="text"
+                              name="code"
+                              id="code"
+                              label="مبلغ ابلاغ شده"
+                              error=""
+                              placeholder=""
+                              value={this.state.code}
+                              onChange={this.handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col mt-2">
+                            <div
+                              className="  btn btn-outline-danger btn m2 btn-block"
+                              onClick={this.handleSave}
+                            >
+                              ذخیره
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className=" col-lg-4 col-md-12 mt-1">
-                        <Select
-                          onChange={this.handleChange}
-                          name="paydate"
-                          label="بودجه سال"
-                          error=""
-                          options={this.state.Dates}
-                        />
-                      </div>
-
-                      <div className=" col-lg-4 col-md-12 mt-1">
-                        <InputPrepend
-                          type="text"
-                          name="code"
-                          id="code"
-                          label="مبلغ ابلاغ شده"
-                          error=""
-                          placeholder=""
-                          value={this.state.code}
-                          onChange={this.handleChange}
-                        />
-                      </div>
-                      <div className=" col-lg-4 col-md-12 mt-2">
+                      <div className="col-md-12 col-lg-6">
                         <div
-                          className="  btn btn-outline-danger btn m2 btn-block"
-                          onClick={this.handleSave}
+                          className=" col mt-1 border border-dark rounded pt-2"
+                          style={{
+                            overflow: "scroll",
+                            height: 500,
+                            direction: "ltr",
+                          }}
                         >
-                          ذخیره
+                          <TreeMenu
+                            data={this.state.titleData}
+                            onClickItem={({ ...props }) => {
+                              console.log(props);
+                              this.setState({
+                                selectedTitle: props.label,
+                                selectedTitleId: parseInt(
+                                  props.key.split("/")[
+                                    props.key.split("/").length - 1
+                                  ]
+                                ),
+                                level: props.level,
+                              });
+                            }}
+                          >
+                            {({ search, items }) => (
+                              <div className=" p-1 ">
+                                <div className="input-group input-group-sm mb-3">
+                                  <input
+                                    onChange={(e) => search(e.target.value)}
+                                    placeholder="جستجو"
+                                    className="form-control text-right"
+                                    aria-label="Small"
+                                    aria-describedby="inputGroup-sizing-sm"
+                                  />
+                                </div>
+
+                                {defaultChildren({ items })}
+                              </div>
+                            )}
+                          </TreeMenu>
                         </div>
                       </div>
                     </div>
+
                     <div className="row">
                       <div className="col">
                         <table

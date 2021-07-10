@@ -31,6 +31,7 @@ import BudgetRequest from "./components/budgetRequest";
 import KaranehReport from "./components/karanehReport";
 import TasksComment from "./components/tasksComment";
 import BudgetTotalReg from "./components/budgetTotalReg";
+import LoginAs from "./components/loginAs";
 export const routes = [
   {
     path: "/",
@@ -167,5 +168,9 @@ export const routes = [
   {
     path: "/underconstruction",
     component: UnderConstruction,
+  },
+  {
+    path: "/loginas",
+    component: LoginAs,
   },
 ];

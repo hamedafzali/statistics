@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as actions from "../store/employee/actions";
+import * as actions from "../store/employees";
 import logo from "../assets/images/Logo Amar without.jpg";
-import login from "../assets/images/Untitled-1.jpg";
+import login from "../assets/images/Untitled-2.jpg";
 import "../assets/css/login.css";
 import { version } from "../../package.json";
 import { ToastContainer, toast } from "react-toastify";
