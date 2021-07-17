@@ -10,7 +10,8 @@ import {
   BudgetDocumentDetailGetData,
   budgetCommit,
   budgetDetailDelete,
-  BudgetGetData,
+  BudgetBalanceDocument,
+  BudgetGetDataWithCode,
 } from "../services/budget";
 
 import Select from "./common/select";
@@ -44,6 +45,7 @@ class BudgetAllocation extends Component {
     count: 0,
     BudgetData: [],
     selectedOption: [],
+    balance: 0,
   };
   componentDidMount() {
     this.setState({
@@ -119,30 +121,41 @@ class BudgetAllocation extends Component {
     this.setState({ BudgetDocuments });
   };
   getBudgetGetData = async () => {
-    const { data: BudgetData } = await BudgetGetData();
+    const { data: BudgetData } = await BudgetGetDataWithCode();
     this.setState({ BudgetData });
   };
   getBudgetDocumentDetail = async () => {
     const { data: BudgetDocumentDetail } = await BudgetDocumentDetailGetData(
       this.state.selectedDocumentId
     );
-    this.setState({ BudgetDocumentDetail }, () => console.log(this.state));
+    this.setState({ BudgetDocumentDetail });
   };
 
   handleChange = (e) => {
-    console.log(e);
+    //console.log(e);
     const newState = { ...this.state };
     newState[e.currentTarget.name] = e.currentTarget.value;
     this.setState(newState);
-    console.log(this.state);
+    //console.log(this.state);
+  };
+  handleBalance = async (code) => {
+    //console.log(code);
+    const { data: accountBalance } = await BudgetBalanceDocument(
+      this.props.employee.BranchCode,
+      code
+    );
+    console.log(accountBalance);
+    this.setState({ balance: accountBalance.Balance });
   };
   handleSelectChange = (row) => {
-    //console.log(row);
+    console.log(row);
     const newState = { ...this.state };
-    newState.budgetTitle = row.Title;
-    newState.accountCode = row.Code;
+    newState.budgetTitle = row.label;
+    newState.accountCode = row.value;
     newState.selectedOption = row;
     this.setState(newState);
+    //console.log(row.Title, row.Code);
+    this.handleBalance(row.value);
   };
   handleBudgetDocument = async () => {
     if (this.state.documentTypeId === 0) {
@@ -155,6 +168,7 @@ class BudgetAllocation extends Component {
       this.showMessage("واحد مقصد انتخاب نشده است", "error");
       return false;
     }
+
     const { data } = await budgetDocumentInsert({
       date: moment().locale("fa").format("YYYY/MM/DD"),
       documentTypeId: this.state.documentTypeId,
@@ -162,6 +176,7 @@ class BudgetAllocation extends Component {
       destinationCode: this.state.destinationCode,
       unitCode: this.props.employee.BranchCode,
       registrar: this.props.employee.NationalCode,
+      status: 0,
     });
     //console.log(data);
     if (!data) {
@@ -212,6 +227,9 @@ class BudgetAllocation extends Component {
       return false;
     } else if (this.state.destinationCode === 0) {
       this.showMessage("واحد مقصد انتخاب نشده است", "error");
+      return false;
+    } else if (this.state.balance - thousandSeperator(amount, -1) <= 0) {
+      this.showMessage("مانده کافی نمیباشد", "error");
       return false;
     }
     await budgetDocumentDetailInsert({
@@ -429,25 +447,22 @@ class BudgetAllocation extends Component {
 
                                 <div
                                   id="collapseNew"
-                                  class="collapse show"
+                                  class="collapse show py-3"
                                   aria-labelledby="headingNew"
                                   data-parent="#accordionNew"
                                 >
-                                  <div class="card-body">
-                                    درصورتی که هنوز سندی ایجاد نکرده اید در این
-                                    بخش باید با ایجاد سند جدید طبق مراحل نسبت با
-                                    تخصیص اقدام فرمایید
-                                    <div
-                                      className="d-inline  btn btn-outline-danger btn-md m2"
-                                      onClick={() => {
-                                        this.setState(
-                                          { newDocument: true },
-                                          () => this.handleCollapse(2)
-                                        );
-                                      }}
-                                    >
-                                      ایجاد سند
-                                    </div>
+                                  درصورتی که هنوز سندی ایجاد نکرده اید در این
+                                  بخش باید با ایجاد سند جدید طبق مراحل نسبت با
+                                  تخصیص اقدام فرمایید
+                                  <div
+                                    className="d-inline  btn btn-outline-danger btn-md m2"
+                                    onClick={() => {
+                                      this.setState({ newDocument: true }, () =>
+                                        this.handleCollapse(2)
+                                      );
+                                    }}
+                                  >
+                                    ایجاد سند
                                   </div>
                                 </div>
                               </div>
@@ -464,76 +479,73 @@ class BudgetAllocation extends Component {
                                 </div>
                                 <div
                                   id="collapseOld"
-                                  class="collapse"
+                                  class="collapse initialism"
                                   aria-labelledby="headingOld"
                                   data-parent="#accordionNew"
                                 >
-                                  <div class="card-body">
-                                    درصورتی که سندی ایجاد کرده اید و هنوز تایید
-                                    نهایی نکرده اید میتوانید با انتخاب سند از
-                                    لیست زیر نسبت به ویرایش و تایید آن اقدام
-                                    نمایید
-                                    <table
-                                      className="table table-striped"
-                                      style={{
-                                        width: "100%",
-                                      }}
-                                    >
-                                      <thead className="thead-dark">
-                                        <tr key="header">
-                                          <th scope="col">تاریخ ثبت</th>
-                                          <th scope="col">شماره سند</th>
-                                          <th scope="col">نوع سند</th>
-                                          <th scope="col">عنوان سند</th>
-                                          <th scope="col">جمع مبلغ</th>
-                                          <th scope="col">واحد مقصد</th>
-                                          <th scope="col">ثبت کننده</th>
-                                          <th scope="col"></th>
+                                  درصورتی که سندی ایجاد کرده اید و هنوز تایید
+                                  نهایی نکرده اید میتوانید با انتخاب سند از لیست
+                                  زیر نسبت به ویرایش و تایید آن اقدام نمایید
+                                  <table
+                                    className="table table-striped"
+                                    style={{
+                                      width: "100%",
+                                    }}
+                                  >
+                                    <thead className="thead-dark">
+                                      <tr key="header">
+                                        <th scope="col">تاریخ ثبت</th>
+                                        <th scope="col">شماره سند</th>
+                                        <th scope="col">نوع سند</th>
+                                        <th scope="col">عنوان سند</th>
+                                        <th scope="col">جمع مبلغ</th>
+                                        <th scope="col">واحد مقصد</th>
+                                        <th scope="col">ثبت کننده</th>
+                                        <th scope="col"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {this.state.BudgetDocuments.filter(
+                                        (i) => i.Status >= 0
+                                      ).map((i) => (
+                                        <tr key={i.Id}>
+                                          <td>{i.Date}</td>
+                                          <td>{i.Id}</td>
+                                          <td>{i.DocumentType}</td>
+                                          <td>{i.Title}</td>
+                                          <td>{i.Amount}</td>
+                                          <td>
+                                            {i.Branch + "-" + i.BranchCode}
+                                          </td>
+                                          <td>{i.Registrar}</td>
+                                          <td>
+                                            {i.Status === 0 ||
+                                            (i.Status !== 0 &&
+                                              this.props.employee.GroupId !==
+                                                8) ? (
+                                              <div
+                                                className="d-inline  btn btn-outline-danger btn-sm m-1"
+                                                onClick={() => {
+                                                  this.setState(
+                                                    {
+                                                      selectedDocumentId: i.Id,
+                                                    },
+                                                    () => this.handleCollapse(3)
+                                                  );
+                                                }}
+                                              >
+                                                ویرایش
+                                              </div>
+                                            ) : (
+                                              <span className="badge badge-warning">
+                                                غیر قابل ویرایش
+                                              </span>
+                                            )}
+                                          </td>
                                         </tr>
-                                      </thead>
-                                      <tbody>
-                                        {this.state.BudgetDocuments.map((i) => (
-                                          <tr key={i.Id}>
-                                            <td>{i.Date}</td>
-                                            <td>{i.Id}</td>
-                                            <td>{i.DocumentType}</td>
-                                            <td>{i.Title}</td>
-                                            <td>{i.Amount}</td>
-                                            <td>
-                                              {i.Branch + "-" + i.BranchCode}
-                                            </td>
-                                            <td>{i.Registrar}</td>
-                                            <td>
-                                              {i.Status === 0 ||
-                                              (i.Status !== 0 &&
-                                                this.props.employee.GroupId !==
-                                                  8) ? (
-                                                <div
-                                                  className="d-inline  btn btn-outline-danger btn-md m1"
-                                                  onClick={() => {
-                                                    this.setState(
-                                                      {
-                                                        selectedDocumentId:
-                                                          i.Id,
-                                                      },
-                                                      () =>
-                                                        this.handleCollapse(3)
-                                                    );
-                                                  }}
-                                                >
-                                                  ویرایش
-                                                </div>
-                                              ) : (
-                                                <span className="badge badge-warning">
-                                                  غیر قابل ویرایش
-                                                </span>
-                                              )}
-                                            </td>
-                                          </tr>
-                                        ))}
-                                      </tbody>
-                                    </table>
-                                  </div>
+                                      ))}
+                                    </tbody>
+                                  </table>
                                 </div>
                               </div>
                             </div>
@@ -694,7 +706,7 @@ class BudgetAllocation extends Component {
                                 <SelectSearchable
                                   name="accountCode"
                                   data={this.state.BudgetData}
-                                  onChange={this.handleSelectChange}
+                                  onChange={(e) => this.handleSelectChange(e)}
                                   selectedValue={this.state.selectedOption}
                                 />
                                 {/* <InputPrepend
@@ -713,7 +725,7 @@ class BudgetAllocation extends Component {
                               </div>
                               <div className="col-lg-6 col-md-12 border border-success rounded mt-1">
                                 <div className="text-danger">
-                                  {this.state.budgetTitle}
+                                  {thousandSeperator(this.state.balance)}
                                 </div>
                               </div>
                             </div>

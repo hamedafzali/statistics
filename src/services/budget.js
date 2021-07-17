@@ -36,8 +36,14 @@ export function budgetDocumentDetailInsert(data) {
 export function BudgetGetData() {
   return http.get(apiUrl + `/budget/budgetgetdata`);
 }
+export function BudgetGetDataWithCode() {
+  return http.get(apiUrl + `/budget/budgetgetdatawithcode`);
+}
 export function BudgetDocumentGetData(nationalcode) {
   return http.get(apiUrl + `/budget/budgetdocumentgetdata/${nationalcode}`);
+}
+export function BudgetBalanceDocument(unitCode, code) {
+  return http.get(apiUrl + `/budget/budgetbalancedocument/${unitCode}/${code}`);
 }
 export function BudgetDocumentGetRow(id) {
   return http.get(apiUrl + `/budget/budgetdocumentgetrow/${id}`);
@@ -49,4 +55,8 @@ export function BudgetDocumentDetailGetData(pid) {
 
 export function BudgetDocumentSummary(pid) {
   return http.get(apiUrl + `/budget/budgetdocumentsummary/${pid}`);
+}
+
+export function BudgetBalance(code) {
+  return http.get(apiUrl + `/budget/budgetbalance/${code}`);
 }

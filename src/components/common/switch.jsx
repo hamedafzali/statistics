@@ -12,7 +12,9 @@ const Switch = ({ name, label, checked, onChange, size = "xs", ...rest }) => {
         onChange={() => onChange(name, !checked)}
         {...rest}
       />
-      <label className="custom-control-label" for={name}></label>
+      <label className="custom-control-label" for={name}>
+        {label}
+      </label>
     </div>
     // <div className="form-group">
     //   <BootstrapSwitchButton

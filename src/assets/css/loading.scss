@@ -1,0 +1,110 @@
+div.overlay {
+  display: table;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+  padding-top: 2rem;
+}
+div.overlay > div {
+  //display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  margin: auto;
+  width: 70%;
+  //border: 1px solid rgb(15, 15, 15);
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(62, 63, 62, 0.2), inset 0 0 5px rgba(97, 97, 97, 0.1);
+  border-radius: 1rem;
+  min-height: 90%;
+  overflow: hidden;
+  background-color: white;
+}
+div.row > div {
+  margin-top: 2rem;
+}
+.wait {
+  width: 70%;
+  margin: 50px auto;
+  text-align: center;
+  text-transform: Capitalize;
+  /* border-bottom:1px solid lightgreen; */
+  position: relative;
+  //   color: #beb;
+  animation: glowtext 0.8s linear infinite alternate;
+  padding: 2px;
+}
+
+@keyframes glowtext {
+  0% {
+    color: $orgColor;
+  }
+  50% {
+    color: darken($orgColor, 30%);
+  }
+  100% {
+    color: $orgColor;
+  }
+}
+
+@keyframes glow {
+  0% {
+    border-color: rgb(131, 133, 131);
+    box-shadow: 0 0 5px rgba(62, 63, 62, 0.2),
+      inset 0 0 5px rgba(97, 97, 97, 0.1), 0 2px 0 #000;
+  }
+  100% {
+    border-color: rgb(247, 247, 247);
+    box-shadow: 0 0 15px $orgColor, inset 0 0 10px $orgColor, 0 2px 0 #000;
+  }
+}
+
+.wait:after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 10%;
+  height: 3px;
+  //background-color: $orgColor;
+
+  animation: progress ease 1.8s infinite /* alternate */;
+}
+
+@keyframes progress {
+  0% {
+    left: 100%;
+    width: 0;
+    right: 0;
+    background-color: green;
+  }
+  50% {
+    left: 0;
+    width: 100%;
+    right: 0;
+  }
+  100% {
+    left: 0;
+    width: 0;
+    right: 100%;
+    background-color: red;
+  }
+}
+.waitLogo {
+  animation: logoOpacity 1.65s 5s linear infinite;
+}
+@keyframes logoOpacity {
+  0% {
+    opacity: 1;
+    //transform: translate(200px, 0);
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}

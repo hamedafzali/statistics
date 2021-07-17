@@ -12,12 +12,15 @@ import { getMenu } from "./services/menu";
 import "aos/dist/aos.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 import "./assets/css/tree.css";
+import "./app.scss";
 
 import logo from "./assets/images/loading1.gif";
+import Loading from "./components/common/loading";
 
 class App extends Component {
   state = {
     loading: false,
+    isLoading: true,
     employee: {
       Name: "",
       Family: "",
@@ -101,6 +104,11 @@ class App extends Component {
     );
   };
   render() {
+    if (this.state.isLoading) {
+      setTimeout(() => this.setState({ isLoading: false }), 4000);
+      return <Loading />;
+    }
+
     return (
       <React.Fragment>
         <Header

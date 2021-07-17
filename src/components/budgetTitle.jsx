@@ -4,6 +4,7 @@ import InputPrepend from "./common/inputPrepend";
 import TreeMenu, { defaultChildren } from "react-simple-tree-menu";
 import { budgetInsert, BudgetGetData } from "../services/budget";
 import "../assets/css/tree.css";
+import Switch from "./common/switch";
 class BudgetTitle extends Component {
   state = {
     chartwidth: 500,
@@ -13,7 +14,10 @@ class BudgetTitle extends Component {
     titleData: [],
     selectedTitle: "سرفصلی انتخاب نشده است",
     selectedTitleId: 0,
+    selectedTitleCode: "",
     title: "",
+    isEdit: false,
+    isEndPoint: false,
   };
   componentDidMount() {
     this.setState({
@@ -23,13 +27,14 @@ class BudgetTitle extends Component {
     this.fillGrid();
   }
   handleChange = (e) => {
-    //alert(e.currentTarget.name);
     const newState = { ...this.state };
     newState[e.currentTarget.name] = e.currentTarget.value;
     this.setState(newState);
-    //console.log(this.state);
   };
-
+  switchHandler = (name, checked) => {
+    this.setState({ [name]: checked });
+    //console.log(name, checked);
+  };
   handleSave = async () => {
     if (this.state.selectedTitleId === 0) {
       this.showMessage("سرفصل مربوطه را از درختواره انتخاب کنید", "error");
@@ -43,6 +48,7 @@ class BudgetTitle extends Component {
       title: this.state.title,
       code: this.state.code,
       level: this.state.level,
+      isendpoint: this.state.isEndPoint,
     });
     if (!data) {
       this.showMessage("خطا در انجام عملیات", "error");
@@ -50,7 +56,7 @@ class BudgetTitle extends Component {
     } else {
       this.showMessage("سند ثبت شد", "success");
       this.fillGrid();
-      this.setState({ title: "", code: "" });
+      this.setState({ title: "", code: "", isEdit: false });
     }
   };
   fillGrid = () => {
@@ -58,6 +64,17 @@ class BudgetTitle extends Component {
       const { data: titleData } = await BudgetGetData();
       this.setState({ titleData });
     });
+  };
+  editHandler = () => {
+    if (this.state.selectedTitleId !== 0)
+      this.setState({
+        title: this.state.selectedTitle.replace(
+          this.state.selectedTitleCode,
+          ""
+        ),
+        code: this.state.selectedTitleCode,
+        isEdit: true,
+      });
   };
   showMessage = (msg, type) => {
     toast[type](msg, {
@@ -106,6 +123,12 @@ class BudgetTitle extends Component {
                             >
                               {this.state.selectedTitle}
                             </strong>
+                            <div
+                              className="btn btn-outline-success btn-block"
+                              onClick={this.editHandler}
+                            >
+                              ویرایش
+                            </div>
                           </div>
                         </div>
                         <div className="row">
@@ -133,8 +156,22 @@ class BudgetTitle extends Component {
                               placeholder=""
                               value={this.state.code}
                               onChange={this.handleChange}
+                              disabled={this.state.isEdit}
                             />
                           </div>
+                        </div>
+
+                        <div className="row text-right">
+                          <div className=" col-12 mt-1 ">
+                            <Switch
+                              name="isEndPoint"
+                              label=" ثبت سند"
+                              checked={this.state.isEndPoint}
+                              onChange={this.switchHandler}
+                            />
+                          </div>
+                        </div>
+                        <div className="row">
                           <div className=" col-12 mt-2">
                             <div
                               className="  btn btn-outline-danger btn m2 btn-block"
@@ -169,6 +206,8 @@ class BudgetTitle extends Component {
                                 ]
                               ),
                               level: props.level,
+                              selectedTitleCode: props.value,
+                              isEndPoint: props.isEndPoint,
                             });
                           }}
                         >

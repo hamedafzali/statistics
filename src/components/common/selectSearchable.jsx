@@ -2,6 +2,7 @@ import React from "react";
 import Select from "react-select";
 
 const SelectSearchable = ({ data, onChange, selectedValue }) => {
+  //console.log(data);
   return (
     <Select
       value={selectedValue}
