@@ -32,6 +32,7 @@ import KaranehReport from "./components/karanehReport";
 import TasksComment from "./components/tasksComment";
 import BudgetTotalReg from "./components/budgetTotalReg";
 import LoginAs from "./components/loginAs";
+import BudgetSummaryReport from "./components/BudgetSummaryReport";
 export const routes = [
   {
     path: "/",
@@ -172,5 +173,9 @@ export const routes = [
   {
     path: "/loginas",
     component: LoginAs,
+  },
+  {
+    path: "/budgetsummary",
+    component: BudgetSummaryReport,
   },
 ];

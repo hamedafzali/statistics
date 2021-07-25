@@ -14,40 +14,38 @@ class Header extends Component {
     menu: "",
   };
 
-  // componentDidMount() {
-  //   console.log("componentDidMount", this.props);
-  //   this.setState({ menu: null }, () => {
-  //     let GroupId;
-  //     try {
-  //       if (this.props.employees.length > 0)
-  //         GroupId =
-  //           this.props.employees[this.props.employees.length - 1].GroupId;
-  //     } catch (e) {
-  //       console.log("componentDidMountError", this.props);
-  //       GroupId = this.props.employee.GroupId;
-  //     }
-  //     this.fillmenu(GroupId);
-  //   });
-  // }
+  componentDidMount() {
+    let GroupId;
+    //try {
+    if (this.props.employees.length > 0)
+      GroupId = this.props.employees[this.props.employees.length - 1].GroupId;
+    //} catch (e) {
+    //GroupId = this.props.employee.GroupId;
+    //}
+    this.fillmenu(GroupId);
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props) {
       let GroupId;
-      try {
-        if (nextProps.employees.length > 0)
-          GroupId = nextProps.employees[nextProps.employees.length - 1].GroupId;
-      } catch (e) {
-        GroupId = this.props.employee.GroupId;
-      }
+      //try {
+      if (nextProps.employees.length > 0)
+        GroupId = nextProps.employees[nextProps.employees.length - 1].GroupId;
+      //} catch (e) {
+      //GroupId = this.props.employee.GroupId;
+      //}
       this.fillmenu(GroupId);
     }
   }
   fillmenu = async (GroupId) => {
-    console.warn("fillmenu Called", GroupId, this.props.employees);
+    //console.log("fillmenu Called before", GroupId, this.props);
     //GroupId = this.state.groupId;
+    if (!GroupId) GroupId = 0;
+    //console.log("fillmenu Called after", GroupId, this.props);
     const { data } = await getMenu(GroupId);
     if (data) {
       let menu = this.refresh(data, 0);
       this.setState({ menu: null }, () => this.setState({ menu }));
+      //console.log(this.state);
     }
   };
   refresh = (table, PId) => {
@@ -110,14 +108,6 @@ class Header extends Component {
             <Nav className="mr-auto text-right ">{this.state.menu}</Nav>
           </Navbar.Collapse>
         </Navbar>
-        {/* <div className="badge badge-light p-2 ml-3 border border-secondary text-success">
-          <i
-            onClick={() => this.props.removeLastEmployee()}
-            className={`btn-sm btn-outline-danger fa fa-fw fa-times d-inline`}
-            style={{ fontSize: "1.75em" }}
-          />
-          {`${this.props.employees[0].Name} ${this.props.employees[0].Family} - ${this.props.employees[0].Position} - ${this.props.employees[0].BranchName}`}
-        </div> */}
 
         {this.props.employees.length
           ? this.props.employees.map((employee) => {

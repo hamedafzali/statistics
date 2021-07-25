@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Product from "./product";
 class Payesh extends Component {
   render() {
-    return <Product type="1" employee={this.props.employee}></Product>;
+    return <Product employee={this.props.employee} productType="1" />;
   }
 }
 

@@ -7,7 +7,7 @@ import { routes } from "./routes";
 import * as actions from "./store/employees";
 import Header from "./components/common/header";
 import auth from "./services/authService";
-import { getMenu } from "./services/menu";
+//import { getMenu } from "./services/menu";
 
 import "aos/dist/aos.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
@@ -38,16 +38,16 @@ class App extends Component {
 
   handleLogin = (employee) => {
     this.setState({ employee }, () => {
-      this.childHeader.fillmenu(this.state.employee.GroupId);
+      //this.childHeader.fillmenu(this.state.employee.GroupId);
     });
   };
-  handleLoading = (stat) => {
-    this.setState({ loading: stat });
-  };
-  handleMenu = async () => {
-    const { data: menudata } = await getMenu(this.state.employee.GroupId || 5);
-    this.setState({ menudata });
-  };
+  // handleLoading = (stat) => {
+  //   this.setState({ loading: stat });
+  // };
+  // handleMenu = async () => {
+  //   const { data: menudata } = await getMenu(this.state.employee.GroupId || 5);
+  //   this.setState({ menudata });
+  // };
   componentDidMount() {
     AOS.init();
     if (!this.state.employee) auth.logout();
@@ -98,26 +98,26 @@ class App extends Component {
       },
       async () => {
         auth.logout();
-        this.childHeader.fillmenu(5);
+        //this.childHeader.fillmenu(5);
         this.props.removeAllEmployee();
       }
     );
   };
   render() {
     if (this.state.isLoading) {
-      setTimeout(() => this.setState({ isLoading: false }), 4000);
+      setTimeout(() => this.setState({ isLoading: false }), 2000);
       return <Loading />;
     }
 
     return (
       <React.Fragment>
         <Header
-          handleMenu={this.handleMenu}
-          employee={this.state.employee}
-          menudata={this.state.menudata}
-          ref={(instanceHeader) => {
-            this.childHeader = instanceHeader;
-          }}
+        // handleMenu={this.handleMenu}
+        //employee={this.state.employee}
+        //menudata={this.state.menudata}
+        // ref={(instanceHeader) => {
+        //   this.childHeader = instanceHeader;
+        // }}
         />
         <div
           style={{

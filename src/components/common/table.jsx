@@ -110,20 +110,10 @@ const Table = ({
     );
   if (!loading && data.length === 0) return <p>اطلاعاتی وجود ندارد.</p>;
   return (
-    <div
-      style={{ width: "100%" }}
-      data-aos="zoom-in"
-      data-aos-offset="200"
-      data-aos-delay="50"
-      data-aos-duration="1000"
-    >
-      <div className="row">
-        <div className="col">
-          <span className="input-group-text text-justifiy col-md">
-            {title} تعداد :{totalCount}
-          </span>
-        </div>
-      </div>
+    <div style={{ width: "100%" }}>
+      <span className="input-group-text text-justifiy  inline-block mt-n4">
+        {title} تعداد :{totalCount}
+      </span>
       <div className="row">
         <div className="text-right col ">
           {data.length ? (
@@ -150,16 +140,7 @@ const Table = ({
             ""
           )}
         </div>
-        {/* <div className="col-4 col">
-          <Inputsm
-            type="text"
-            name="username"
-            error=""
-            placeholder="جستجو"
-            //value={this.state.account.Username}
-            //onChange={this.handleChange}
-          />
-        </div> */}
+
         <div className="text-left  col">
           <i
             onClick={() => setSize(size - 1)}
@@ -201,8 +182,8 @@ const Table = ({
           )}
         </div>
       </div>
-      <div className="row ">
-        <div className="col">
+      <div>
+        <div>
           <Collapse in={searchOpen}>
             <div>
               <Inputsm
@@ -218,10 +199,7 @@ const Table = ({
               />
             </div>
           </Collapse>
-        </div>
-      </div>
-      <div className="row ">
-        <div className="col">
+
           <Collapse in={pageSizeOpen}>
             <div>
               <Select

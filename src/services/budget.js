@@ -45,6 +45,9 @@ export function BudgetDocumentGetData(nationalcode) {
 export function BudgetBalanceDocument(unitCode, code) {
   return http.get(apiUrl + `/budget/budgetbalancedocument/${unitCode}/${code}`);
 }
+export function BudgetSummary(unitCode, code) {
+  return http.get(apiUrl + `/budget/budgetsummary`);
+}
 export function BudgetDocumentGetRow(id) {
   return http.get(apiUrl + `/budget/budgetdocumentgetrow/${id}`);
 }

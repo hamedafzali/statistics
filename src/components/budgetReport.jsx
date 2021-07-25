@@ -144,7 +144,9 @@ class BudgetReport extends Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {this.state.BudgetDocuments.map((i) => (
+                            {this.state.BudgetDocuments.filter(
+                              (i) => i.Status >= 0
+                            ).map((i) => (
                               <tr key={i.Id}>
                                 <td>{i.Date}</td>
                                 <td>{i.Id}</td>

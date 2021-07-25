@@ -26,17 +26,18 @@ class Product extends Component {
   };
 
   componentDidMount() {
+    //console.log("product props", this.props);
     this.getTitle();
     this.checkAccess();
     this.ProductPercent();
   }
   ProductPercent = async () => {
-    const { data } = await GetProductPercent(this.props.type);
+    const { data } = await GetProductPercent(/*this.props.type*/ "1");
     //console.log(data[0]);
     this.setState({ productPercent: data });
   };
   getTitle = async () => {
-    const { data } = await GetProductTitle(this.props.type);
+    const { data } = await GetProductTitle(/*this.props.type*/ "1");
     this.setState(
       {
         pageContent: { title: data[0].Name },
@@ -184,7 +185,7 @@ class Product extends Component {
   onCommit = (NationalCode, A50, A30, A20, PostTypeId) => {
     //console.log(NationalCode, A50, A30, A20, PostTypeId);
     //alert(this.props.type === "1");
-    if (this.props.type === "1") {
+    if (/*this.props.type*/ "1" === "1") {
       if (
         (this.props.employee.GroupId === 4 ||
           this.props.employee.GroupId === 2) &&
@@ -239,7 +240,7 @@ class Product extends Component {
         }
       }
     } else {
-      this.showMessage("خطا در تشخیص پست کارکنان" + this.props.type, "error");
+      this.showMessage("خطا در تشخیص پست کارکنان" /*this.props.type*/, "error");
       return false;
     }
 

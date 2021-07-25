@@ -247,11 +247,12 @@ class BudgetTotalReg extends Component {
                                   type="text"
                                   name="amount"
                                   id="amount"
-                                  label="مبلغ ابلاغ شده"
+                                  label="مبلغ "
                                   error=""
                                   placeholder=""
-                                  value={this.state.amount}
+                                  value={thousandSeperator(this.state.amount)}
                                   onChange={this.handleChange}
+                                  maxlength="19"
                                 />
                               </div>
                             </div>
