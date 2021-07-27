@@ -11,6 +11,7 @@ import { Collapse } from "react-bootstrap";
 import { CSVLink } from "react-csv";
 import Overlay from "react-overlay-component";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ExcelDownloader from "../../utils/ExcelDownloader";
 
 const Table = ({
   columns,
@@ -125,11 +126,18 @@ const Table = ({
                   style={{ fontSize: "1.65em" }}
                 />
               </CSVLink>
-              <i
-                // onClick={() => this.props.onCommit(item.Id)}
-                className={`btn-outline-success fa fa-fw fa-file-excel-o`}
-                style={{ fontSize: "1.65em" }}
+              <ExcelDownloader
+                name="دانلود-آمار و بودجه"
+                columns={columns.filter((i) => i.label)}
+                icon={
+                  <i
+                    className={`btn-outline-success fa fa-fw fa-file-excel-o`}
+                    style={{ fontSize: "1.65em" }}
+                  />
+                }
+                data={data}
               />
+
               <i
                 // onClick={() => this.props.onCommit(item.Id)}
                 className={`btn-outline-danger fa fa-fw fa-file-pdf-o`}
