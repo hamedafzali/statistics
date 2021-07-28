@@ -8,6 +8,7 @@ import SelectPrepend from "./common/selectPrepend";
 import {
   BudgetGetData,
   BudgetBalance,
+  BudgetBalanceEslahieh,
   budgetDocumentInsert,
   budgetDocumentDetailInsert,
   BudgetDocumentGetData,
@@ -25,6 +26,7 @@ class BudgetTotalReg extends Component {
     selectedTitleId: 0,
     selectedTitleSum: 0,
     BudgetBalanceData: [],
+    BudgetBalanceEslahiehData: [],
     amount: 0,
     year: "1400",
     BudgetDocuments: [],
@@ -124,7 +126,10 @@ class BudgetTotalReg extends Component {
   };
   getBudgetBalance = async (code) => {
     const { data: BudgetBalanceData } = await BudgetBalance(code);
-    this.setState({ BudgetBalanceData });
+    const { data: BudgetBalanceEslahiehData } = await BudgetBalanceEslahieh(
+      code
+    );
+    this.setState({ BudgetBalanceData, BudgetBalanceEslahiehData });
   };
   showMessage = (msg, type) => {
     toast[type](msg, {
@@ -195,7 +200,7 @@ class BudgetTotalReg extends Component {
                             </strong>
                           </div>
                           <div className=" col-12 mt-1 text-right ">
-                            مبلغ تخصیص داده شده تاکنون:
+                            مبلغ مصوب تخصیص داده شده :
                             <strong
                               className={
                                 !this.state.selectedTitleId
@@ -205,6 +210,20 @@ class BudgetTotalReg extends Component {
                             >
                               {thousandSeperator(
                                 this.state.BudgetBalanceData.Balance
+                              )}
+                            </strong>
+                          </div>
+                          <div className=" col-12 mt-1 text-right ">
+                            مبلغ اصلاحی تخصیص داده شده :
+                            <strong
+                              className={
+                                !this.state.selectedTitleId
+                                  ? "text-danger mr-2"
+                                  : "text-success mr-2"
+                              }
+                            >
+                              {thousandSeperator(
+                                this.state.BudgetBalanceEslahiehData.Balance
                               )}
                             </strong>
                           </div>

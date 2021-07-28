@@ -63,3 +63,15 @@ export function BudgetDocumentSummary(pid) {
 export function BudgetBalance(code) {
   return http.get(apiUrl + `/budget/budgetbalance/${code}`);
 }
+
+export function BudgetBalanceEblagh(code) {
+  return http.get(apiUrl + `/budget/budgetbalanceeblagh/${code}`);
+}
+
+export function BudgetBalanceEslahieh(code) {
+  return http.get(apiUrl + `/budget/budgetbalanceeslahieh/${code}`);
+}
+
+export function budgetRequestInsert(data) {
+  return http.post(apiUrl + `/budget/budgetRequestInsert`, data);
+}

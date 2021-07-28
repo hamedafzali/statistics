@@ -9,6 +9,7 @@ class BudgetSummaryReportTable extends Component {
     { path: "mosavab", label: "بودجه مصوب", seprated: true, type: "text" },
     { path: "eslahieh", label: "اصلاحیه", seprated: true, type: "text" },
     { path: "eblagh", label: "ابلاغ", seprated: true, type: "text" },
+    { path: "eblaghCount", label: "تعداد ابلاغ", seprated: true, type: "text" },
     {
       path: "nesbatMosavab",
       label: "مانده نسبت به مصوب",

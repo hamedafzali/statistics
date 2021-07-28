@@ -95,6 +95,7 @@ class MainPage extends Component {
                         <img src={logo} alt="" width="100" />
                         <br />
                         <br />
+
                         <h2 className="text-danger">
                           به سامانه آمار و بودجه خوش آمدید
                         </h2>

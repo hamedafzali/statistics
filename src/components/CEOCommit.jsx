@@ -31,7 +31,7 @@ class CEOCommit extends Component {
     diff: 0,
     SetadHours: 0,
     paydate: "",
-    value: { min: 25, max: 120 },
+    value: { min: 0, max: 20000 },
   };
   handleRange = async (value) => {
     setKaranehParams(
@@ -54,11 +54,12 @@ class CEOCommit extends Component {
     this.getKaranehDates();
   }
   getKaranehDates = async () => {
+    console.log("before", this.state);
     const { data: KaranehDates } = await getKaranehDates();
     this.setState({
       KaranehDates,
     });
-    console.log(this.state);
+    console.log("before", this.state);
   };
   handleSave = () => {
     //console.log(this.state);
@@ -224,7 +225,7 @@ class CEOCommit extends Component {
                           </div>
                           <div class="form-control">
                             <InputRange
-                              maxValue={150}
+                              maxValue={20000}
                               minValue={0}
                               formatLabel={(value) => ``}
                               value={this.state.value}

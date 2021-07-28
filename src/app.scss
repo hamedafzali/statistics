@@ -1,2 +1,8 @@
 @import "./assets/css/colors.scss";
 @import "./assets/css/loading.scss";
+@import url("https://unpkg.com/leaflet@3.2.0/dist/leaflet.css");
+.leaflet-container {
+  height: 400px;
+  width: 80%;
+  margin: 0 auto;
+}

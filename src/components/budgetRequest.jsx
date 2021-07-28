@@ -3,7 +3,7 @@ import moment from "jalali-moment";
 import {
   getBudgetTitle,
   getBudgetUnits,
-  budgetDocumentInsert,
+  budgetRequestInsert,
   BudgetDocumentGetData,
   BudgetDocumentGetRow,
   budgetDocumentDetailInsert,
@@ -123,7 +123,7 @@ class BudgetRequest extends Component {
     //console.log(this.state);
   };
 
-  handleBudgetDocument = async () => {
+  handleBudgetRequest = async () => {
     if (this.state.documentTypeId === 0) {
       this.showMessage("نوع درخواست انتخاب نشده است", "error");
       return false;
@@ -134,7 +134,7 @@ class BudgetRequest extends Component {
       this.showMessage("واحد مقصد انتخاب نشده است", "error");
       return false;
     }
-    const { data } = await budgetDocumentInsert({
+    const { data } = await budgetRequestInsert({
       date: moment().locale("fa").format("YYYY/MM/DD"),
       documentTypeId: this.state.documentTypeId,
       documentTitle: this.state.documentTitle,
@@ -388,25 +388,22 @@ class BudgetRequest extends Component {
 
                                 <div
                                   id="collapseNew"
-                                  class="collapse show"
+                                  class="collapse show py-3 initialism "
                                   aria-labelledby="headingNew"
                                   data-parent="#accordionNew"
                                 >
-                                  <div class="card-body">
-                                    درصورتی که هنوز درخواستی ایجاد نکرده اید در
-                                    این بخش باید با ایجاد درخواست جدید طبق مراحل
-                                    اقدام فرمایید
-                                    <div
-                                      className="d-inline  btn btn-outline-danger btn-md m2"
-                                      onClick={() => {
-                                        this.setState(
-                                          { newDocument: true },
-                                          () => this.handleCollapse(2)
-                                        );
-                                      }}
-                                    >
-                                      ایجاد درخواست
-                                    </div>
+                                  درصورتی که هنوز درخواستی ایجاد نکرده اید در
+                                  این بخش باید با ایجاد درخواست جدید طبق مراحل
+                                  نسبت با تخصیص اقدام فرمایید
+                                  <div
+                                    className="d-inline btn btn-outline-danger btn-md m-2 "
+                                    onClick={() => {
+                                      this.setState({ newDocument: true }, () =>
+                                        this.handleCollapse(2)
+                                      );
+                                    }}
+                                  >
+                                    ایجاد
                                   </div>
                                 </div>
                               </div>
@@ -423,50 +420,53 @@ class BudgetRequest extends Component {
                                 </div>
                                 <div
                                   id="collapseOld"
-                                  class="collapse"
+                                  class="collapse initialism"
                                   aria-labelledby="headingOld"
                                   data-parent="#accordionNew"
                                 >
-                                  <div class="card-body">
-                                    درصورتی که درخواستی ایجاد کرده اید و هنوز
-                                    تایید نهایی نکرده اید میتوانید با انتخاب
-                                    درخواست از لیست زیر نسبت به ویرایش و تایید
-                                    آن اقدام نمایید
-                                    <table
-                                      className="table table-striped"
-                                      style={{
-                                        width: "100%",
-                                      }}
-                                    >
-                                      <thead className="thead-dark">
-                                        <tr key="header">
-                                          <th scope="col">تاریخ ثبت</th>
-                                          <th scope="col">شماره درخواست</th>
-                                          <th scope="col">نوع درخواست</th>
-                                          <th scope="col">عنوان درخواست</th>
-                                          <th scope="col">جمع مبلغ</th>
-                                          <th scope="col">
-                                            واحد درخواست کننده
-                                          </th>
-                                          <th scope="col">ثبت کننده</th>
-                                          <th scope="col"></th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {this.state.BudgetDocuments.map((i) => (
-                                          <tr key={i.Id}>
-                                            <td>{i.Date}</td>
-                                            <td>{i.Id}</td>
-                                            <td>{i.DocumentType}</td>
-                                            <td>{i.Title}</td>
-                                            <td>{i.Amount}</td>
-                                            <td>
-                                              {i.Branch + "-" + i.BranchCode}
-                                            </td>
-                                            <td>{i.Registrar}</td>
-                                            <td>
+                                  درصورتی که درخواستی ایجاد کرده اید و هنوز
+                                  تایید نهایی نکرده اید میتوانید با انتخاب سند
+                                  از لیست زیر نسبت به ویرایش و تایید آن اقدام
+                                  نمایید
+                                  <table
+                                    className="table table-striped"
+                                    style={{
+                                      width: "100%",
+                                    }}
+                                  >
+                                    <thead className="thead-dark">
+                                      <tr key="header">
+                                        <th scope="col">تاریخ ثبت</th>
+                                        <th scope="col">شماره درخواست</th>
+                                        <th scope="col">نوع درخواست</th>
+                                        <th scope="col">عنوان درخواست</th>
+                                        <th scope="col">جمع مبلغ</th>
+                                        <th scope="col">واحد مقصد</th>
+                                        <th scope="col">ثبت کننده</th>
+                                        <th scope="col"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {this.state.BudgetDocuments.filter(
+                                        (i) => i.Status >= 0
+                                      ).map((i) => (
+                                        <tr key={i.Id}>
+                                          <td>{i.Date}</td>
+                                          <td>{i.Id}</td>
+                                          <td>{i.DocumentType}</td>
+                                          <td>{i.Title}</td>
+                                          <td>{i.Amount}</td>
+                                          <td>
+                                            {i.Branch + "-" + i.BranchCode}
+                                          </td>
+                                          <td>{i.Registrar}</td>
+                                          <td>
+                                            {i.Status === 0 ||
+                                            (i.Status !== 0 &&
+                                              this.props.employee.GroupId !==
+                                                8) ? (
                                               <div
-                                                className="d-inline  btn btn-outline-danger btn-md m1"
+                                                className="d-inline  btn btn-outline-danger btn-sm m-1"
                                                 onClick={() => {
                                                   this.setState(
                                                     {
@@ -478,12 +478,16 @@ class BudgetRequest extends Component {
                                               >
                                                 ویرایش
                                               </div>
-                                            </td>
-                                          </tr>
-                                        ))}
-                                      </tbody>
-                                    </table>
-                                  </div>
+                                            ) : (
+                                              <span className="badge badge-warning">
+                                                غیر قابل ویرایش
+                                              </span>
+                                            )}
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
                                 </div>
                               </div>
                             </div>
@@ -510,18 +514,13 @@ class BudgetRequest extends Component {
                                 <Select
                                   onChange={this.handleChange}
                                   name="documentTypeId"
-                                  label="نوع سند"
+                                  label="نوع درخواست"
                                   error=""
                                   options={[
-                                    { id: 1, name: "سند ابلاغ بودجه جاری" },
+                                    { id: 1, name: "جاری" },
                                     {
                                       id: 2,
-                                      name: "سند ابلاغ بودجه سرمایه ای",
-                                    },
-                                    { id: 3, name: "سند ترمیم بودجه جاری" },
-                                    {
-                                      id: 4,
-                                      name: "سند ترمیم بودجه سرمایه ای",
+                                      name: "سرمایه ای",
                                     },
                                   ]}
                                 />
@@ -531,7 +530,7 @@ class BudgetRequest extends Component {
                                   type="text"
                                   name="documentTitle"
                                   id="documentTitle"
-                                  label="توضیحات سند"
+                                  label="توضیحات "
                                   error=""
                                   title={this.props.employee.BranchCode}
                                   maxLength={500}
@@ -546,14 +545,20 @@ class BudgetRequest extends Component {
                                   name="destinationCode"
                                   label="واحد مقصد"
                                   error=""
-                                  options={this.state.budgetUnits}
+                                  options={[
+                                    {
+                                      id: "1",
+                                      name: "اداره کل آمار و بودجه",
+                                      code: "M8001",
+                                    },
+                                  ]}
                                 />
                               </div>
                             </div>
                             <div className="row">
                               <div
                                 className="btn btn-outline-danger btn btn-large btn-block"
-                                onClick={this.handleBudgetDocument}
+                                onClick={this.handleBudgetRequest}
                               >
                                 ثبت
                               </div>
