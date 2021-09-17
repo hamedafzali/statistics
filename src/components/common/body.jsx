@@ -2,6 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Card } from "react-bootstrap";
 import banner from "../../assets/images/analytics-banner.png";
+import Map from "./Map";
 const Body = () => {
   return (
     <React.Fragment>
@@ -13,7 +14,7 @@ const Body = () => {
               <Card.Title>آخرین خبرها</Card.Title>
               <Card.Text>
                 <div class="row">
-                  <Card className=" col col-lg-6">
+                  <Card className=" col">
                     <Card.Img
                       variant="top"
                       src="https://www.postbank.ir/DeskTopModules/News/showimage.aspx?id=17540&type=1&t=y&w=500&h=500"
@@ -23,42 +24,7 @@ const Body = () => {
                         استان ها و شعب برتر پست بانک ایران معرفی شدند
                       </Card.Title>
                       <Card.Text>
-                        برنامه عملیاتی و اهداف کمی سالانه پست بانک ایران به
-                        تفکیک استان‌ها و مناطق، همه ساله در ابتدای هرسال تعیین،
-                        تصویب و ابلاغ می‌شود. فرآیند تحقق اهداف ابلاغی هرماه با
-                        حضور مدیرعامل بانک، معاونین، مدیران امور و مدیران شعب
-                        استان‌ها و مناطق سنجش و ارزیابی می‌شود.
-                      </Card.Text>
-                    </Card.Body>
-                    {/* <Card.Footer>
-                      <small className="text-muted">
-                        Last updated 3 mins ago
-                      </small>
-                    </Card.Footer> */}
-                  </Card>
-                  <Card className=" col col-lg-6">
-                    <Card.Img
-                      variant="top"
-                      src="https://www.postbank.ir/DeskTopModules/News/showimage.aspx?id=17592&type=1&t=y&w=500&h=500"
-                    />
-                    <Card.Body>
-                      <Card.Title>
-                        معاون مالی و سرمایه گذاری خبرداد: افزایش بیش از 5 برابری
-                        سود پست بانک ایران در 9 ماهه سال جاری
-                      </Card.Title>
-                      <Card.Text>
-                        سیداصغر جلیلی نیا معاون مالی و سرمایه گذاری مدیرعامل پست
-                        بانک ایران گفت: با توجه به استخراج صورت های مالی 9 ماهه
-                        سال 1399، سود این بانک طی این مدت بیش از 5 برابر سال
-                        گذشته افزایش یافته است. به گزارش روابط عمومی پست بانک
-                        ایران: وی با اعلام این خبر افزود: سود عملکرد این بانک در
-                        سال 1398 به میزان 974 میلیارد ریال بود که طی 9 ماهه سال
-                        جاری به 5497 میلیارد ریال افزایش یافته است. جلیلی نیا در
-                        ادامه اعلام کرد: دارایی های پست بانک ایران طی 9 ماهه سال
-                        جاری حدود 49 درصد افزایش داشته که مهمترین عوامل افزایش
-                        آن شامل؛ رشد 71 درصدی تسهیلات و اوراق بهادار و همچنین
-                        رشد 72 درصدی سپرده های دیداری، رشد 55 درصدی سپرده های پس
-                        انداز و رشد 68 درصدی سپرده های مدت دار بوده است.
+                        <Map />
                       </Card.Text>
                     </Card.Body>
                     {/* <Card.Footer>

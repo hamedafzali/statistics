@@ -4,14 +4,13 @@ import {
   getBudgetTitle,
   getBudgetUnits,
   budgetRequestInsert,
-  BudgetDocumentGetData,
-  BudgetDocumentGetRow,
-  budgetDocumentDetailInsert,
-  BudgetDocumentDetailGetData,
-  budgetCommit,
-  budgetDetailDelete,
+  BudgetRDocumentGetData,
+  BudgetRDocumentGetRow,
+  budgetRDocumentDetailInsert,
+  BudgetRDocumentDetailGetData,
+  RBudgetCommit,
+  budgetRDetailDelete,
 } from "../services/budget";
-import InputPrepend from "./common/inputPrepend";
 import Select from "./common/select";
 import Input from "./common/input";
 import { ToastContainer, toast } from "react-toastify";
@@ -31,8 +30,8 @@ class BudgetRequest extends Component {
     documentTypeId: 0,
     unitId: 0,
     documentTitle: "",
-    BudgetDocuments: [],
-    BudgetDocumentDetail: [],
+    BudgetRDocuments: [],
+    BudgetRDocumentDetail: [],
     selectedDocumentData: [],
     selectedDocumentId: 0,
     newDocument: false,
@@ -43,11 +42,11 @@ class BudgetRequest extends Component {
       width: window.innerWidth,
       height: window.innerHeight - 100,
     });
-    this.handleBudgetUnits();
-    this.getBudgetDocuments();
+    //this.handleBudgetUnits();
+    this.getBudgetRDocuments();
   }
   handleCommit = async (id) => {
-    const { data } = await budgetCommit({
+    const { data } = await RBudgetCommit({
       id,
       nationalcode: this.props.employee.NationalCode,
     });
@@ -55,11 +54,11 @@ class BudgetRequest extends Component {
       this.showMessage("خطا در تایید", "error");
     } else {
       this.showMessage("تایید انجام شد", "success");
-      this.getBudgetDocuments();
+      this.getBudgetRDocuments();
     }
   };
   handleBudgetDetailDelete = async (id) => {
-    const { data } = await budgetDetailDelete({
+    const { data } = await budgetRDetailDelete({
       id,
       nationalcode: this.props.employee.NationalCode,
     });
@@ -67,7 +66,7 @@ class BudgetRequest extends Component {
       this.showMessage("خطا در حذف", "error");
     } else {
       this.showMessage("حذف انجام شد", "success");
-      this.getBudgetDocumentDetail();
+      this.getBudgetRDocumentDetail();
     }
   };
   handleCollapse = (id) => {
@@ -88,7 +87,7 @@ class BudgetRequest extends Component {
     } else if (id === 3) {
       if (id === 3 && this.state.selectedDocumentId) {
         this.handleBudgetDocumentGetRow();
-        this.getBudgetDocumentDetail();
+        this.getBudgetRDocumentDetail();
       } else if (id === 3 && !this.state.selectedDocumentId) {
         this.showMessage("هیچ درخواستی ایجاد یا انتخاب نشده است", "error");
         id = 1;
@@ -102,17 +101,23 @@ class BudgetRequest extends Component {
       });
     }
   };
-  getBudgetDocuments = async () => {
-    const { data: BudgetDocuments } = await BudgetDocumentGetData(
+  getBudgetRDocuments = async () => {
+    //console.log(1);
+    const { data: BudgetRDocuments } = await BudgetRDocumentGetData(
       this.props.employee.NationalCode
     );
-    this.setState({ BudgetDocuments });
+    console.log("BudgetRDocuments", BudgetRDocuments);
+    // const newState = { ...this.state };
+    // newState.BudgetRDocuments = BudgetRDocuments;
+    // this.setState(newState,);
+    this.setState({ BudgetRDocuments });
+    //console.log(111);
   };
-  getBudgetDocumentDetail = async () => {
-    const { data: BudgetDocumentDetail } = await BudgetDocumentDetailGetData(
+  getBudgetRDocumentDetail = async () => {
+    const { data: BudgetRDocumentDetail } = await BudgetRDocumentDetailGetData(
       this.state.selectedDocumentId
     );
-    this.setState({ BudgetDocumentDetail }, () => console.log(this.state));
+    this.setState({ BudgetRDocumentDetail });
   };
 
   handleChange = (e) => {
@@ -134,6 +139,7 @@ class BudgetRequest extends Component {
       this.showMessage("واحد مقصد انتخاب نشده است", "error");
       return false;
     }
+
     const { data } = await budgetRequestInsert({
       date: moment().locale("fa").format("YYYY/MM/DD"),
       documentTypeId: this.state.documentTypeId,
@@ -141,6 +147,7 @@ class BudgetRequest extends Component {
       destinationCode: this.state.destinationCode,
       unitCode: this.props.employee.BranchCode,
       registrar: this.props.employee.NationalCode,
+      status: 0,
     });
     console.log(data);
     if (!data) {
@@ -157,7 +164,7 @@ class BudgetRequest extends Component {
     }
   };
   handleBudgetDocumentGetRow = async () => {
-    const { data } = await BudgetDocumentGetRow(this.state.selectedDocumentId);
+    const { data } = await BudgetRDocumentGetRow(this.state.selectedDocumentId);
     const newState = { ...this.state };
     newState.selectedDocumentData = data;
     this.setState(newState);
@@ -169,22 +176,27 @@ class BudgetRequest extends Component {
     newState.budgetUnits = data;
     this.setState(newState);
   };
-  handleBudgetDocumentDetail = async () => {
-    const {
-      amount,
-      description,
-      selectedDocumentId,
-      budgetTitle,
-      accountCode,
-    } = this.state;
-    await budgetDocumentDetailInsert({
+  handleBudgetRDocumentDetail = async () => {
+    const { amount, description, selectedDocumentId, documentDetailId } =
+      this.state;
+    if (description.length === 0) {
+      this.showMessage("شرح درخواست را وارد کنید؟", "error");
+      return false;
+    } else if (amount <= 0) {
+      this.showMessage("مبلغ اشتباه است", "error");
+      return false;
+    }
+    //console.log(this.state);
+    await budgetRDocumentDetailInsert({
+      id: documentDetailId,
       pid: selectedDocumentId,
-      title: budgetTitle,
-      code: accountCode,
+      title: "-",
+      code: 0,
       amount,
       description,
     });
-    this.getBudgetDocumentDetail(selectedDocumentId);
+    this.getBudgetRDocumentDetail(selectedDocumentId);
+
     this.setState({
       amount: 0,
       description: "",
@@ -447,45 +459,48 @@ class BudgetRequest extends Component {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      {this.state.BudgetDocuments.filter(
-                                        (i) => i.Status >= 0
-                                      ).map((i) => (
-                                        <tr key={i.Id}>
-                                          <td>{i.Date}</td>
-                                          <td>{i.Id}</td>
-                                          <td>{i.DocumentType}</td>
-                                          <td>{i.Title}</td>
-                                          <td>{i.Amount}</td>
-                                          <td>
-                                            {i.Branch + "-" + i.BranchCode}
-                                          </td>
-                                          <td>{i.Registrar}</td>
-                                          <td>
-                                            {i.Status === 0 ||
-                                            (i.Status !== 0 &&
-                                              this.props.employee.GroupId !==
-                                                8) ? (
-                                              <div
-                                                className="d-inline  btn btn-outline-danger btn-sm m-1"
-                                                onClick={() => {
-                                                  this.setState(
-                                                    {
-                                                      selectedDocumentId: i.Id,
-                                                    },
-                                                    () => this.handleCollapse(3)
-                                                  );
-                                                }}
-                                              >
-                                                ویرایش
-                                              </div>
-                                            ) : (
-                                              <span className="badge badge-warning">
-                                                غیر قابل ویرایش
-                                              </span>
-                                            )}
-                                          </td>
-                                        </tr>
-                                      ))}
+                                      {this.state.BudgetRDocuments.length &&
+                                        this.state.BudgetRDocuments.filter(
+                                          (i) => i.Status === 0
+                                        ).map((i) => (
+                                          <tr key={i.Id}>
+                                            <td>{i.Date}</td>
+                                            <td>{i.Id}</td>
+                                            <td>{i.DocumentType}</td>
+                                            <td>{i.Title}</td>
+                                            <td>{i.Amount}</td>
+                                            <td>
+                                              {i.Branch + "-" + i.BranchCode}
+                                            </td>
+                                            <td>{i.Registrar}</td>
+                                            <td>
+                                              {i.Status === 0 ||
+                                              (i.Status !== 0 &&
+                                                this.props.employee.GroupId !==
+                                                  8) ? (
+                                                <div
+                                                  className="d-inline  btn btn-outline-danger btn-sm m-1"
+                                                  onClick={() => {
+                                                    this.setState(
+                                                      {
+                                                        selectedDocumentId:
+                                                          i.Id,
+                                                      },
+                                                      () =>
+                                                        this.handleCollapse(3)
+                                                    );
+                                                  }}
+                                                >
+                                                  ویرایش
+                                                </div>
+                                              ) : (
+                                                <span className="badge badge-warning">
+                                                  غیر قابل ویرایش
+                                                </span>
+                                              )}
+                                            </td>
+                                          </tr>
+                                        ))}
                                     </tbody>
                                   </table>
                                 </div>
@@ -547,7 +562,7 @@ class BudgetRequest extends Component {
                                   error=""
                                   options={[
                                     {
-                                      id: "1",
+                                      id: "M8001",
                                       name: "اداره کل آمار و بودجه",
                                       code: "M8001",
                                     },
@@ -595,7 +610,7 @@ class BudgetRequest extends Component {
                             <div className="row border bg-light rounded">
                               <div className="col-md-12 col-lg-6">
                                 <div className="row">
-                                  <div className="col">عنوان سند</div>
+                                  <div className="col">عنوان درخواست</div>
                                   <div className="col">
                                     {this.state.selectedDocumentData.length
                                       ? this.state.selectedDocumentData[0].Title
@@ -613,7 +628,7 @@ class BudgetRequest extends Component {
                               </div>
                               <div className="col-md-12 col-lg-6">
                                 <div className="row">
-                                  <div className="col">شماره سند</div>
+                                  <div className="col">شماره درخواست</div>
                                   <div className="col">
                                     {this.state.selectedDocumentData.length
                                       ? this.state.selectedDocumentData[0].Id
@@ -630,7 +645,7 @@ class BudgetRequest extends Component {
                                 </div>
                               </div>
                             </div>
-                            <div className="row ">
+                            {/* <div className="row ">
                               <div className="col-lg-6 col-md-12 mt-1">
                                 <InputPrepend
                                   type="number"
@@ -651,7 +666,7 @@ class BudgetRequest extends Component {
                                   {this.state.budgetTitle}
                                 </div>
                               </div>
-                            </div>
+                            </div> */}
                             <div className="row ">
                               <div className="col-lg-4 col-md-12">
                                 <Input
@@ -683,7 +698,7 @@ class BudgetRequest extends Component {
                               <div className="col col-2 "></div>
                               <div
                                 className="btn btn-block btn-success m-2"
-                                onClick={this.handleBudgetDocumentDetail}
+                                onClick={this.handleBudgetRDocumentDetail}
                               >
                                 ثبت
                               </div>
@@ -699,20 +714,20 @@ class BudgetRequest extends Component {
                                   <thead className="thead-dark">
                                     <tr key="header">
                                       <th scope="col">شماره سند</th>
-                                      <th scope="col">کد سرفصل</th>
-                                      <th scope="col">عنوان سرفصل</th>
+                                      {/* <th scope="col">کد سرفصل</th>
+                                      <th scope="col">عنوان سرفصل</th> */}
                                       <th scope="col">مبلغ</th>
                                       <th scope="col">شرح سند</th>
                                       <th scope="col"></th>
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {this.state.BudgetDocumentDetail.map(
+                                    {this.state.BudgetRDocumentDetail.map(
                                       (i) => (
                                         <tr key={i.PId}>
                                           <td>{i.PId}</td>
-                                          <td>{i.Code}</td>
-                                          <td>{i.Title}</td>
+                                          {/* <td>{i.Code}</td>
+                                          <td>{i.Title}</td> */}
                                           <td>{i.Amount}</td>
                                           <td>{i.Description}</td>
                                           <td>
@@ -724,8 +739,11 @@ class BudgetRequest extends Component {
                                                     accountCode: i.Code,
                                                     amount: i.Amount,
                                                     description: i.Description,
+                                                    documentDetailId: i.Id,
                                                   },
-                                                  () => this.handleBudgetTitle()
+                                                  () => {
+                                                    this.handleBudgetTitle();
+                                                  }
                                                 )
                                               }
                                             >
@@ -736,7 +754,7 @@ class BudgetRequest extends Component {
                                               onClick={
                                                 () =>
                                                   window.confirm(
-                                                    `سرفصل ${i.Title} با کد ${i.Code}حذف شود؟`
+                                                    `آیا از حذف این ردیف مطمئن هستید؟`
                                                   ) === true
                                                     ? this.handleBudgetDetailDelete(
                                                         i.Id
@@ -754,7 +772,7 @@ class BudgetRequest extends Component {
                                       )
                                     )}
                                   </tbody>
-                                  {/* {this.state.BudgetDocumentDetail.map((i) => (
+                                  {/* {this.state.BudgetRDocumentDetail.map((i) => (
                                     <tr key={i.PId}>
                                       <td>{i.PId}</td>
                                       <td>{i.Code}</td>
@@ -816,38 +834,41 @@ class BudgetRequest extends Component {
                                 </tr>
                               </thead>
                               <tbody>
-                                {this.state.BudgetDocuments.map((i) => (
-                                  <tr key={i.Id}>
-                                    <td>{i.Date}</td>
-                                    <td>{i.Id}</td>
-                                    <td>{i.DocumentType}</td>
-                                    <td>{i.Title}</td>
-                                    <td>{i.Amount}</td>
-                                    <td>{i.Branch + "-" + i.BranchCode}</td>
-                                    <td>{i.Registrar}</td>
-                                    <td>{i.StatusTitle}</td>
-                                    {i.Status === 0 ? (
-                                      <td>
-                                        <div
-                                          className="d-inline  btn btn-outline-success btn-md m-1"
-                                          onClick={() =>
-                                            this.handleCommit(i.Id)
-                                          }
-                                        >
-                                          تایید
-                                        </div>
-                                      </td>
-                                    ) : (
-                                      <td>
-                                        <div
-                                          className="d-inline  btn btn-outline-warning btn-md m-1 "
-                                          onClick={() => this.handleCollapse(1)}
-                                        >
-                                          چاپ
-                                        </div>
-                                      </td>
-                                    )}
-                                    {/* <td>
+                                {this.state.BudgetRDocuments.length &&
+                                  this.state.BudgetRDocuments.map((i) => (
+                                    <tr key={i.Id}>
+                                      <td>{i.Date}</td>
+                                      <td>{i.Id}</td>
+                                      <td>{i.DocumentType}</td>
+                                      <td>{i.Title}</td>
+                                      <td>{i.Amount}</td>
+                                      <td>{i.Branch + "-" + i.BranchCode}</td>
+                                      <td>{i.Registrar}</td>
+                                      <td>{i.StatusTitle}</td>
+                                      {i.Status === 0 ? (
+                                        <td>
+                                          <div
+                                            className="d-inline  btn btn-outline-success btn-md m-1"
+                                            onClick={() =>
+                                              this.handleCommit(i.Id)
+                                            }
+                                          >
+                                            تایید
+                                          </div>
+                                        </td>
+                                      ) : (
+                                        <td>
+                                          <div
+                                            className="d-inline  btn btn-outline-warning btn-md m-1 "
+                                            onClick={() =>
+                                              this.handleCollapse(1)
+                                            }
+                                          >
+                                            چاپ
+                                          </div>
+                                        </td>
+                                      )}
+                                      {/* <td>
                                       <div
                                         className="d-inline  btn btn-outline-success btn-md m-1"
                                         onClick={() => this.handleCommit(i.Id)}
@@ -861,8 +882,8 @@ class BudgetRequest extends Component {
                                         چاپ
                                       </div>
                                     </td> */}
-                                  </tr>
-                                ))}
+                                    </tr>
+                                  ))}
                               </tbody>
                             </table>
                           </div>

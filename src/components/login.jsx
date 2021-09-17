@@ -27,7 +27,7 @@ class Login extends Component {
     justifyContent: "center",
     alignItems: "center",
   };
-  async componentDidMount() {
+  componentDidMount() {
     this.props.handleLogout();
   }
   validate = () => {

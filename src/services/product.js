@@ -1,5 +1,6 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
+//import { apiUrl } from "../config.json";
+import apiUrl from "./apiUrl";
 
 export function GetProductTitle(id) {
   return http.get(apiUrl + `/product/getproducttitle/${id}`);

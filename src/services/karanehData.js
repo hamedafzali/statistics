@@ -1,5 +1,6 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
+//import { apiUrl } from "../config.json";
+import apiUrl from "./apiUrl";
 
 export function getKaranehData(ratio, diff, paydate) {
   return http.get(apiUrl + `/karaneh/karanehdata/${ratio}/${diff}/${paydate}`);
@@ -30,4 +31,7 @@ export function GetKarnamehBranchTotal(paydate) {
 }
 export function GetKarnamehSupervisorTotal(paydate) {
   return http.get(apiUrl + `/karaneh/getkarnamehsupervisortotal/${paydate}`);
+}
+export function GetKaranehSummary(unitcode) {
+  return http.get(apiUrl + `/karaneh/karanehsummary/${unitcode}`);
 }

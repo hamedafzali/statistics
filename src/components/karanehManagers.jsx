@@ -20,7 +20,7 @@ class KaranehManagers extends Component {
     //console.log("mmmm", NationalCode, Amount);
     const { data } = await ManagersKaranehInsert(
       NationalCode,
-      "140001",
+      "140005",
       Amount
     );
     //console.log(data[0]);
@@ -32,7 +32,7 @@ class KaranehManagers extends Component {
     this.setState({ data });
   };
   refresh = async () => {
-    const { data: managersList } = await getManagersList("140003");
+    const { data: managersList } = await getManagersList("140005");
     this.setState({ managersList });
   };
 

@@ -17,6 +17,7 @@ import "./app.scss";
 import logo from "./assets/images/loading1.gif";
 import Loading from "./components/common/loading";
 import Map from "./components/common/Map";
+import Index from "./components/index";
 class App extends Component {
   state = {
     loading: false,
@@ -104,6 +105,7 @@ class App extends Component {
     );
   };
   render() {
+    // return <Index />;
     return <Map />;
     if (this.state.isLoading) {
       setTimeout(() => this.setState({ isLoading: false }), 2000);

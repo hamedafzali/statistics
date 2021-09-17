@@ -724,7 +724,7 @@ class BudgetAllocation extends Component {
                                 /> */}
                               </div>
                               <div className="col-lg-6 col-md-12 border border-success rounded mt-1">
-                                <div className="text-danger">
+                                <div className="text-dark">
                                   {thousandSeperator(this.state.balance)}
                                 </div>
                               </div>

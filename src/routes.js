@@ -33,6 +33,10 @@ import TasksComment from "./components/tasksComment";
 import BudgetTotalReg from "./components/budgetTotalReg";
 import LoginAs from "./components/loginAs";
 import BudgetSummaryReport from "./components/BudgetSummaryReport";
+import BudgetRCommit from "./components/BudgetRCommit";
+import BudgetRequests from "./components/BudgetRequests";
+import BudgetRequestToDocument from "./components/BudgetRequestToDocument";
+import KaranehSummaryReport from "./components/KaranehSummaryReport";
 export const routes = [
   {
     path: "/",
@@ -177,5 +181,21 @@ export const routes = [
   {
     path: "/budgetsummary",
     component: BudgetSummaryReport,
+  },
+  {
+    path: "/budgetrcommit",
+    component: BudgetRCommit,
+  },
+  {
+    path: "/budgetnewrequests",
+    component: BudgetRequests,
+  },
+  {
+    path: "/budgetrequesttodocument",
+    component: BudgetRequestToDocument,
+  },
+  {
+    path: "/karanehsummary",
+    component: KaranehSummaryReport,
   },
 ];
