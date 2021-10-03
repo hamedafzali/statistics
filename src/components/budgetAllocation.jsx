@@ -144,11 +144,11 @@ class BudgetAllocation extends Component {
       this.props.employee.BranchCode,
       code
     );
-    console.log(accountBalance);
+    //console.log(accountBalance);
     this.setState({ balance: accountBalance.Balance });
   };
   handleSelectChange = (row) => {
-    console.log(row);
+    //console.log(row);
     const newState = { ...this.state };
     newState.budgetTitle = row.label;
     newState.accountCode = row.value;

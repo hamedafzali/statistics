@@ -13,7 +13,7 @@ import "aos/dist/aos.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 import "./assets/css/tree.css";
 import "./app.scss";
-
+import "animate.css";
 import logo from "./assets/images/loading1.gif";
 import Loading from "./components/common/loading";
 import Map from "./components/common/Map";
@@ -106,7 +106,7 @@ class App extends Component {
   };
   render() {
     // return <Index />;
-    return <Map />;
+    //return <Map />;
     if (this.state.isLoading) {
       setTimeout(() => this.setState({ isLoading: false }), 2000);
       return <Loading />;
@@ -114,14 +114,7 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        <Header
-        // handleMenu={this.handleMenu}
-        //employee={this.state.employee}
-        //menudata={this.state.menudata}
-        // ref={(instanceHeader) => {
-        //   this.childHeader = instanceHeader;
-        // }}
-        />
+        <Header />
         <div
           style={{
             width: window.width,

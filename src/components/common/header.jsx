@@ -89,7 +89,7 @@ class Header extends Component {
 
   render() {
     return (
-      <div className="container py-3 fixed-top">
+      <div className="container py-3 fixed-top ">
         <Navbar
           collapseOnSelect
           expand="lg"
@@ -98,7 +98,11 @@ class Header extends Component {
         >
           <Navbar.Brand className="font-weight-bold text-muted text-right ">
             <img src={logo} alt="logo" className="logo" width="25" />
-            <Link to="/" className="text-danger">
+            <Link
+              to="/"
+              className="text-danger"
+              style={{ textDecoration: "none" }}
+            >
               سامانه آمار و بودجه پست بانک ایران
             </Link>
             <br />
