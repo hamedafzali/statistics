@@ -18,6 +18,7 @@ import logo from "./assets/images/loading1.gif";
 import Loading from "./components/common/loading";
 import Map from "./components/common/Map";
 import Index from "./components/index";
+import FileUpload from "./components/FileUpload";
 class App extends Component {
   state = {
     loading: false,
@@ -107,6 +108,7 @@ class App extends Component {
   render() {
     // return <Index />;
     //return <Map />;
+    //return <FileUpload URL="http://localhost:8080/api/files/budget/1222" />;
     if (this.state.isLoading) {
       setTimeout(() => this.setState({ isLoading: false }), 2000);
       return <Loading />;

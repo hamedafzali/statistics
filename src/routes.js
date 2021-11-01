@@ -37,6 +37,7 @@ import BudgetRCommit from "./components/BudgetRCommit";
 import BudgetRequests from "./components/BudgetRequests";
 import BudgetRequestToDocument from "./components/BudgetRequestToDocument";
 import KaranehSummaryReport from "./components/KaranehSummaryReport";
+import BudgetRegCost from "./components/BudgetRegCost";
 export const routes = [
   {
     path: "/",
@@ -197,5 +198,9 @@ export const routes = [
   {
     path: "/karanehsummary",
     component: KaranehSummaryReport,
+  },
+  {
+    path: "/budgetcost",
+    component: BudgetRegCost,
   },
 ];

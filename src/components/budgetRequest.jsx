@@ -11,11 +11,14 @@ import {
   RBudgetCommit,
   budgetRDetailDelete,
 } from "../services/budget";
+
 import Select from "./common/select";
 import Input from "./common/input";
 import { ToastContainer, toast } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/js/src/collapse.js";
+import FileUpload from "./FileUpload";
+import { fileURL, list } from "../services/files";
 class BudgetRequest extends Component {
   state = {
     chartwidth: 500,
@@ -36,6 +39,7 @@ class BudgetRequest extends Component {
     selectedDocumentId: 0,
     newDocument: false,
     description: "",
+    files: [],
   };
   componentDidMount() {
     this.setState({
@@ -45,6 +49,18 @@ class BudgetRequest extends Component {
     //this.handleBudgetUnits();
     this.getBudgetRDocuments();
   }
+  getList = async () => {
+    if (this.state.selectedDocumentData.length) {
+      const { data: files } = await list(
+        `/budget${this.state.selectedDocumentData[0].Id}`
+      );
+      this.setState({ files });
+    }
+    //console.log(data);
+  };
+  getFile = (folder, file) => {
+    return fileURL(folder, file);
+  };
   handleCommit = async (id) => {
     const { data } = await RBudgetCommit({
       id,
@@ -167,7 +183,7 @@ class BudgetRequest extends Component {
     const { data } = await BudgetRDocumentGetRow(this.state.selectedDocumentId);
     const newState = { ...this.state };
     newState.selectedDocumentData = data;
-    this.setState(newState);
+    this.setState(newState, () => this.getList());
   };
   handleBudgetUnits = async () => {
     const { data } = await getBudgetUnits();
@@ -695,9 +711,47 @@ class BudgetRequest extends Component {
                                   onChange={this.handleChange}
                                 />
                               </div>
-                              <div className="col col-2 "></div>
+                            </div>
+                            <div className="row ">
+                              <div className="col-lg-4 col-md-12">
+                                <FileUpload
+                                  URL={
+                                    this.state.selectedDocumentData.length
+                                      ? `/budget${this.state.selectedDocumentData[0].Id}`
+                                      : ""
+                                  }
+                                  callback={this.getList}
+                                  //type="full"
+                                />
+                              </div>
+                              {/* <div
+                                className="btn btn-warning"
+                                onClick={() => this.getList()}
+                              >
+                                نمایش لیست فایلها
+                              </div> */}
                               <div
-                                className="btn btn-block btn-success m-2"
+                                className="col-lg-8 col-md-12"
+                                style={{ display: "flex", cursor: "pointer" }}
+                              >
+                                {this.state.files.map((i) => (
+                                  <a
+                                    className="mx-1"
+                                    href={this.getFile(
+                                      `budget${this.state.selectedDocumentData[0].Id}`,
+                                      i
+                                    )}
+                                    download
+                                  >
+                                    {i}
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="row ">
+                              <div
+                                className="btn btn-block btn-success "
                                 onClick={this.handleBudgetRDocumentDetail}
                               >
                                 ثبت
@@ -724,7 +778,7 @@ class BudgetRequest extends Component {
                                   <tbody>
                                     {this.state.BudgetRDocumentDetail.map(
                                       (i) => (
-                                        <tr key={i.PId}>
+                                        <tr key={`row${i.PId}${i.id}`}>
                                           <td>{i.PId}</td>
                                           {/* <td>{i.Code}</td>
                                           <td>{i.Title}</td> */}

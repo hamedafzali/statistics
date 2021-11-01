@@ -1,15 +1,20 @@
 import React, { Component } from "react";
-import { BudgetRDocumentDetailGetData } from "../services/budget";
+import {
+  BudgetRDocumentDetailGetData,
+  BudgetRDocumentGetRow,
+} from "../services/budget";
 import SelectSearchable from "./common/selectSearchable";
 import { BudgetGetDataWithCode } from "../services/budget";
 import Select from "./common/select";
 import Input from "./common/input";
+import { fileURL, list } from "../services/files";
 class BudgetRequestToDocument extends Component {
   state = {
     pageContent: { title: "صدور سند" },
     selectedRequestId: new URLSearchParams(window.location.search).get("Id"),
     BudgetRDocumentDetail: [],
     selectedDocumentData: [],
+    files: [],
   };
   componentDidMount() {
     this.setState({
@@ -17,9 +22,30 @@ class BudgetRequestToDocument extends Component {
       height: window.innerHeight - 100,
     });
     //this.handleBudgetUnits();
+    this.handleBudgetDocumentGetRow();
     this.getBudgetRDocumentDetail();
     this.getBudgetGetData();
   }
+  getFile = (folder, file) => {
+    return fileURL(folder, file);
+  };
+  registerDocument() {
+    console.log(this.state.BudgetRDocumentDetail.filter((i) => i.Code !== "0"));
+  }
+  handleBudgetDocumentGetRow = async () => {
+    const { data } = await BudgetRDocumentGetRow(this.state.selectedRequestId);
+    const newState = { ...this.state };
+    newState.selectedDocumentData = data;
+    this.setState(newState, () => this.getList());
+  };
+  getList = async () => {
+    if (this.state.selectedDocumentData.length) {
+      const { data: files } = await list(
+        `/budget${this.state.selectedDocumentData[0].Id}`
+      );
+      this.setState({ files });
+    }
+  };
   getBudgetGetData = async () => {
     const { data: BudgetData } = await BudgetGetDataWithCode();
     this.setState({ BudgetData });
@@ -31,12 +57,12 @@ class BudgetRequestToDocument extends Component {
     this.setState({ BudgetRDocumentDetail }, () => console.log(this.state));
   };
   handleSelectChange = (row, i) => {
-    console.log(
-      "BudgetRDocumentDetailOld",
-      this.state.BudgetRDocumentDetail,
-      i,
-      row
-    );
+    // console.log(
+    //   "BudgetRDocumentDetailOld",
+    //   this.state.BudgetRDocumentDetail,
+    //   i,
+    //   row
+    // );
     let oldBudgetRDocumentDetail = this.state.BudgetRDocumentDetail.map((r) => {
       if (r === i) {
         r.Code = row.value;
@@ -60,7 +86,7 @@ class BudgetRequestToDocument extends Component {
                   <h4>{this.state.pageContent.title}</h4>
                 </div>
                 <div
-                  className="card-body "
+                  className="card-body mb-5"
                   style={{ minHeight: this.state.height }}
                 >
                   <div className="row border bg-light rounded">
@@ -97,6 +123,29 @@ class BudgetRequestToDocument extends Component {
                           {this.state.selectedDocumentData.length
                             ? this.state.selectedDocumentData[0].GUID
                             : ""}
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div
+                          className="col-lg-8 col-md-12"
+                          style={{ display: "flex", cursor: "pointer" }}
+                        >
+                          {this.state.files.map((i) => (
+                            <a
+                              className="mx-1"
+                              href={
+                                this.state.selectedDocumentData.length
+                                  ? this.getFile(
+                                      `budget${this.state.selectedDocumentData[0].Id}`,
+                                      i
+                                    )
+                                  : ""
+                              }
+                              download
+                            >
+                              {i}
+                            </a>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -163,7 +212,12 @@ class BudgetRequestToDocument extends Component {
                       ))}
                     </tbody>
                   </table>
-                  <div className="btn btn-success btn-block">ثبت سند</div>
+                  <div
+                    className="btn btn-success btn-block"
+                    onClick={() => this.registerDocument()}
+                  >
+                    ثبت سند
+                  </div>
                 </div>
               </div>
             </div>
