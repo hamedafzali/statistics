@@ -37,7 +37,7 @@ class Product extends Component {
     this.setState({ productPercent: data });
   };
   getTitle = async () => {
-    const { data } = await GetProductTitle(/*this.props.type*/ "1");
+    const { data } = await GetProductTitle(this.props.productType);
     this.setState(
       {
         pageContent: { title: data[0].Name },
@@ -49,7 +49,11 @@ class Product extends Component {
     //console.log(this.state);
   };
   checkAccess = async () => {
-    const { data } = await karanehAccress(this.props.employee.NationalCode, 1);
+    console.log(this.props);
+    const { data } = await karanehAccress(
+      this.props.employee.NationalCode,
+      this.props.productType
+    );
     if (!data[0]) this.props.history.push("/not-found");
   };
 

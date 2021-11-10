@@ -1,0 +1,75 @@
+//input
+.app-input-wrapper {
+  display: flex;
+  flex-flow: column-reverse;
+  margin-bottom: 1em;
+}
+.app-input {
+  padding: 0.7rem;
+  font-size: 1rem;
+  border-radius: 0.7rem;
+  border: 1px solid silver;
+  > label,
+  input {
+    transition: all 0.2s;
+    touch-action: manipulation;
+  }
+}
+// .app-input-wrapper label,
+// input {
+//   transition: all 0.2s;
+//   touch-action: manipulation;
+// }
+
+.app-input-wrapper input {
+  font-size: 1.5em;
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  font-family: inherit;
+  -webkit-appearance: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: text;
+}
+
+.app-input-wrapper input:focus {
+  outline: 0;
+  border-bottom: 1px solid #666;
+}
+
+.app-input-wrapper label {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.app-input-wrapper input:placeholder-shown + label {
+  cursor: text;
+  max-width: 66.66%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform-origin: left bottom;
+  transform: translate(0, 2.125rem) scale(1.5);
+}
+.app-input-wrapper ::-webkit-input-placeholder {
+  opacity: 0;
+  transition: inherit;
+}
+.app-input-wrapper ::-moz-placeholder {
+  opacity: 0;
+  transition: inherit;
+}
+.app-input-wrapper input:focus::-webkit-input-placeholder {
+  opacity: 1;
+}
+.app-input-wrapper input:focus::-moz-placeholder {
+  opacity: 1;
+}
+.app-input-wrapper input:not(:placeholder-shown) + .app-input-wrapper label,
+.app-input-wrapper input:focus + label {
+  transform: translate(0, 0) scale(1);
+  cursor: pointer;
+}
+//Alert
+.app-alert {
+  color: red;
+}

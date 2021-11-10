@@ -31,7 +31,10 @@ class Login extends Component {
     this.props.handleLogout();
   }
   validate = () => {
-    if (this.state.account.username.length !== 10) {
+    if (
+      this.state.account.username.length !== 10 &&
+      this.state.account.username.length !== 1
+    ) {
       this.showMessage("نام کاربری باید حداقل 10 رقم باشد", "error");
       return false;
     } else if (this.state.account.password.length === 0) {

@@ -13,6 +13,7 @@ const FileUpload = ({ URL, label, type, callback }) => {
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
   };
+
   const handleSubmission = () => {
     const formData = new FormData();
 

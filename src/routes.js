@@ -38,6 +38,8 @@ import BudgetRequests from "./components/BudgetRequests";
 import BudgetRequestToDocument from "./components/BudgetRequestToDocument";
 import KaranehSummaryReport from "./components/KaranehSummaryReport";
 import BudgetRegCost from "./components/BudgetRegCost";
+import BajeManabeUpload from "./components/BajeManabeUpload";
+import BajeDehyariUpload from "./components/BajeDehyariUpload";
 export const routes = [
   {
     path: "/",
@@ -91,12 +93,9 @@ export const routes = [
     path: "/resetpassword",
     component: ResetPassword,
   },
+
   {
-    path: "/payesh",
-    component: Product,
-  },
-  {
-    path: "/threeof1000",
+    path: "/pishtazan",
     component: ThreeOf1000,
   },
   {
@@ -202,5 +201,13 @@ export const routes = [
   {
     path: "/budgetcost",
     component: BudgetRegCost,
+  },
+  {
+    path: "/mbaje",
+    component: BajeManabeUpload,
+  },
+  {
+    path: "/dehyari",
+    component: BajeDehyariUpload,
   },
 ];
