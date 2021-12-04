@@ -189,63 +189,59 @@ class Product extends Component {
   onCommit = (NationalCode, A50, A30, A20, PostTypeId) => {
     //console.log(NationalCode, A50, A30, A20, PostTypeId);
     //alert(this.props.type === "1");
-    if (/*this.props.type*/ "1" === "1") {
-      if (
-        (this.props.employee.GroupId === 4 ||
-          this.props.employee.GroupId === 2) &&
-        PostTypeId === 2
-      ) {
-        if (parseInt(A50) * 2 === 45000000) {
-          if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 45000000) {
-            this.showMessage(
-              "سقف مبلغ قابل تخصیص به رییس شعبه 45,000,000 ریال میباشد",
-              "error"
-            );
-            return false;
-          }
-        } else {
-          if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
-            this.showMessage(
-              "سقف مبلغ قابل تخصیص به رییس شعبه 35,000,000 ریال میباشد",
-              "error"
-            );
-            return false;
-          }
-        }
-      } else if (
-        (this.props.employee.GroupId === 4 ||
-          this.props.employee.GroupId === 2) &&
-        PostTypeId !== 2
-      ) {
-        if (parseInt(A50) * 2 === 45000000) {
-          if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 45000000) {
-            this.showMessage(
-              "سقف مبلغ قابل تخصیص به کارکنان 45,000,000 ریال میباشد",
-              "error"
-            );
-            return false;
-          }
-        } else {
-          if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
-            this.showMessage(
-              "سقف مبلغ قابل تخصیص به کارکنان 35,000,000 ریال میباشد",
-              "error"
-            );
-            return false;
-          }
+
+    if (
+      (this.props.employee.GroupId === 4 ||
+        this.props.employee.GroupId === 2) &&
+      PostTypeId === 2
+    ) {
+      if (parseInt(A50) * 2 === 45000000) {
+        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 45000000) {
+          this.showMessage(
+            "سقف مبلغ قابل تخصیص به رییس شعبه 45,000,000 ریال میباشد",
+            "error"
+          );
+          return false;
         }
       } else {
         if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
           this.showMessage(
-            "سقف مبلغ قابل تخصیص به کارکنان ستادی 35,000,000 ریال میباشد",
+            "سقف مبلغ قابل تخصیص به رییس شعبه 35,000,000 ریال میباشد",
+            "error"
+          );
+          return false;
+        }
+      }
+    } else if (
+      (this.props.employee.GroupId === 4 ||
+        this.props.employee.GroupId === 2) &&
+      PostTypeId !== 2
+    ) {
+      if (parseInt(A50) * 2 === 45000000) {
+        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 45000000) {
+          this.showMessage(
+            "سقف مبلغ قابل تخصیص به کارکنان 45,000,000 ریال میباشد",
+            "error"
+          );
+          return false;
+        }
+      } else {
+        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
+          this.showMessage(
+            "سقف مبلغ قابل تخصیص به کارکنان 35,000,000 ریال میباشد",
             "error"
           );
           return false;
         }
       }
     } else {
-      this.showMessage("خطا در تشخیص پست کارکنان" /*this.props.type*/, "error");
-      return false;
+      if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
+        this.showMessage(
+          "سقف مبلغ قابل تخصیص به کارکنان ستادی 35,000,000 ریال میباشد",
+          "error"
+        );
+        return false;
+      }
     }
 
     if (this.props.employee.GroupId === 4) {

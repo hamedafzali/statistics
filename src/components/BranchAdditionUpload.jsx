@@ -4,27 +4,27 @@ import moment from "jalali-moment";
 import FileUpload from "./FileUpload";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DatePicker from "react-multi-date-picker";
 import { Calendar } from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import {
-  getBajeManabehSummary,
-  getBajeManabeh,
-  readBajeManabeh,
-} from "../services/baje";
-import BajeManabehUploadTable from "./BajeManabehUploadTable";
+  getBranchAdditionSummary,
+  getBranchAddition,
+  readBranchAddition,
+} from "../services/karnameh";
+import BranchAdditionUploadTable from "./BranchAdditionUploadTable";
 import CreateGuid from "../utils/GUID";
-const BajeManabeUpload = () => {
+const BranchAdditionUpload = () => {
   const [loading, setLoading] = useState(false);
   const [GUID, setGUID] = useState("");
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedType, setSelectedType] = useState("2");
   useEffect(() => {
     setGUID(CreateGuid());
-    handleBajeManabehSummary();
+    handleBranchAdditionSummary();
     setDate(
       moment(new Date().toJSON().slice(0, 10).replace(/-/g, "/"), "YYYY/MM/DD")
         .locale("fa")
@@ -36,9 +36,9 @@ const BajeManabeUpload = () => {
   //     const ar = [setDate];
   //     ar[0]("1399/01/01");
   //   };
-  const handleBajeManabehSummary = async () => {
+  const handleBranchAdditionSummary = async () => {
     setLoading(true);
-    const { data } = await getBajeManabehSummary();
+    const { data } = await getBranchAdditionSummary();
     setData(data);
     setLoading(false);
   };
@@ -48,28 +48,33 @@ const BajeManabeUpload = () => {
     setSelectedDate(date);
     date = date.replaceAll(/\//g, "");
     //console.log(date);
-    const { data } = await getBajeManabeh(date);
+    const { data } = await getBranchAddition(date);
     setSelectedData(data);
     //console.log(excelData);
     setLoading(false);
   };
   const readFileHandler = async () => {
+    //console.log(moment(date.toDate()).locale("fa").format("YYYY/MM/DD"));
     try {
       moment(date.toDate()).locale("fa").format("YYYYMMDD");
     } catch (e) {
       showMessage("تاریخ را انتخاب کنید", "error");
       return false;
     }
-    //console.log(moment(date.toDate()).locale("fa").format("YYYY/MM/DD"));
     setLoading(true);
-    const { data } = await readBajeManabeh({
-      filelocation: `baje${GUID}`,
+    const { data } = await readBranchAddition({
+      filelocation: `branchaddition${GUID}`,
       date: moment(date.toDate()).locale("fa").format("YYYYMMDD"),
+      type: selectedType,
     });
-    handleBajeManabehSummary();
+    handleBranchAdditionSummary();
     setLoading(false);
+
     data
-      ? showMessage(`بارگذاری فایل با موفقیت انجام شد`, "success")
+      ? showMessage(
+          `بارگذاری فایل ${selectedType} با موفقیت انجام شد`,
+          "success"
+        )
       : showMessage(`اشکال در انجام بارگذاری فایل`, "error");
   };
   function just_persian({ currentTarget: input }) {
@@ -97,7 +102,7 @@ const BajeManabeUpload = () => {
           <div className="row no-gutters">
             <div className="col-md">
               <div className="card-title btn-secondary">
-                <h4>بارگذاری منابع باجه ها</h4>
+                <h4>بارگذاری کارگزاری/ارزی</h4>
               </div>
 
               <div
@@ -109,47 +114,85 @@ const BajeManabeUpload = () => {
                 </div>
                 <div className="row">
                   <div className="col text-right">
-                    <FileUpload
-                      URL={`/baje${GUID}`}
-                      callback={() => console.log(1)}
-                      type="full"
-                      label="فایل "
-                    />
-                    <ul className="text-danger">
-                      <strong>نکات:</strong>
-                      <li className="li">عنوان ستونها باید در ردیف 4 باشد</li>
-                      <li className="li">
-                        فرمت فایل باید مطابق با روزهای قبل باشد
-                      </li>
-
-                      <li className="li">
-                        ترتیب ستونها اهمیت دارد لذا نباید حذف یا جابجا شوند
-                      </li>
-                    </ul>
+                    <div className="row border bg-light rounded">
+                      <div className="col">
+                        <div>
+                          <input
+                            class=""
+                            type="radio"
+                            name="exampleRadios"
+                            id="kargozari"
+                            value="2"
+                            checked={selectedType === "2"}
+                            onChange={(e) =>
+                              setSelectedType(e.currentTarget.value)
+                            }
+                          />
+                          <label class=" mr-1" for="kargozari">
+                            کارگزاری
+                          </label>
+                        </div>
+                      </div>
+                      <div className="col">
+                        <div>
+                          <input
+                            class=""
+                            type="radio"
+                            name="exampleRadios"
+                            id="arzi"
+                            value="1"
+                            onChange={(e) =>
+                              setSelectedType(e.currentTarget.value)
+                            }
+                            checked={selectedType === "1"}
+                          />
+                          <label class=" mr-1" for="arzi">
+                            ارزی
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        <FileUpload
+                          URL={`/branchaddition${GUID}`}
+                          callback={() => console.log(1)}
+                          type="full"
+                          label="فایل "
+                        />
+                        <ul className="text-danger">
+                          <strong>نکات:</strong>
+                          <li className="li">
+                            نام فایل ارزی عدد "1" و نام فایل کارگزاری عدد "2" با
+                            پسوند .xlsx باید باشد
+                          </li>
+                          <li className="li">نام فرم حتما Sheet1 باشد</li>
+                          <li className="li">
+                            فرمت فایل شامل کد شعبه(ستون اول) ، ساعت(ستون دوم) و
+                            مبلغ(ستون سوم) میباشد
+                          </li>
+                          <li className="li">
+                            یکی از ستونهای ساعت یا مبلغ باید حتما مقدار داشته
+                            باشد
+                          </li>
+                          <li className="li">
+                            ترتیب ستونها اهمیت دارد لذا نباید حذف یا جابجا شوند
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                   <div className="col col-4">
-                    {/* <Inputsm
-                      name="Date"
-                      placeholder="تاریخ فایل را با فرمت 1399/06/30 وارد کنید"
-                      //type="datetime"
-                      onChange={handleChange}
-                      value={date}
-                    /> */}
-                    {/* <DatePicker
-                      calendar={persian}
-                      locale={persian_fa}
-                      calendarPosition="bottom-right"
-                      value={date}
-                      onChange={setDate}
-                    /> */}
                     <Calendar
                       calendar={persian}
                       locale={persian_fa}
+                      onlyMonthPicker
                       onChange={setDate}
                       value={date}
                     />
                   </div>
                 </div>
+
                 <div className="row">
                   <div
                     className={
@@ -164,7 +207,7 @@ const BajeManabeUpload = () => {
                 </div>
                 <div className="row">
                   <div className="col">
-                    <BajeManabehUploadTable
+                    <BranchAdditionUploadTable
                       data={data}
                       //title={}
                       loading={false}
@@ -179,10 +222,10 @@ const BajeManabeUpload = () => {
             </div>
           </div>
         </div>
-      </div>{" "}
+      </div>
       <ToastContainer className="text-center" />
     </main>
   );
 };
 
-export default BajeManabeUpload;
+export default BranchAdditionUpload;

@@ -197,7 +197,7 @@ class BudgetAllocation extends Component {
     const newState = { ...this.state };
     newState.selectedDocumentData = data;
     this.setState(newState);
-    console.log(data);
+    //console.log(data);
   };
   handleBudgetUnits = async () => {
     const { data } = await getBudgetUnits();

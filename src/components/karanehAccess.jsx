@@ -8,7 +8,12 @@ import {
   karanehAccessUpdateAll,
 } from "../services/karanehData";
 
-import { ProductStatus } from "../services/product";
+import {
+  ProductStatus,
+  getProductType,
+  ProductStatusList,
+  ProductFinishingOperation,
+} from "../services/product";
 import KaranehAccessTable from "./karanehAccessTable";
 class KaranehAccess extends Component {
   state = {
@@ -18,6 +23,7 @@ class KaranehAccess extends Component {
     pageContent: { title: "تنظیمات کارانه" },
     KaranehDates: [],
     data: [],
+    karanehStatusList: [],
     checked: {
       Omor: false,
       Setad: false,
@@ -36,6 +42,7 @@ class KaranehAccess extends Component {
       Branch: 0,
       Setad: 0,
     },
+    productTypes: [],
   };
   componentDidMount() {
     this.setState({
@@ -44,7 +51,8 @@ class KaranehAccess extends Component {
     });
     this.getProductStatus();
     this.getKaranehDates();
-    this.KaranehAccessList(this.state.level);
+    this.KaranehAccessList();
+    this.productTypesget();
   }
   getKaranehDates = async () => {
     const { data: KaranehDates } = await getKaranehDates();
@@ -52,24 +60,58 @@ class KaranehAccess extends Component {
       KaranehDates,
     });
   };
+
+  productTypesget = async () => {
+    const { data: productTypes } = await getProductType();
+    productTypes[0].selected = true;
+    this.setState({
+      productTypes,
+    });
+  };
   KaranehAccessList = async () => {
+    //console.log(this.state.productTypes);
+    let selected = 1; //this.state.productTypes.filter((i) => i.selected === true);
+    //console.log(selected);
+    if (!selected) {
+      this.showMessage("طرح را انتخاب کنید", "error");
+      return false;
+    }
     if (this.state.level !== "") {
-      const { data } = await getKaranehAccessList(this.state.level);
+      const { data } = await getKaranehAccessList(
+        this.state.level,
+        selected //selected[0].Id
+      );
+      //console.log(data);
       this.setState({ data });
     }
   };
   getProductStatus = async () => {
-    console.log("3333");
+    //console.log("3333");
     const { data } = await ProductStatus();
     this.setState({ karanehStatus: data });
   };
-
+  getProductStatusList = async (type) => {
+    console.log("3333");
+    const { data } = await ProductStatusList(type);
+    this.setState({ karanehStatusList: data });
+  };
   handleChange = (e) => {
     const newState = { ...this.state };
     newState[e.currentTarget.name] = e.currentTarget.value;
     this.setState(newState, () => {
       this.KaranehAccessList(this.state.level);
     });
+  };
+  handleProductFinishingOperation = async (level) => {
+    if (
+      window.confirm(
+        "آیا از انجام عملیات مطمئن هستید؟ بعد از انجام امکان بازگرداندن اطلاعات وجود ندارد"
+      )
+    ) {
+      const { data } = await ProductFinishingOperation(level);
+      if (!data[0].COUNT) this.showMessage("اشکال در انجام عملیات", "error");
+      else this.showMessage("عملیات با موفقیت انجام شد", "success");
+    }
   };
   handleKaranehAccess = async (Code) => {
     //console.log(Code);
@@ -112,7 +154,16 @@ class KaranehAccess extends Component {
     newState[e.currentTarget.name] = e.currentTarget.value;
     this.setState(newState);
   };
-
+  productTypesHandler = (e) => {
+    let newProductTypes = this.state.productTypes.map((i) =>
+      i.Name === e.currentTarget.name
+        ? { ...i, selected: true }
+        : { ...i, selected: false }
+    );
+    this.setState({ productTypes: newProductTypes }, () =>
+      this.KaranehAccessList()
+    );
+  };
   showMessage = (msg, type) => {
     toast[type](msg, {
       position: "top-center",
@@ -139,37 +190,105 @@ class KaranehAccess extends Component {
                   className="card-body "
                   style={{ minHeight: this.state.height }}
                 >
-                  <div className="row bg-light border border-warning rounded m-1">
-                    <div className="col-md-6 col-lg-3 col-md-12 p-2">
+                  <div className="row bg-light m-1 mt-3 p-2 border border-success rounded">
+                    <div className="col-md-8 col-lg-8 col-md-12 p-2">
                       تاریخ: {this.state.karanehStatus.Date}
                     </div>
+                    <div className="col-md-4 col-lg-4 col-md-12">
+                      {this.state.productTypes &&
+                        this.state.productTypes.map((i) => (
+                          <input
+                            className={
+                              i.selected
+                                ? "btn btn-success btn-block"
+                                : "btn btn-secondary btn-block"
+                            }
+                            type="button"
+                            value={i.Name}
+                            name={i.Name}
+                            id={i.Id}
+                            onClick={this.productTypesHandler}
+                          />
+                        ))}
+                    </div>
                   </div>
-                  <div className="row bg-light border border-warning rounded m-1">
-                    <div className="col-md-6 col-lg-3 col-md-12 p-2">
-                      ثبت نشده شعبه: {this.state.karanehStatus.Branch}
-                    </div>
-                    <div className=" col-md-6 col-lg-3 col-md-12 p-2">
-                      ثبت نشده مدیریت شعب: {this.state.karanehStatus.Supervisor}
-                    </div>
-                    <div className=" col-md-6 col-lg-3 col-md-12 p-2">
-                      ثبت نشده ستاد: {this.state.karanehStatus.Setad}
-                    </div>
-                    <div className=" col-md-6 col-lg-3 col-md-12 ">
+                  <div className="row bg-light m-1 mt-3 p-2 border border-success rounded">
+                    <h3 className=" btn-block bg-secondary text-light">
+                      وضعیت لحظه ای
+                    </h3>
+
+                    <div className="col col-6  border rounded">
                       <div
-                        className="btn btn-outline-primary btn-block m-1"
-                        onClick={() => this.getProductStatus()}
+                        className="col p-2 btn text-right"
+                        onClick={() => this.getProductStatusList("Branch")}
                       >
-                        بروزرسانی
+                        ثبت نشده شعبه: {this.state.karanehStatus.Branch}
+                      </div>
+                      <div
+                        className=" col p-2 btn text-right"
+                        onClick={() => this.getProductStatusList("Supervisor")}
+                      >
+                        ثبت نشده مدیریت شعب:
+                        {this.state.karanehStatus.Supervisor}
+                      </div>
+                      <div
+                        className=" col p-2 btn text-right"
+                        onClick={() => this.getProductStatusList("Setad")}
+                      >
+                        ثبت نشده ستاد: {this.state.karanehStatus.Setad}
+                      </div>
+                      <div className=" col ">
+                        <div
+                          className="btn btn-outline-primary btn-block m-1"
+                          onClick={() => this.getProductStatus()}
+                        >
+                          بروزرسانی
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col col-6 border rounded">
+                      <div
+                        style={{
+                          overflow: "scroll",
+                          height: "10rem",
+                          width: "100%",
+                          textAlign: "right",
+                        }}
+                      >
+                        {this.state.karanehStatusList &&
+                          this.state.karanehStatusList.map((i, index) => (
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                width: "95%",
+                                margin: 1,
+                                border: "1px solid silver",
+                                borderRadius: "0.2rem",
+                                padding: "0.3rem",
+                                paddingRight: "0.5rem",
+                                backgroundColor: "lightslategrey",
+                                color: "white",
+                              }}
+                            >
+                              <div>{`${index + 1}: ${i.Title}  کد: ${
+                                i.Code
+                              } تعداد: ${i.count}`}</div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>
-                  <div className="row bg-light border border-danger rounded m-1">
+                  <div className="row bg-light m-1 mt-3 p-2 border border-success rounded">
+                    <h3 className=" btn-block bg-secondary text-light">
+                      بخش مدیریت
+                    </h3>
+
                     <div className="col-lg-4 col-md-12">
                       <div
-                        className={
-                          this.state.karanehStatus.Branch === 0
-                            ? "btn btn-success btn-block m-2 p-3 disabled"
-                            : "btn btn-danger btn-block m-2 p-3"
+                        className="btn btn-outline-danger btn-block m-2 p-3"
+                        onClick={() =>
+                          this.handleProductFinishingOperation("Branch")
                         }
                       >
                         1. تکمیل عملیات شعب
@@ -177,10 +296,9 @@ class KaranehAccess extends Component {
                     </div>
                     <div className="col-lg-4 col-md-12">
                       <div
-                        className={
-                          this.state.karanehStatus.Setad === 0
-                            ? "btn btn-success btn-block m-2 p-3 disabled"
-                            : "btn btn-danger btn-block m-2 p-3"
+                        className="btn btn-outline-danger btn-block m-2 p-3"
+                        onClick={() =>
+                          this.handleProductFinishingOperation("Setad")
                         }
                       >
                         2. تکمیل عملیات ستاد
@@ -189,19 +307,27 @@ class KaranehAccess extends Component {
 
                     <div className="col-lg-4 col-md-12">
                       <div
-                        className={
-                          this.state.karanehStatus.Branch !== 0
-                            ? "btn btn-danger btn-block m-2 p-3 disabled"
-                            : this.state.karanehStatus.Supervisor !== 0
-                            ? "btn btn-danger btn-block m-2 p-3"
-                            : "btn btn-success btn-block m-2 p-3 disabled"
+                        className="btn btn-outline-danger btn-block m-2 p-3"
+                        onClick={() =>
+                          this.handleProductFinishingOperation("Supervisor")
                         }
                       >
                         3. تکمیل عملیات مدیریت شعب
                       </div>
                     </div>
+                    <div
+                      className="btn btn-outline-danger btn-block"
+                      onClick={() =>
+                        this.handleProductFinishingOperation("All")
+                      }
+                    >
+                      پایان کل عملیات
+                    </div>
                   </div>
                   <div className="row bg-light m-1 mt-3 p-2 border border-success rounded">
+                    <h3 className=" btn-block bg-secondary text-light">
+                      بخش دسترسی ها
+                    </h3>
                     <div className="col-12 text-right">
                       <Select
                         onChange={this.handleChange}

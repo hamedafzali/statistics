@@ -15,6 +15,12 @@ class KaranehSummaryReportTable extends Component {
     { path: "شهریور", label: "شهریور", type: "text", seprated: true },
     { path: "مهر", label: "مهر", type: "text", seprated: true },
     { path: "آبان", label: "آبان", type: "text", seprated: true },
+    {
+      path: "آبان-پیشتازان",
+      label: "آبان-پیشتازان",
+      type: "text",
+      seprated: true,
+    },
     { path: "آذر", label: "آذر", type: "text", seprated: true },
     { path: "دی", label: "دی", type: "text", seprated: true },
     { path: "بهمن", label: "بهمن", type: "text", seprated: true },

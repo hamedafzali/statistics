@@ -16,7 +16,7 @@ import KaranehAccess from "./components/karanehAccess";
 import KaranehManagersPage from "./components/karanehManagersPage";
 import CEOConfirm from "./components/ceoConfirm";
 import PersonsList from "./components/PersonsList";
-import Product from "./components/product";
+//import Product from "./components/product";
 import ThreeOf1000 from "./components/ThreeOf1000";
 import Payesh from "./components/payesh";
 import CEOCommitNew from "./components/CEOCommitNew";
@@ -40,6 +40,11 @@ import KaranehSummaryReport from "./components/KaranehSummaryReport";
 import BudgetRegCost from "./components/BudgetRegCost";
 import BajeManabeUpload from "./components/BajeManabeUpload";
 import BajeDehyariUpload from "./components/BajeDehyariUpload";
+import KarnamehUpload from "./components/KarnamehUpload";
+import BranchAdditionUpload from "./components/BranchAdditionUpload";
+import Profile from "./components/Profile";
+import BudgetCostCommit from "./components/BudgetCostCommit";
+import KaranehPanel from "./components/KaranehPanel";
 export const routes = [
   {
     path: "/",
@@ -209,5 +214,25 @@ export const routes = [
   {
     path: "/dehyari",
     component: BajeDehyariUpload,
+  },
+  {
+    path: "/karnameh",
+    component: KarnamehUpload,
+  },
+  {
+    path: "/branchaddition",
+    component: BranchAdditionUpload,
+  },
+  {
+    path: "/profile",
+    component: Profile,
+  },
+  {
+    path: "/budgetcostcommit",
+    component: BudgetCostCommit,
+  },
+  {
+    path: "/panel",
+    component: KaranehPanel,
   },
 ];

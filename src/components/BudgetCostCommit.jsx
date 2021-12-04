@@ -3,13 +3,13 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import {
   budgetInsert,
-  BudgetRDocumentGetData,
+  BudgetDocumentGetData,
   BudgetDocumentDetailGetData,
-  RBudgetCommit,
+  budgetCommit,
   budgetUnCommit,
 } from "../services/budget";
 import Overlay from "react-overlay-component";
-class BudgetRCommit extends Component {
+class BudgetCostCommit extends Component {
   state = {
     chartwidth: 500,
     width: 0,
@@ -34,7 +34,7 @@ class BudgetRCommit extends Component {
       height: window.innerHeight - 100,
     });
     //this.fillGrid();
-    this.getBudgetRDocuments();
+    this.getBudgetDocuments();
   }
   getBudgetDocumentDetail = async () => {
     const { data: BudgetDocumentDetail } = await BudgetDocumentDetailGetData(
@@ -46,7 +46,7 @@ class BudgetRCommit extends Component {
     this.setState({ isOpen: false });
   };
   handleCommit = async (id) => {
-    const { data } = await RBudgetCommit({
+    const { data } = await budgetCommit({
       id,
       nationalcode: this.props.employee.NationalCode,
     });
@@ -54,7 +54,7 @@ class BudgetRCommit extends Component {
       this.showMessage("خطا در تایید", "error");
     } else {
       this.showMessage("تایید انجام شد", "success");
-      this.getBudgetRDocuments();
+      this.getBudgetDocuments();
     }
   };
   handleUnCommit = async (id) => {
@@ -66,7 +66,7 @@ class BudgetRCommit extends Component {
       this.showMessage("خطا در ردتایید", "error");
     } else {
       this.showMessage("ردتایید انجام شد", "success");
-      this.getBudgetRDocuments();
+      this.getBudgetDocuments();
     }
   };
   handleChange = (e) => {
@@ -76,18 +76,23 @@ class BudgetRCommit extends Component {
     this.setState(newState);
     //console.log(this.state);
   };
-  getBudgetRDocuments = async () => {
-    const { data: BudgetDocuments } = await BudgetRDocumentGetData(
+  getBudgetDocuments = async () => {
+    const { data: BudgetDocuments } = await BudgetDocumentGetData(
       this.props.employee.NationalCode
     );
-    //console.log(this.props.employee);
+    console.log(this.props.employee);
+    console.log(BudgetDocuments);
     const id = new URLSearchParams(window.location.search).get("Id");
-    this.setState({
-      BudgetDocuments: BudgetDocuments.filter(
+    if (BudgetDocuments) {
+      const BudgetDocumentsData = BudgetDocuments.filter(
         (i) =>
           i.UnitCode === id || i.UnitCode === this.props.employee.BranchCode
-      ),
-    });
+      );
+      console.log(BudgetDocuments);
+      this.setState({
+        BudgetDocuments: BudgetDocumentsData,
+      });
+    }
   };
   handleSave = async () => {
     // if (this.state.documentTypeId === 0) {
@@ -201,7 +206,7 @@ class BudgetRCommit extends Component {
                               <th scope="col">تایید دوم</th>
                               <th scope="col">تایید نهایی</th> */}
                               <th scope="col"></th>
-                              <th scope="col"></th>
+                              {/* <th scope="col"></th> */}
                             </tr>
                           </thead>
                           <tbody>
@@ -262,7 +267,7 @@ class BudgetRCommit extends Component {
                                       </div>
                                     </div>
                                   </td>
-                                  <td>
+                                  {/* <td>
                                     <div className="row">
                                       <Link
                                         to={`/budgetrequesttodocument/?Id=${i.Id}`}
@@ -287,7 +292,7 @@ class BudgetRCommit extends Component {
                                         چاپ
                                       </div>
                                     </div>
-                                  </td>
+                                  </td> */}
                                 </tr>
                               ))}
                           </tbody>
@@ -352,4 +357,4 @@ class BudgetRCommit extends Component {
   }
 }
 
-export default BudgetRCommit;
+export default BudgetCostCommit;

@@ -5,6 +5,7 @@ class karanehManagersTable extends Component {
   state = { fs: 14 };
 
   columns = [
+    { path: "type", label: "نوع طرح" },
     { path: "سرپرستی", label: "سرپرستی" },
     { path: "کد سرپرستی", label: "کد سرپرستی" },
     { path: "نام واحد", label: "نام واحد" },
@@ -38,14 +39,8 @@ class karanehManagersTable extends Component {
     this.setState({ fs: this.state.fs + c });
   };
   render() {
-    const {
-      data,
-      onSort,
-      sortColumn,
-      allData,
-      onCommit,
-      tbhandleChange,
-    } = this.props;
+    const { data, onSort, sortColumn, allData, onCommit, tbhandleChange } =
+      this.props;
     //console.log(this.props.checked);
     // console.log(
     //   this.props.data.filter((i) => i.Status === 0).length,

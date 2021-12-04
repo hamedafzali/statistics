@@ -11,8 +11,8 @@ export function getKaranehData1(ratio, diff, paydate, val) {
   );
 }
 
-export function getKaranehAccessList(type) {
-  return http.get(apiUrl + `/karaneh/karanehaccesslist/${type}`);
+export function getKaranehAccessList(type, id) {
+  return http.get(apiUrl + `/karaneh/karanehaccesslist/${type}/${id}`);
 }
 
 export function karanehAccessUpdate(id) {

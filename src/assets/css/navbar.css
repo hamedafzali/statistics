@@ -3,6 +3,7 @@
   font-size: 1rem;
   font-weight: bold;
   align-items: center;
+
   direction: rtl;
   border-radius: 1rem;
   z-index: 99999999;
@@ -24,6 +25,7 @@
   margin-left: 3px;
   align-items: center;
   text-align: center;
+  display: block;
 }
 .navbar_Dropdown:hover {
   background-color: rgb(206, 206, 206) !important;
@@ -32,6 +34,7 @@
 .navbar_Items {
   align-items: center;
   text-align: center;
+  display: flex;
   border-radius: 1rem;
   background-color: white !important;
 }

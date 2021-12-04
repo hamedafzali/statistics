@@ -12,7 +12,12 @@ export function GetProductPercent(id) {
 export function ProductStatus() {
   return http.get(apiUrl + `/product/karanehstatus`);
 }
-
+export function ProductStatusList(type) {
+  return http.get(apiUrl + `/product/karanehstatuslist/${type}`);
+}
+export function ProductFinishingOperation(level) {
+  return http.get(apiUrl + `/product/productfinishingoperation/${level}`);
+}
 export function GetPersonsProduct(managerNationalCode, paydate, productid) {
   return http.get(
     apiUrl +
@@ -42,4 +47,8 @@ export function getPersonsProductRemain(nationalCode, paydate, producttypeid) {
 
 export function KaranehPersonelReport(code) {
   return http.get(apiUrl + `/product/karanehpersonelreport/${code}`);
+}
+
+export function getProductType() {
+  return http.get(apiUrl + `/product/producttype`);
 }

@@ -3,6 +3,9 @@ import moment from "jalali-moment";
 import Inputsm from "./common/inputsm";
 import FileUpload from "./FileUpload";
 import DatePicker from "react-multi-date-picker";
+import { Calendar } from "react-multi-date-picker";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import {
@@ -51,6 +54,12 @@ const BajeDehyariUpload = () => {
     setLoading(false);
   };
   const readFileHandler = async () => {
+    try {
+      moment(date.toDate()).locale("fa").format("YYYYMMDD");
+    } catch (e) {
+      showMessage("تاریخ را انتخاب کنید", "error");
+      return false;
+    }
     //console.log(moment(date.toDate()).locale("fa").format("YYYY/MM/DD"));
     setLoading(true);
     const { data } = await readBajeManabehDehyari({
@@ -59,6 +68,9 @@ const BajeDehyariUpload = () => {
     });
     handleBajeManabehSummary();
     setLoading(false);
+    data
+      ? showMessage(`بارگذاری فایل با موفقیت انجام شد`, "success")
+      : showMessage(`اشکال در انجام بارگذاری فایل`, "error");
   };
   function just_persian({ currentTarget: input }) {
     var p = /^[\u0600-\u06FF\s]+$/;
@@ -67,6 +79,17 @@ const BajeDehyariUpload = () => {
       input.value = "";
     }
   }
+  const showMessage = (msg, type) => {
+    toast[type](msg, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
   return (
     <main className="d-flex align-items-center  py-md-0  ">
       <div className="container ">
@@ -85,7 +108,26 @@ const BajeDehyariUpload = () => {
                   <div className="col">شناسه بارگذاری فایل : {GUID}</div>
                 </div>
                 <div className="row">
-                  <div className="col">
+                  <div className="col text-right">
+                    <FileUpload
+                      URL={`/dehyari${GUID}`}
+                      callback={() => console.log(1)}
+                      type="full"
+                      label="فایل "
+                    />
+                    <ul className="text-danger">
+                      <strong>نکات:</strong>
+                      <li className="li">عنوان ستونها باید در ردیف 4 باشد</li>
+                      <li className="li">
+                        فرمت فایل باید مطابق با روزهای قبل باشد
+                      </li>
+
+                      <li className="li">
+                        ترتیب ستونها اهمیت دارد لذا نباید حذف یا جابجا شوند
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="col col-4">
                     {/* <Inputsm
                       name="Date"
                       placeholder="تاریخ فایل را با فرمت 1399/06/30 وارد کنید"
@@ -93,20 +135,18 @@ const BajeDehyariUpload = () => {
                       onChange={handleChange}
                       value={date}
                     /> */}
-                    <DatePicker
+                    {/* <DatePicker
                       calendar={persian}
                       locale={persian_fa}
                       calendarPosition="bottom-right"
                       value={date}
                       onChange={setDate}
-                    />
-                  </div>
-                  <div className="col">
-                    <FileUpload
-                      URL={`/dehyari${GUID}`}
-                      callback={() => console.log(1)}
-                      type="full"
-                      label="فایل "
+                    /> */}
+                    <Calendar
+                      calendar={persian}
+                      locale={persian_fa}
+                      onChange={setDate}
+                      value={date}
                     />
                   </div>
                 </div>
@@ -140,6 +180,7 @@ const BajeDehyariUpload = () => {
           </div>
         </div>
       </div>
+      <ToastContainer className="text-center" />
     </main>
   );
 };

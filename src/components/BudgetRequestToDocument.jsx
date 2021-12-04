@@ -1,14 +1,17 @@
 import React, { Component } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import moment from "jalali-moment";
 import {
   BudgetRDocumentDetailGetData,
   BudgetRDocumentGetRow,
   budgetDocumentInsert,
+  budgetDocumentDetailInsert,
 } from "../services/budget";
 import SelectSearchable from "./common/selectSearchable";
 import { BudgetGetDataWithCode } from "../services/budget";
 import Select from "./common/select";
 import Input from "./common/input";
+import thousandSeperator from "../utils/thousandSeparator";
 import { fileURL, list } from "../services/files";
 //import QRCode from "react-qr-code";
 import QRCode from "qrcode.react";
@@ -34,9 +37,12 @@ class BudgetRequestToDocument extends Component {
   getFile = (folder, file) => {
     return fileURL(folder, file);
   };
-  registerDocument() {
-    console.log(this.state.BudgetRDocumentDetail.filter((i) => i.Code !== "0"));
-  }
+  handleChange = (e) => {
+    //alert(e.currentTarget.name);
+    const newState = { ...this.state };
+    newState[e.currentTarget.name] = e.currentTarget.value;
+    this.setState(newState);
+  };
   handleBudgetDocumentGetRow = async () => {
     const { data } = await BudgetRDocumentGetRow(this.state.selectedRequestId);
     const newState = { ...this.state };
@@ -59,7 +65,7 @@ class BudgetRequestToDocument extends Component {
     const { data: BudgetRDocumentDetail } = await BudgetRDocumentDetailGetData(
       this.state.selectedRequestId
     );
-    this.setState({ BudgetRDocumentDetail }, () => console.log(this.state));
+    this.setState({ BudgetRDocumentDetail });
   };
   handleSelectChange = (row, i) => {
     // console.log(
@@ -76,44 +82,83 @@ class BudgetRequestToDocument extends Component {
       } else return r;
     });
 
-    this.setState({ BudgetRDocumentDetail: oldBudgetRDocumentDetail }, () =>
-      console.log(this.state.BudgetRDocumentDetail[0].Code)
-    );
+    this.setState({ BudgetRDocumentDetail: oldBudgetRDocumentDetail });
   };
+  registerDocument() {
+    //console.log(this.state.BudgetRDocumentDetail.filter((i) => i.Code !== "0"));
+    this.handleBudgetDocument();
+  }
   handleBudgetDocument = async () => {
-    if (this.state.documentTypeId === 0) {
+    if (!this.state.documentTypeId) {
       this.showMessage("نوع سند انتخاب نشده است", "error");
       return false;
-    } else if (this.state.documentTitle.length === 0) {
+    } else if (!this.state.documentTitle) {
       this.showMessage("عنوان سند را وارد کنید", "error");
-      return false;
-    } else if (this.state.destinationCode === 0) {
-      this.showMessage("واحد مقصد انتخاب نشده است", "error");
       return false;
     }
 
     const { data } = await budgetDocumentInsert({
       date: moment().locale("fa").format("YYYY/MM/DD"),
       documentTypeId: this.state.documentTypeId,
-      documentTitle: this.state.documentTitle,
-      destinationCode: this.state.destinationCode,
+      documentTitle: `درخواست شماره:${this.state.selectedDocumentData[0].Id}-${this.state.documentTitle}`,
+      destinationCode: this.state.selectedDocumentData[0].UnitCode,
       unitCode: this.props.employee.BranchCode,
       registrar: this.props.employee.NationalCode,
       status: 0,
     });
-    //console.log(data);
+    console.log(data);
     if (!data) {
       this.showMessage("نوع سند انتخاب نشده است", "error");
       return false;
     } else {
       this.showMessage("سند ثبت شد", "success");
-      this.setState(
-        {
-          selectedDocumentId: data.Id,
-        },
-        () => this.handleCollapse(3)
-      );
+      this.state.BudgetRDocumentDetail.map((i) => {
+        console.log(i);
+        if (i.Code !== "0") {
+          this.handleBudgetDocumentDetail(i, data.Id);
+        }
+      });
     }
+  };
+  handleBudgetDocumentDetail = async (row, id) => {
+    const { Amount, Code, Count, Description, Title } = row;
+    // if (Amount < 1) {
+    //   this.showMessage("مبلغ صفر یا منفی نمیتواند باشد", "error");
+    //   return false;
+    // } else if (
+    //   budgetTitle === "سرفصل وارد شده صحیح نمیباشد" ||
+    //   accountCode.length === 0
+    // ) {
+    //   this.showMessage("سرفصل وارد شده صحیح نمیباشد", "error");
+    //   return false;
+    // } else if (this.state.destinationCode === 0) {
+    //   this.showMessage("واحد مقصد انتخاب نشده است", "error");
+    //   return false;
+    // } else if (this.state.balance - thousandSeperator(Amount, -1) <= 0) {
+    //   this.showMessage("مانده کافی نمیباشد", "error");
+    //   return false;
+    // }
+    const { data } = await budgetDocumentDetailInsert({
+      id: 0,
+      pid: id,
+      title: Title,
+      code: Code,
+      amount: thousandSeperator(Amount, -1),
+      description: Description,
+      count: Count ? thousandSeperator(Count, -1) : 0,
+    });
+    
+  };
+  showMessage = (msg, type) => {
+    toast[type](msg, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
   render() {
     return (
@@ -155,11 +200,19 @@ class BudgetRequestToDocument extends Component {
                             : ""}
                         </div>
                       </div>
+                      <div className="row">
+                        <div className="col">کد درخواست دهنده</div>
+                        <div className="col">
+                          {this.state.selectedDocumentData.length
+                            ? this.state.selectedDocumentData[0].UnitCode
+                            : ""}
+                        </div>
+                      </div>
                     </div>
                     <div className="col-md-12 col-lg-4  bg-light rounded border">
                       <div>
                         <div>شماره پیگیری</div>
-                        {}
+
                         <div>
                           {this.state.selectedDocumentData.length ? (
                             <>
@@ -193,38 +246,39 @@ class BudgetRequestToDocument extends Component {
                           textAlign: "right",
                         }}
                       >
-                        {this.state.files.map((i, index) => (
-                          <div
-                            className=""
-                            style={{
-                              display: "flex",
-                              width: "95%",
-                              backgroundColor: "#f8f9fa",
-                              margin: 1,
-                              border: "1px solid silver",
-                              borderRadius: "0.2rem",
-                              padding: "0.2rem",
-                            }}
-                          >
-                            <div>{`فایل شماره ${index + 1}:`}</div>
-                            <div>
-                              <a
-                                className="m-3 "
-                                href={
-                                  this.state.selectedDocumentData.length
-                                    ? this.getFile(
-                                        `budget${this.state.selectedDocumentData[0].Id}`,
-                                        i
-                                      )
-                                    : ""
-                                }
-                                download
-                              >
-                                {i}
-                              </a>
+                        {this.state.files &&
+                          this.state.files.map((i, index) => (
+                            <div
+                              className=""
+                              style={{
+                                display: "flex",
+                                width: "95%",
+                                backgroundColor: "#f8f9fa",
+                                margin: 1,
+                                border: "1px solid silver",
+                                borderRadius: "0.2rem",
+                                padding: "0.2rem",
+                              }}
+                            >
+                              <div>{`فایل شماره ${index + 1}:`}</div>
+                              <div>
+                                <a
+                                  className="m-3 "
+                                  href={
+                                    this.state.selectedDocumentData.length
+                                      ? this.getFile(
+                                          `budget${this.state.selectedDocumentData[0].Id}`,
+                                          i
+                                        )
+                                      : ""
+                                  }
+                                  download
+                                >
+                                  {i}
+                                </a>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -261,15 +315,15 @@ class BudgetRequestToDocument extends Component {
                       </div>
                     </div>
 
-                    <div
+                    {/* <div
                       className="btn btn-success btn-block p-3 mb-2"
                       onClick={() => this.handleBudgetDocument()}
                     >
                       ایجاد سند
-                    </div>
+                    </div> */}
                   </div>
-                  <div className="border p-2 rounded">
-                    <table className="table table-striped">
+                  <div className="border p-2 rounded ">
+                    <table className="table table-striped ">
                       <thead className="thead-dark">
                         <tr key="header">
                           <th scope="col">شماره درخواست</th>
@@ -279,32 +333,35 @@ class BudgetRequestToDocument extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {this.state.BudgetRDocumentDetail.map((i) => (
-                          <tr key={i.PId}>
-                            <td>{i.PId}</td>
-                            <td width="40%">
-                              <SelectSearchable
-                                name="accountCode"
-                                data={this.state.BudgetData}
-                                onChange={(e) => this.handleSelectChange(e, i)}
-                                selectedValue={
-                                  this.state.BudgetRDocumentDetail.filter(
-                                    (r) => r.Code === i.Code
-                                  ).Code
-                                }
-                              />
-                            </td>
-                            <td>{i.Amount}</td>
-                            <td>{i.Description}</td>
-                          </tr>
-                        ))}
+                        {this.state.BudgetRDocumentDetail &&
+                          this.state.BudgetRDocumentDetail.map((i) => (
+                            <tr key={i.PId}>
+                              <td>{i.PId}</td>
+                              <td width="40%">
+                                <SelectSearchable
+                                  name="accountCode"
+                                  data={this.state.BudgetData}
+                                  onChange={(e) =>
+                                    this.handleSelectChange(e, i)
+                                  }
+                                  selectedValue={
+                                    this.state.BudgetRDocumentDetail.filter(
+                                      (r) => r.Code === i.Code
+                                    ).Code
+                                  }
+                                />
+                              </td>
+                              <td>{i.Amount}</td>
+                              <td>{i.Description}</td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                     <div
                       className="btn btn-success btn-block p-3"
                       onClick={() => this.registerDocument()}
                     >
-                      ثبت ردیف سند
+                      ثبت سند
                     </div>
                   </div>
                 </div>
@@ -312,6 +369,7 @@ class BudgetRequestToDocument extends Component {
             </div>
           </div>
         </div>
+        <ToastContainer className="text-center" />
       </main>
     );
   }

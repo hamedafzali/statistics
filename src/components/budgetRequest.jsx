@@ -58,8 +58,8 @@ class BudgetRequest extends Component {
     }
     //console.log(data);
   };
-  getFile = (folder, file) => {
-    return fileURL(folder, file);
+  getFile = async (folder, file) => {
+    return await fileURL(folder, file);
   };
   handleCommit = async (id) => {
     const { data } = await RBudgetCommit({
@@ -122,7 +122,7 @@ class BudgetRequest extends Component {
     const { data: BudgetRDocuments } = await BudgetRDocumentGetData(
       this.props.employee.NationalCode
     );
-    console.log("BudgetRDocuments", BudgetRDocuments);
+    //console.log("BudgetRDocuments", BudgetRDocuments);
     // const newState = { ...this.state };
     // newState.BudgetRDocuments = BudgetRDocuments;
     // this.setState(newState,);
@@ -145,10 +145,11 @@ class BudgetRequest extends Component {
   };
 
   handleBudgetRequest = async () => {
-    if (this.state.documentTypeId === 0) {
-      this.showMessage("نوع درخواست انتخاب نشده است", "error");
-      return false;
-    } else if (this.state.documentTitle.length === 0) {
+    // if (this.state.documentTypeId === 0) {
+    //   this.showMessage("نوع درخواست انتخاب نشده است", "error");
+    //   return false;
+    // } else
+    if (this.state.documentTitle.length === 0) {
       this.showMessage("عنوان درخواست را وارد کنید", "error");
       return false;
     } else if (this.state.destinationCode === 0) {
@@ -158,7 +159,7 @@ class BudgetRequest extends Component {
 
     const { data } = await budgetRequestInsert({
       date: moment().locale("fa").format("YYYY/MM/DD"),
-      documentTypeId: this.state.documentTypeId,
+      documentTypeId: 0,
       documentTitle: this.state.documentTitle,
       destinationCode: this.state.destinationCode,
       unitCode: this.props.employee.BranchCode,
@@ -541,7 +542,7 @@ class BudgetRequest extends Component {
                         >
                           <div className="card-body">
                             <div className="row">
-                              <div className="col-md-12 col-xl-4">
+                              {/* <div className="col-md-12 col-xl-4">
                                 <Select
                                   onChange={this.handleChange}
                                   name="documentTypeId"
@@ -555,8 +556,8 @@ class BudgetRequest extends Component {
                                     },
                                   ]}
                                 />
-                              </div>
-                              <div className="col-md-12 col-xl-4">
+                              </div> */}
+                              <div className="col-md-12 col-xl-6">
                                 <Input
                                   type="text"
                                   name="documentTitle"
@@ -570,7 +571,7 @@ class BudgetRequest extends Component {
                                   onChange={this.handleChange}
                                 />
                               </div>
-                              <div className="col-md-12 col-xl-4">
+                              <div className="col-md-12 col-xl-6">
                                 <Select
                                   onChange={this.handleChange}
                                   name="destinationCode"
@@ -734,18 +735,19 @@ class BudgetRequest extends Component {
                                 className="col-lg-8 col-md-12"
                                 style={{ display: "flex", cursor: "pointer" }}
                               >
-                                {this.state.files.map((i) => (
-                                  <a
-                                    className="mx-1"
-                                    href={this.getFile(
-                                      `budget${this.state.selectedDocumentData[0].Id}`,
-                                      i
-                                    )}
-                                    download
-                                  >
-                                    {i}
-                                  </a>
-                                ))}
+                                {this.state.files &&
+                                  this.state.files.map((i) => (
+                                    <a
+                                      className="mx-1"
+                                      href={this.getFile(
+                                        `budget${this.state.selectedDocumentData[0].Id}`,
+                                        i
+                                      )}
+                                      download
+                                    >
+                                      {i}
+                                    </a>
+                                  ))}
                               </div>
                             </div>
 

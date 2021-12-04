@@ -49,7 +49,7 @@ class ThreeOf1000 extends Component {
     console.log(this.props);
     const { data } = await karanehAccress(
       this.props.employee.NationalCode,
-      this.props.productType
+      this.state.productType
     );
     if (!data[0]) this.props.history.push("/not-found");
   };
@@ -123,65 +123,64 @@ class ThreeOf1000 extends Component {
     return nf.format(x) === "NaN" ? 0 : nf.format(x);
   };
   onCommit = (NationalCode, A50, A30, A20, PostTypeId) => {
-    if (/*this.props.type*/ "1" === "1") {
-      if (
-        (this.props.employee.GroupId === 4 ||
-          this.props.employee.GroupId === 2) &&
-        PostTypeId === 2
-      ) {
-        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
-          this.showMessage(
-            "سقف مبلغ قابل تخصیص به رییس شعبه 35,000,000 ریال میباشد",
-            "error"
-          );
-          return false;
-        }
-      } else if (
-        (this.props.employee.GroupId === 4 ||
-          this.props.employee.GroupId === 2) &&
-        PostTypeId !== 2
-      ) {
-        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
-          this.showMessage(
-            "سقف مبلغ قابل تخصیص به کارکنان 35,000,000 ریال میباشد",
-            "error"
-          );
-          return false;
-        }
-      } else {
-        if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
-          this.showMessage(
-            "سقف مبلغ قابل تخصیص به کارکنان ستادی 35,000,000 ریال میباشد",
-            "error"
-          );
-          return false;
-        }
+    //console.log(NationalCode, A50, A30, A20, PostTypeId);
+    //alert(this.props.type === "1");
+
+    if (
+      (this.props.employee.GroupId === 4 ||
+        this.props.employee.GroupId === 2) &&
+      PostTypeId === 2
+    ) {
+      if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
+        this.showMessage(
+          "سقف مبلغ قابل تخصیص به رییس شعبه 35,000,000 ریال میباشد",
+          "error"
+        );
+        return false;
+      }
+    } else if (
+      (this.props.employee.GroupId === 4 ||
+        this.props.employee.GroupId === 2) &&
+      PostTypeId !== 2
+    ) {
+      if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
+        this.showMessage(
+          "سقف مبلغ قابل تخصیص به کارکنان 35,000,000 ریال میباشد",
+          "error"
+        );
+        return false;
       }
     } else {
-      this.showMessage("خطا در تشخیص پست کارکنان" /*this.props.type*/, "error");
-      return false;
+      if (parseInt(A20) + parseInt(A30) + parseInt(A50) > 35000000) {
+        this.showMessage(
+          "سقف مبلغ قابل تخصیص به کارکنان ستادی 35,000,000 ریال میباشد",
+          "error"
+        );
+        return false;
+      }
     }
 
-    // if (this.props.employee.GroupId === 4) {
-    //   let sum = this.state.karanehRemain;
-
-    //   if (
-    //     (this.state.data.length === 2 &&
-    //       parseInt(A30) > parseInt(sum.Total * 0.3 * 0.6)) ||
-    //     (this.state.data.length === 3 &&
-    //       parseInt(A30) > parseInt(sum.Total * 0.3 * 0.45)) ||
-    //     (this.state.data.length === 4 &&
-    //       parseInt(A30) > parseInt(sum.Total * 0.3 * 0.35)) ||
-    //     (this.state.data.length > 4 &&
-    //       parseInt(A30) > parseInt(sum.Total * 0.3 * 0.3))
-    //   ) {
-    //     this.showMessage(
-    //       "حداکثر اعتبار تخصیصی به کارمند رعایت نشده است",
-    //       "error"
-    //     );
-    //     return false;
-    //   }
-    // }
+    if (this.props.employee.GroupId === 4) {
+      let sum = this.state.karanehRemain;
+      //alert(parseInt(sum.A30All * 0.3));
+      //alert(parseInt(A30));
+      if (
+        (this.state.data.length === 2 &&
+          parseInt(A30) > parseInt(sum.Total * 0.8 * 0.6)) ||
+        (this.state.data.length === 3 &&
+          parseInt(A30) > parseInt(sum.Total * 0.8 * 0.45)) ||
+        (this.state.data.length === 4 &&
+          parseInt(A30) > parseInt(sum.Total * 0.8 * 0.35)) ||
+        (this.state.data.length > 4 &&
+          parseInt(A30) > parseInt(sum.Total * 0.8 * 0.3))
+      ) {
+        this.showMessage(
+          "حداکثر اعتبار تخصیصی به کارمند رعایت نشده است",
+          "error"
+        );
+        return false;
+      }
+    }
 
     if (
       (this.props.employee.GroupId === 7 && A20 < 0) ||
@@ -192,6 +191,30 @@ class ThreeOf1000 extends Component {
       this.showMessage("مبلغ نمیتواند کمتر از صفر باشد", "error");
       return false;
     }
+    //alert(parseInt(this.state.sum.A30));
+    // if (
+    //   (this.props.employee.GroupId === 4 &&
+    //     parseInt(this.state.karanehRemain.A30) - A30 < 0) ||
+    //   ((this.props.employee.GroupId === 2 ||
+    //     this.props.employee.GroupId === 7 ||
+    //     this.props.employee.GroupId === 10) &&
+    //     parseInt(this.state.karanehRemain.A20) - A20 < 0)
+    // ) {
+    //   this.showMessage("مانده کافی نمیباشد", "error");
+    //   return false;
+    // }
+    // if (
+    //   (this.props.employee.GroupId === 4 &&
+    //     parseInt(this.state.karanehRemain.A30) < 0) ||
+    //   ((this.props.employee.GroupId === 2 ||
+    //     this.props.employee.GroupId === 7 ||
+    //     this.props.employee.GroupId === 10) &&
+    //     parseInt(this.state.karanehRemain.A20)) < 0
+    // ) {
+    //   this.showMessage("مانده کافی نمیباشد", "error");
+    //   return false;
+    // }
+
     this.insert(
       NationalCode,
       A50,
@@ -280,7 +303,7 @@ class ThreeOf1000 extends Component {
                     )}
                   </h4>
                   <h4 className="row text-success">
-                    {/* {this.props.employee.GroupId === 2 ? (
+                    {this.props.employee.GroupId === 2 ? (
                       <ul>
                         <li>
                           مانده قابل تخصیص :
@@ -341,20 +364,7 @@ class ThreeOf1000 extends Component {
                       </ul>
                     ) : (
                       ""
-                    )} */}
-                    {
-                      <ul>
-                        <li>
-                          مانده قابل تخصیص :
-                          {this.numberWithCommas(
-                            parseInt(
-                              this.state.karanehRemain.Total -
-                                this.state.karanehRemain.A50
-                            )
-                          )}
-                        </li>
-                      </ul>
-                    }
+                    )}
                   </h4>
                   <strong>مبلغ نهایی</strong> شامل
                   <strong> مبلغ ثابت </strong>،<strong> سهم شعبه </strong> و

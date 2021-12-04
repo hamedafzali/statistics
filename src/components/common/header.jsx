@@ -76,8 +76,8 @@ class Header extends Component {
           );
         } else {
           return (
-            <Dropdown.Item key={i} eventKey="1" className="navbar_Items">
-              <Link to={i.Link} className="navbar_Items_Link">
+            <Dropdown.Item key={i} eventKey="1" className="navbar_Items ">
+              <Link to={i.Link} className="navbar_Items_Link ">
                 {i.Name}
               </Link>
             </Dropdown.Item>
@@ -127,7 +127,13 @@ class Header extends Component {
                     ""
                   )}
 
-                  {`${employee.Name} ${employee.Family} - ${employee.Position} - ${employee.BranchName}`}
+                  <Link
+                    to="/profile"
+                    className="text-success"
+                    style={{ textDecoration: "none" }}
+                  >
+                    {`${employee.Name} ${employee.Family} - ${employee.Position} - ${employee.BranchName}`}
+                  </Link>
                 </div>
               );
             })

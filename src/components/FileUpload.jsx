@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { upload } from "../services/files";
-const FileUpload = ({ URL, label, type, callback }) => {
+const FileUpload = ({ URL, label, type, size, callback }) => {
   const [selectedFile, setSelectedFile] = useState();
-  const [isFilePicked, setIsFilePicked] = useState(false);
+  //const [isFilePicked, setIsFilePicked] = useState(false);
   const [isUploded, setIsUploded] = useState([false, null]);
   useEffect(() => {
     if (selectedFile) {
-      setIsFilePicked(true);
+      //setIsFilePicked(true);
       handleSubmission();
     }
   }, [selectedFile]);
   const changeHandler = (event) => {
+    //alert(event.target.files[0].size);
+    if (size && event.target.files[0].size > size * 1048576) {
+      alert("سایز فایل بیشتر از حد تعیین شده میباشد");
+      return false;
+    }
     setSelectedFile(event.target.files[0]);
   };
 
