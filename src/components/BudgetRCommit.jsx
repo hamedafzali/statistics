@@ -270,13 +270,13 @@ class BudgetRCommit extends Component {
                                           i.Status === 2 &&
                                           (this.props.employee.GroupId === 11 ||
                                             this.props.employee.GroupId === 8)
-                                            ? "d-inline  btn btn-warning m-1 col"
-                                            : "d-inline  btn btn-light  m-1 disabled col"
+                                            ? "  btn btn-warning m-1 col"
+                                            : "  btn btn-light  m-1 disabled col"
                                         }
                                       >
                                         صدور سند
                                       </Link>
-                                      <div
+                                      {/* <div
                                         className="d-inline text-nowrap btn btn-outline-danger btn-md m-1 col"
                                         onClick={() => {
                                           window.open(
@@ -285,7 +285,7 @@ class BudgetRCommit extends Component {
                                         }}
                                       >
                                         چاپ
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </td>
                                 </tr>

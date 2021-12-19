@@ -568,7 +568,7 @@ class BudgetAllocation extends Component {
                         >
                           <div className="card-body">
                             <div className="row">
-                              <div className="col-md-12 col-xl-4">
+                              <div className="col-md-12 col-xl-6">
                                 <Select
                                   onChange={this.handleChange}
                                   name="documentTypeId"
@@ -588,7 +588,19 @@ class BudgetAllocation extends Component {
                                   ]}
                                 />
                               </div>
-                              <div className="col-md-12 col-xl-4">
+
+                              <div className="col-md-12 col-xl-6">
+                                <Select
+                                  onChange={this.handleChange}
+                                  name="destinationCode"
+                                  label="واحد مقصد"
+                                  error=""
+                                  options={this.state.budgetUnits}
+                                />
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-12 col-xl-12">
                                 <Input
                                   type="text"
                                   name="documentTitle"
@@ -600,15 +612,6 @@ class BudgetAllocation extends Component {
                                   placeholder=""
                                   value={this.state.documentTitle}
                                   onChange={this.handleChange}
-                                />
-                              </div>
-                              <div className="col-md-12 col-xl-4">
-                                <Select
-                                  onChange={this.handleChange}
-                                  name="destinationCode"
-                                  label="واحد مقصد"
-                                  error=""
-                                  options={this.state.budgetUnits}
                                 />
                               </div>
                             </div>

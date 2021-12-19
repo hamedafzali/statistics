@@ -45,6 +45,10 @@ import BranchAdditionUpload from "./components/BranchAdditionUpload";
 import Profile from "./components/Profile";
 import BudgetCostCommit from "./components/BudgetCostCommit";
 import KaranehPanel from "./components/KaranehPanel";
+import BudgetCostsReport from "./components/BudgetCostsReport";
+import BudgetAllocationCostDetailWithCodeReport from "./components/BudgetAllocationCostDetailWithCodeReport";
+import BudgetAllocationCostReport from "./components/BudgetAllocationCostReport";
+import BudgetAllocationCostDetailReport from "./components/BudgetAllocationCostDetailReport";
 export const routes = [
   {
     path: "/",
@@ -234,5 +238,21 @@ export const routes = [
   {
     path: "/panel",
     component: KaranehPanel,
+  },
+  {
+    path: "/budgetcostsreport",
+    component: BudgetCostsReport,
+  },
+  {
+    path: "/budgetallocationcostdetailwithcode",
+    component: BudgetAllocationCostDetailWithCodeReport,
+  },
+  {
+    path: "/budgetallocationcost",
+    component: BudgetAllocationCostReport,
+  },
+  {
+    path: "/budgetallocationcostdetail",
+    component: BudgetAllocationCostDetailReport,
   },
 ];

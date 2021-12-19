@@ -115,6 +115,7 @@ class BudgetRequest extends Component {
       this.setState({
         collapse: id,
       });
+      this.getBudgetRDocuments();
     }
   };
   getBudgetRDocuments = async () => {
@@ -914,14 +915,14 @@ class BudgetRequest extends Component {
                                         </td>
                                       ) : (
                                         <td>
-                                          <div
+                                          {/* <div
                                             className="d-inline  btn btn-outline-warning btn-md m-1 "
                                             onClick={() =>
                                               this.handleCollapse(1)
                                             }
                                           >
                                             چاپ
-                                          </div>
+                                          </div> */}
                                         </td>
                                       )}
                                       {/* <td>

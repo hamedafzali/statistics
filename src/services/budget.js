@@ -104,8 +104,21 @@ export function BudgetBalanceEblagh(code) {
 export function BudgetBalanceEslahieh(code) {
   return http.get(apiUrl + `/budget/budgetbalanceeslahieh/${code}`);
 }
-
+export function BudgetCosts(code) {
+  return http.get(apiUrl + `/budget/budgetcosts/${code}`);
+}
 export function budgetRequestInsert(data) {
   //console.log(data);
   return http.post(apiUrl + `/budget/budgetRequestInsert`, data);
+}
+export function BudgetAllocationCost() {
+  return http.get(apiUrl + `/budget/budgetallocationcost/`);
+}
+export function BudgetAllocationCostDetail(code) {
+  return http.get(apiUrl + `/budget/budgetallocationcostdetail/${code}`);
+}
+export function BudgetAllocationCostDetailWithCode(code) {
+  return http.get(
+    apiUrl + `/budget/budgetallocationcostdetailwithcode/${code}`
+  );
 }

@@ -48,7 +48,11 @@ class TableBody extends Component {
     if (column.type) {
       switch (column.type) {
         case "text":
-          return <p>{value}</p>;
+          return String(item[column.path]).replace(",", "") < 0 ? (
+            <p className="text-danger">{value}</p>
+          ) : (
+            <p>{value}</p>
+          );
 
         case "input":
           return (

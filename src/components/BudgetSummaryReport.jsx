@@ -20,7 +20,7 @@ class BudgetSummaryReport extends Component {
       <main className="d-flex align-items-center  py-md-0  ">
         <div className="container ">
           <div className="card login-card ">
-            <div className="brand-wrapper px-4 pt-2">
+            <div className="brand-wrapper  p-5">
               <BudgetSummaryReportTable
                 data={this.state.data}
                 title={this.state.title}
